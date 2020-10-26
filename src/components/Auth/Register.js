@@ -39,7 +39,7 @@ export default function Register() {
 
   const isFormEmpty = ({ username, email, password, passwordConfirmation }) => {
     return (
-      !username ||
+      !username.length ||
       !email.length ||
       !password.length ||
       !passwordConfirmation.length
