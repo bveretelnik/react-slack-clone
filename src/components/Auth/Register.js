@@ -17,26 +17,69 @@ export default function Register() {
     email: "",
     password: "",
     passwordConfirmation: "",
+    errors: [],
   });
+
+  const isFormValid = () => {
+    let errors = [];
+    let error;
+
+    if (isFormEmpty(register)) {
+      error = { message: "Fill in all fields" };
+      setRegister({ ...register, errors: errors.concat(error) });
+      return false;
+    } else if (!isPasswordValid(register)) {
+      error = { message: "Password is invalid" };
+      setRegister({ ...register, errors: errors.concat(error) });
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const isFormEmpty = ({ username, email, password, passwordConfirmation }) => {
+    return (
+      !username ||
+      !email.length ||
+      !password.length ||
+      !passwordConfirmation.length
+    );
+  };
+
+  const isPasswordValid = ({ password, passwordConfirmation }) => {
+    if (password.length < 6 || passwordConfirmation.length < 6) {
+      return false;
+    } else if (password !== passwordConfirmation) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const displayErrors = (errors) => {
+    return errors.map((error, i) => <p key={i}>{error.message}</p>);
+  };
 
   const handleChange = (e) => {
     setRegister({ ...register, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(register.email, register.password)
-      .then((createdUser) => {
-        console.log(createdUser);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (isFormValid()) {
+      e.preventDefault();
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(register.email, register.password)
+        .then((createdUser) => {
+          console.log(createdUser);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
 
-  const { username, email, password, passwordConfirmation } = register;
+  const { username, email, password, passwordConfirmation, errors } = register;
 
   return (
     <Grid textAlign="center" verticalAlign="middle" className="app">
@@ -92,6 +135,12 @@ export default function Register() {
             </Button>
           </Segment>
         </Form>
+        {errors.length > 0 && (
+          <Message error>
+            <h3>Error</h3>
+            {displayErrors(errors)}
+          </Message>
+        )}
         <Message>
           Already a user <Link to="/login">Login</Link>
         </Message>
