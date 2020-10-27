@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import firebase from "../../firebase";
+import md5 from "md5";
 import {
   Grid,
   Form,
@@ -19,6 +20,7 @@ export default function Register() {
     passwordConfirmation: "",
     errors: [],
     loading: false,
+    userRef: firebase.database().ref("user"),
   });
 
   const isFormValid = () => {
@@ -74,7 +76,26 @@ export default function Register() {
         .createUserWithEmailAndPassword(register.email, register.password)
         .then((createdUser) => {
           console.log(createdUser);
-          setRegister({ ...register, loading: false });
+          createdUser.user
+            .updateProfile({
+              displayName: register.username,
+              photoURL: `http://gravatar.com/avatar/${md5(
+                createdUser.user.email
+              )}?d=identicon`,
+            })
+            .then(() => {
+              saveUser(createdUser).then(() => {
+                console.log("user saved");
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+              setRegister({
+                ...register,
+                errors: register.errors.concat(err),
+                loading: false,
+              });
+            });
         })
         .catch((err) => {
           console.log(err);
@@ -85,6 +106,13 @@ export default function Register() {
           });
         });
     }
+  };
+
+  const saveUser = (createdUser) => {
+    return register.userRef.child(createdUser.user.uid).set({
+      name: createdUser.user.displayName,
+      avatar: createdUser.user.photoURL,
+    });
   };
 
   const handleInputError = (errors, inputName) => {
