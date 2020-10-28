@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useContext } from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App";
 import Login from "./components/Auth/Login";
@@ -11,11 +11,17 @@ import {
   withRouter,
 } from "react-router-dom";
 import "semantic-ui-css/semantic.min.css";
+import UserState from "./components/context/user/UserState";
+import { UserContext } from "./components/context/user/userContext";
 
 const Root = ({ history }) => {
+  const { setUser } = useContext(UserContext);
+
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        console.log(user);
+        setUser(user);
         history.push("/");
       }
     });
@@ -33,8 +39,10 @@ const Root = ({ history }) => {
 const RootWithAuth = withRouter(Root);
 
 ReactDOM.render(
-  <Router>
-    <RootWithAuth />
-  </Router>,
+  <UserState>
+    <Router>
+      <RootWithAuth />
+    </Router>
+  </UserState>,
   document.getElementById("root")
 );
