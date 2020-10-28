@@ -10,12 +10,13 @@ import {
   Route,
   withRouter,
 } from "react-router-dom";
+import Spinner from "./components/Spiner/Spiner";
 import "semantic-ui-css/semantic.min.css";
 import UserState from "./components/context/user/UserState";
 import { UserContext } from "./components/context/user/userContext";
 
 const Root = ({ history }) => {
-  const { setUser } = useContext(UserContext);
+  const { setUser, state } = useContext(UserContext);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
@@ -28,7 +29,9 @@ const Root = ({ history }) => {
     // eslint-disable-next-line
   }, []);
 
-  return (
+  return state.isLoading ? (
+    <Spinner />
+  ) : (
     <Switch>
       <Route exact path="/" component={App} />
       <Route path="/login" component={Login} />
