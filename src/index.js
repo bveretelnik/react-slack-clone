@@ -16,7 +16,7 @@ import UserState from "./components/context/user/UserState";
 import { UserContext } from "./components/context/user/userContext";
 
 const Root = ({ history }) => {
-  const { setUser, state } = useContext(UserContext);
+  const { setUser, clearUser, state } = useContext(UserContext);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
@@ -24,6 +24,9 @@ const Root = ({ history }) => {
         console.log(user);
         setUser(user);
         history.push("/");
+      } else {
+        history.push("/login");
+        clearUser();
       }
     });
     // eslint-disable-next-line
