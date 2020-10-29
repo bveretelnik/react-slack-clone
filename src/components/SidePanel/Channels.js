@@ -1,20 +1,62 @@
-import React, { Fragment, useState } from "react";
+import firebase from "../../firebase";
+import React, { Fragment, useState, useContext } from "react";
 import { Menu, Icon, Modal, Form, Input, Button } from "semantic-ui-react";
+import { UserContext } from "../context/user/userContext";
 
 export default function Channels() {
-  const [state, setState] = useState({
+  const { state } = useContext(UserContext);
+  const [channal, setChannal] = useState({
+    user: state.currentUser,
     channels: [],
     channelName: "",
     channelDetails: "",
+    channalsRef: firebase.database().ref("channels"),
     modal: false,
   });
-  const handleChange = (e) => {
-    setState({ ...state, [e.target.name]: e.target.value });
-  };
-  const openModal = () => setState({ ...state, modal: true });
-  const closeModal = () => setState({ ...state, modal: false });
 
-  const { channels, modal } = state;
+  const addChannel = () => {
+    const { channalsRef, channelName, channelDetails, user } = channal;
+    const key = channalsRef.push().key;
+
+    const newChannel = {
+      id: key,
+      name: channelName,
+      details: channelDetails,
+      createdBy: {
+        nam: user.displayName,
+        avatar: user.photoURL,
+      },
+    };
+
+    channalsRef
+      .child(key)
+      .update(newChannel)
+      .then(() => {
+        setChannal({ ...channal, channelName: "", channelDetails: "" });
+        closeModal();
+        console.log("channel added");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (isFormValid(channal)) {
+      addChannel();
+    }
+  };
+  const isFormValid = ({ channelName, channelDetails }) =>
+    channelName && channelDetails;
+
+  const handleChange = (e) => {
+    setChannal({ ...channal, [e.target.name]: e.target.value });
+  };
+  const openModal = () => setChannal({ ...channal, modal: true });
+  const closeModal = () => setChannal({ ...channal, modal: false });
+
+  const { channels, modal } = channal;
   return (
     <Fragment>
       <Menu.Menu style={{ paddingBottom: "2em" }}>
@@ -32,7 +74,7 @@ export default function Channels() {
       <Modal basic open={modal} onClose={closeModal}>
         <Modal.Header>Add a Channel</Modal.Header>
         <Modal.Content>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Field>
               <Input
                 fluid
@@ -53,7 +95,7 @@ export default function Channels() {
           </Form>
         </Modal.Content>
         <Modal.Actions>
-          <Button color="green" inverted>
+          <Button color="green" inverted onClick={handleSubmit}>
             <Icon name="checkmark" /> Add
           </Button>
           <Button color="red" inverted onClick={closeModal}>
