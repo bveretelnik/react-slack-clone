@@ -1,6 +1,7 @@
 import React from "react";
 import UserPanel from "./UserPanel";
 import { Menu } from "semantic-ui-react";
+import Channels from "./Channels";
 
 export default function SidePanel() {
   return (
@@ -12,6 +13,7 @@ export default function SidePanel() {
       style={{ background: "#4c3c4c", fontSize: "1.2rem" }}
     >
       <UserPanel />
+      <Channels />
     </Menu>
   );
 }
