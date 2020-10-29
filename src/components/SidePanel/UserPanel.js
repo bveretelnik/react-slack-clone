@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
 import firebase from "../../firebase";
 import { Grid, Header, Icon, Dropdown } from "semantic-ui-react";
+import { UserContext } from "../context/user/userContext";
 
 export default function UserPanel() {
+  const { state } = useContext(UserContext);
+  // const [userData, setUserData] = useState({
+  //   user: state.currentUser,
+  // });
   const dropdownOptions = () => [
     {
       key: "user",
       text: (
         <span>
-          Signed in as <strong>User</strong>
+          Signed in as <strong>{state.currentUser.displayName}</strong>
         </span>
       ),
       disabled: true,
@@ -42,7 +47,10 @@ export default function UserPanel() {
         </Grid.Row>
         {/* User Dropdown */}
         <Header style={{ padding: "0.25em" }} as="h4" inverted>
-          <Dropdown trigger={<span>User</span>} options={dropdownOptions()} />
+          <Dropdown
+            trigger={<span>{state.currentUser.displayName}</span>}
+            options={dropdownOptions()}
+          />
         </Header>
       </Grid.Column>
     </Grid>
