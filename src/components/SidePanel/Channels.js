@@ -1,5 +1,5 @@
 import firebase from "../../firebase";
-import React, { Fragment, useState, useContext } from "react";
+import React, { Fragment, useState, useContext, useEffect } from "react";
 import { Menu, Icon, Modal, Form, Input, Button } from "semantic-ui-react";
 import { UserContext } from "../context/user/userContext";
 
@@ -13,6 +13,19 @@ export default function Channels() {
     channalsRef: firebase.database().ref("channels"),
     modal: false,
   });
+
+  useEffect(() => {
+    addListeners();
+    // eslint-disable-next-line
+  }, []);
+
+  const addListeners = () => {
+    let loadedChannels = [];
+    channal.channalsRef.on("child_added", (snap) => {
+      loadedChannels.push(snap.val());
+      setChannal({ ...channal, channels: loadedChannels });
+    });
+  };
 
   const addChannel = () => {
     const { channalsRef, channelName, channelDetails, user } = channal;
@@ -41,6 +54,20 @@ export default function Channels() {
       });
   };
 
+  //   const displayChannels = (channels) => {
+  //     channels.length > 0 &&
+  //       channels.map((channel) => (
+  //         <Menu.Item
+  //           key={channel.id}
+  //           onClick={() => console.log(channel)}
+  //           name={channel.name}
+  //           style={{ opacity: 0.7 }}
+  //         >
+  //           # {channel.name}
+  //         </Menu.Item>
+  //       ));
+  //   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isFormValid(channal)) {
@@ -67,7 +94,17 @@ export default function Channels() {
           </span>{" "}
           ({channels.length}) <Icon name="add" onClick={openModal} />
         </Menu.Item>
-        {/* Channels */}
+        {channels.length > 0 &&
+          channels.map((channel) => (
+            <Menu.Item
+              key={channel.id}
+              onClick={() => console.log(channel)}
+              name={channel.name}
+              style={{ opacity: 0.7 }}
+            >
+              # {channel.name}
+            </Menu.Item>
+          ))}
       </Menu.Menu>
 
       {/* Add Channel Modal */}
