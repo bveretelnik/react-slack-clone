@@ -30,7 +30,7 @@ const Root = ({ history }) => {
       }
     });
     // eslint-disable-next-line
-  }, []);
+  }, [state.currentUser]);
 
   return state.isLoading ? (
     <Spinner />
