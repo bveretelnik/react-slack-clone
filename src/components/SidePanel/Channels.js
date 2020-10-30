@@ -8,16 +8,22 @@ export default function Channels() {
   const { state } = useContext(UserContext);
   const { setCurrentChannel } = useContext(ChannelContext);
   const [channal, setChannal] = useState({
+    activeChannel: "",
     user: state.currentUser,
     channels: [],
     channelName: "",
     channelDetails: "",
     channalsRef: firebase.database().ref("channels"),
     modal: false,
+    firstLoad: true,
   });
 
   useEffect(() => {
     addListeners();
+    // eslint-disable-next-line
+  }, []);
+  useEffect(() => {
+    setFirstCHannel();
     // eslint-disable-next-line
   }, []);
 
@@ -27,6 +33,15 @@ export default function Channels() {
       loadedChannels.push(snap.val());
       setChannal({ ...channal, channels: loadedChannels });
     });
+  };
+
+  const setFirstCHannel = () => {
+    const firstChannel = channal.channels[0];
+    if (channal.firstLoad && channal.channels.length > 0) {
+      setCurrentChannel(firstChannel);
+      setActiveChannel(firstChannel);
+    }
+    setChannal({ ...channal, firstLoad: false });
   };
 
   const addChannel = () => {
@@ -70,8 +85,12 @@ export default function Channels() {
   //       ));
   //   };
 
-  const changeChannel = (channal) => {
-    setCurrentChannel(channal);
+  const changeChannel = (channel) => {
+    setActiveChannel(channel);
+    setCurrentChannel(channel);
+  };
+  const setActiveChannel = (channel) => {
+    setChannal({ ...channal, activeChannel: channel.id });
   };
 
   const handleSubmit = (e) => {
@@ -107,6 +126,7 @@ export default function Channels() {
               onClick={() => changeChannel(channel)}
               name={channel.name}
               style={{ opacity: 0.7 }}
+              active={channel.id === channal.activeChannel}
             >
               # {channel.name}
             </Menu.Item>
