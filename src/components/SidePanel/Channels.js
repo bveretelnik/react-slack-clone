@@ -13,7 +13,7 @@ export default function Channels() {
     channels: [],
     channelName: "",
     channelDetails: "",
-    channalsRef: firebase.database().ref("channels"),
+    channelsRef: firebase.database().ref("channels"),
     modal: false,
     firstLoad: true,
   });
@@ -22,20 +22,32 @@ export default function Channels() {
     addListeners();
     // eslint-disable-next-line
   }, []);
+
   useEffect(() => {
-    setFirstCHannel();
+    setFirstChannel();
     // eslint-disable-next-line
-  }, [channal.activeChannel]);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      removeListeners();
+    };
+    // eslint-disable-next-line
+  }, []);
 
   const addListeners = () => {
     let loadedChannels = [];
-    channal.channalsRef.on("child_added", (snap) => {
+    channal.channelsRef.on("child_added", (snap) => {
       loadedChannels.push(snap.val());
       setChannal({ ...channal, channels: loadedChannels });
     });
   };
 
-  const setFirstCHannel = () => {
+  const removeListeners = () => {
+    channal.channelsRef.off();
+  };
+
+  const setFirstChannel = () => {
     const firstChannel = channal.channels[0];
     if (channal.firstLoad && channal.channels.length > 0) {
       setCurrentChannel(firstChannel);
@@ -45,8 +57,8 @@ export default function Channels() {
   };
 
   const addChannel = () => {
-    const { channalsRef, channelName, channelDetails, user } = channal;
-    const key = channalsRef.push().key;
+    const { channelsRef, channelName, channelDetails, user } = channal;
+    const key = channelsRef.push().key;
 
     const newChannel = {
       id: key,
@@ -58,7 +70,7 @@ export default function Channels() {
       },
     };
 
-    channalsRef
+    channelsRef
       .child(key)
       .update(newChannel)
       .then(() => {
