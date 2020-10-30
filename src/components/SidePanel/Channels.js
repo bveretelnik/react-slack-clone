@@ -41,6 +41,7 @@ export default function Channels() {
       loadedChannels.push(snap.val());
       setChannal({ ...channal, channels: loadedChannels });
     });
+    console.log(channal);
   };
 
   const removeListeners = () => {
@@ -52,6 +53,7 @@ export default function Channels() {
     if (channal.firstLoad && channal.channels.length > 0) {
       setCurrentChannel(firstChannel);
       setActiveChannel(firstChannel);
+      console.log(firstChannel);
     }
     setChannal({ ...channal, firstLoad: false });
   };
