@@ -5,7 +5,7 @@ const handlers = {
     currentUser: payload.currentUser,
     isLoading: false,
   }),
-  [CLEAR_USER]: (state) => ({ currentUser: null, isLoading: false }),
+  [CLEAR_USER]: (state) => ({ ...state, isLoading: false }),
   DEFAULT: (state) => state,
 };
 export const userReducer = (state, action) => {

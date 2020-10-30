@@ -14,6 +14,7 @@ import Spinner from "./components/Spiner/Spiner";
 import "semantic-ui-css/semantic.min.css";
 import UserState from "./components/context/user/UserState";
 import { UserContext } from "./components/context/user/userContext";
+import ChannelState from "./components/context/channel/ChannelState";
 
 const Root = ({ history }) => {
   const { setUser, clearUser, state } = useContext(UserContext);
@@ -45,10 +46,12 @@ const Root = ({ history }) => {
 const RootWithAuth = withRouter(Root);
 
 ReactDOM.render(
-  <UserState>
-    <Router>
-      <RootWithAuth />
-    </Router>
-  </UserState>,
+  <ChannelState>
+    <UserState>
+      <Router>
+        <RootWithAuth />
+      </Router>
+    </UserState>
+  </ChannelState>,
   document.getElementById("root")
 );

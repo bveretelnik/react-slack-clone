@@ -2,9 +2,11 @@ import firebase from "../../firebase";
 import React, { Fragment, useState, useContext, useEffect } from "react";
 import { Menu, Icon, Modal, Form, Input, Button } from "semantic-ui-react";
 import { UserContext } from "../context/user/userContext";
+import { ChannelContext } from "../context/channel/channelContext";
 
 export default function Channels() {
   const { state } = useContext(UserContext);
+  const { setCurrentChannel } = useContext(ChannelContext);
   const [channal, setChannal] = useState({
     user: state.currentUser,
     channels: [],
@@ -68,6 +70,10 @@ export default function Channels() {
   //       ));
   //   };
 
+  const changeChannel = (channal) => {
+    setCurrentChannel(channal);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isFormValid(channal)) {
@@ -98,7 +104,7 @@ export default function Channels() {
           channels.map((channel) => (
             <Menu.Item
               key={channel.id}
-              onClick={() => console.log(channel)}
+              onClick={() => changeChannel(channel)}
               name={channel.name}
               style={{ opacity: 0.7 }}
             >
