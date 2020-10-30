@@ -25,7 +25,7 @@ export default function Channels() {
   useEffect(() => {
     setFirstCHannel();
     // eslint-disable-next-line
-  }, []);
+  }, [channal.activeChannel]);
 
   const addListeners = () => {
     let loadedChannels = [];
