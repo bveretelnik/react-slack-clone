@@ -24,6 +24,7 @@ export default function Messages() {
         messagesRef={messagesRef}
         // currentChannel={channel}
         // currentUser={user}
+        //
       />
     </Fragment>
   );

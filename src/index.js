@@ -18,7 +18,7 @@ import ChannelState from "./components/context/channel/ChannelState";
 
 const Root = ({ history }) => {
   const { setUser, clearUser, user } = useContext(UserContext);
-
+  //
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {

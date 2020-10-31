@@ -5,6 +5,7 @@ import { UserContext } from "../context/user/userContext";
 import { ChannelContext } from "../context/channel/channelContext";
 
 export default function Channels() {
+  //
   const { user } = useContext(UserContext);
   const { setCurrentChannel } = useContext(ChannelContext);
   const [channal, setChannal] = useState({
