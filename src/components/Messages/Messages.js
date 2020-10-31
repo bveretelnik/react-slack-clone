@@ -1,9 +1,17 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import { Segment, Comment } from "semantic-ui-react";
+import firebase from "../../firebase";
+
 import MessagesForm from "./MessagesForm";
 import MessagesHeader from "./MessagesHeader";
 
 export default function Messages() {
+  const [messag, setMessag] = useState({
+    messagesRef: firebase.database().ref("messages"),
+    // channel: props.currentChannel,
+    // user: props.currentUser,
+  });
+  const { messagesRef } = messag;
   return (
     <Fragment>
       <MessagesHeader />
@@ -12,7 +20,11 @@ export default function Messages() {
         <Comment.Group className="messages">{/* Messages */}</Comment.Group>
       </Segment>
 
-      <MessagesForm />
+      <MessagesForm
+        messagesRef={messagesRef}
+        // currentChannel={channel}
+        // currentUser={user}
+      />
     </Fragment>
   );
 }

@@ -29,7 +29,7 @@ export default function UserState({ children }) {
   };
 
   return (
-    <UserContext.Provider value={{ setUser, clearUser, state: state }}>
+    <UserContext.Provider value={{ setUser, clearUser, user: state }}>
       {children}
     </UserContext.Provider>
   );
