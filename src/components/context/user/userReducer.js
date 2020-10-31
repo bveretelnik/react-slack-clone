@@ -2,8 +2,7 @@ import { CLEAR_USER, SET_USER } from "../types";
 
 const handlers = {
   [SET_USER]: (state, { payload }) => ({
-    ...state,
-    currentUser: payload,
+    currentUser: payload.currentUser,
     isLoading: false,
   }),
   [CLEAR_USER]: (state) => ({ ...state, isLoading: false }),
