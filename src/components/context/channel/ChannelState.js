@@ -12,7 +12,9 @@ export default function ChannelState({ children }) {
   const setCurrentChannel = (channel) => {
     dispatch({
       type: SET_CURRENT_CHANNEL,
-      payload: channel,
+      payload: {
+        currentChannel: channel,
+      },
     });
     // console.log(state);
   };
