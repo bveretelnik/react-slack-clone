@@ -57,13 +57,13 @@ export default function Messages() {
       <Segment>
         <Comment.Group className="messages">
           {messages.length > 0 &&
-            messages.map((message) => {
+            messages.map((message) => (
               <Message
                 key={message.timestamp}
                 message={message}
                 user={messag.user}
-              />;
-            })}
+              />
+            ))}
         </Comment.Group>
       </Segment>
 

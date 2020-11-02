@@ -20,11 +20,10 @@ export default function Channels() {
 
   useEffect(() => {
     addListeners();
-    // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    setFirstChannel();
+    if (channal.activeChannel) {
+      setFirstChannel();
+    }
+    console.log(channal);
     // eslint-disable-next-line
   }, []);
 
@@ -41,7 +40,7 @@ export default function Channels() {
       loadedChannels.push(snap.val());
       setChannal({ ...channal, channels: loadedChannels });
     });
-    console.log(channal);
+    // console.log(channal);
   };
 
   const removeListeners = () => {
@@ -53,7 +52,7 @@ export default function Channels() {
     if (channal.firstLoad && channal.channels.length > 0) {
       setCurrentChannel(firstChannel);
       setActiveChannel(firstChannel);
-      console.log(firstChannel);
+      console.log(channal);
     }
     setChannal({ ...channal, firstLoad: false });
   };

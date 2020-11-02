@@ -16,7 +16,7 @@ export default function ChannelState({ children }) {
         currentChannel: channel,
       },
     });
-    // console.log(state);
+    console.log(state);
   };
   return (
     <ChannelContext.Provider value={{ setCurrentChannel, channel: state }}>

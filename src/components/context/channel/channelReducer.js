@@ -3,7 +3,7 @@ import { SET_CURRENT_CHANNEL } from "../types";
 const handlers = {
   [SET_CURRENT_CHANNEL]: (state, { payload }) => ({
     ...state,
-    currentChannel: payload,
+    currentChannel: payload.currentChannel,
   }),
   DEFAULT: (state) => state,
 };
