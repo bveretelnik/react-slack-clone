@@ -20,19 +20,20 @@ export default function Channels() {
 
   useEffect(() => {
     addListeners();
-    if (channal.activeChannel) {
-      setFirstChannel();
-    }
-    console.log(channal);
     // eslint-disable-next-line
   }, []);
 
-  useEffect(() => {
-    return () => {
-      removeListeners();
-    };
-    // eslint-disable-next-line
-  }, []);
+  // useEffect(() => {
+  //     setFirstChannel();
+  //   // eslint-disable-next-line
+  // }, []);
+
+  // useEffect(() => {
+  //   return () => {
+  //     removeListeners();
+  //   };
+  //   // eslint-disable-next-line
+  // }, [channel]);
 
   const addListeners = () => {
     let loadedChannels = [];
@@ -40,7 +41,8 @@ export default function Channels() {
       loadedChannels.push(snap.val());
       setChannal({ ...channal, channels: loadedChannels });
     });
-    // console.log(channal);
+
+    console.log(channal);
   };
 
   const removeListeners = () => {
@@ -52,9 +54,9 @@ export default function Channels() {
     if (channal.firstLoad && channal.channels.length > 0) {
       setCurrentChannel(firstChannel);
       setActiveChannel(firstChannel);
-      console.log(channal);
     }
     setChannal({ ...channal, firstLoad: false });
+    console.log(channal);
   };
 
   const addChannel = () => {
@@ -104,6 +106,7 @@ export default function Channels() {
   };
   const setActiveChannel = (channel) => {
     setChannal({ ...channal, activeChannel: channel.id });
+    console.log(channal);
   };
 
   const handleSubmit = (e) => {

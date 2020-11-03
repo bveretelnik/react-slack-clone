@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import firebase from "../../firebase";
 import { Segment, Button, Input } from "semantic-ui-react";
 import { ChannelContext } from "../context/channel/channelContext";
@@ -9,11 +9,16 @@ export default function MessagesForm({ messagesRef }) {
   const { user } = useContext(UserContext);
   const [state, setstate] = useState({
     message: "",
-    channelCur: channel.currentChannel,
+    channelCur: null,
     user: user.currentUser,
     loading: false,
     errors: [],
   });
+  useEffect(() => {
+    setstate({ ...state, channelCur: channel.currentChannel });
+    console.log(state);
+  }, [channel.currentChannel]);
+
   const handleChange = (e) => {
     setstate({ ...state, [e.target.name]: e.target.value });
   };

@@ -14,17 +14,18 @@ export default function Messages() {
     messagesRef: firebase.database().ref("messages"),
     messages: [],
     messagesLoading: true,
-    channel: channel.currentChannel,
+    channal: channel.currentChannel,
     user: user.currentUser,
   });
 
   useEffect(() => {
-    const { channel, user } = messag;
-    if (channel && user) {
-      addListeners(channel.id);
+    const { channal, user } = messag;
+    if (channal && user) {
+      addListeners(channal.id);
     }
     // eslint-disable-next-line
   }, []);
+
   const addListeners = (channelId) => {
     addMessageListener(channelId);
   };
@@ -38,6 +39,7 @@ export default function Messages() {
         messagesLoading: false,
       });
     });
+    console.log(messag);
   };
   // displayMessages = messages =>
   // messages.length > 0 &&
@@ -67,12 +69,7 @@ export default function Messages() {
         </Comment.Group>
       </Segment>
 
-      <MessagesForm
-        messagesRef={messagesRef}
-        // currentChannel={channel}
-        // currentUser={user}
-        //s
-      />
+      <MessagesForm messagesRef={messagesRef} />
     </Fragment>
   );
 }
