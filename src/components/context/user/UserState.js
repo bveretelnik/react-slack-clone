@@ -8,7 +8,7 @@ export default function UserState({ children }) {
     currentUser: null,
     isLoading: true,
   };
-
+  //
   const [state, dispatch] = useReducer(userReducer, initialState);
 
   const setUser = (user) => {
@@ -18,7 +18,7 @@ export default function UserState({ children }) {
         currentUser: user,
       },
     });
-    // console.log(state);
+    console.log(state);
   };
 
   const clearUser = () => {
@@ -29,7 +29,7 @@ export default function UserState({ children }) {
   };
 
   return (
-    <UserContext.Provider value={{ setUser, clearUser, state: state }}>
+    <UserContext.Provider value={{ setUser, clearUser, user: state }}>
       {children}
     </UserContext.Provider>
   );

@@ -17,7 +17,7 @@ import { UserContext } from "./components/context/user/userContext";
 import ChannelState from "./components/context/channel/ChannelState";
 
 const Root = ({ history }) => {
-  const { setUser, clearUser, state } = useContext(UserContext);
+  const { setUser, clearUser, user } = useContext(UserContext);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
@@ -30,10 +30,9 @@ const Root = ({ history }) => {
         clearUser();
       }
     });
-    // eslint-disable-next-line
-  }, [state.currentUser]);
+  }, [user.currentUser]);
 
-  return state.isLoading ? (
+  return user.isLoading ? (
     <Spinner />
   ) : (
     <Switch>

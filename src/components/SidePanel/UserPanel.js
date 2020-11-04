@@ -4,14 +4,13 @@ import { Grid, Header, Icon, Dropdown, Image } from "semantic-ui-react";
 import { UserContext } from "../context/user/userContext";
 
 export default function UserPanel() {
-  const { state } = useContext(UserContext);
-
+  const { user } = useContext(UserContext);
   const dropdownOptions = () => [
     {
       key: "user",
       text: (
         <span>
-          Signed in as <strong>{state.currentUser.displayName}</strong>
+          Signed in as <strong>{user.currentUser.displayName}</strong>
         </span>
       ),
       disabled: true,
@@ -32,7 +31,7 @@ export default function UserPanel() {
       .signOut()
       .then(() => console.log("signed out!"));
   };
-  const { currentUser } = state;
+  const { currentUser } = user;
   return (
     <Grid style={{ background: "#4c3c4c" }}>
       <Grid.Column>
