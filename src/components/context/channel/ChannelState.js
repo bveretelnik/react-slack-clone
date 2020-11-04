@@ -24,6 +24,11 @@ export default function ChannelState({ children }) {
     addListeners();
     //eslint-disable-next-line
   }, []);
+  useEffect(() => {
+    return () => removeListeners();
+    //eslint-disable-next-line
+  }, []);
+
   const addListeners = () => {
     let loadedChannels = [];
     state.channelsRef.on("child_added", (snap) => {
@@ -36,12 +41,11 @@ export default function ChannelState({ children }) {
   };
 
   const removeListeners = () => {
-    initialState.channelsRef.off();
+    state.channelsRef.off();
   };
 
   const setActiveChannel = (channel) => {
     dispatch({ type: SET_ACTIVE_CHANNEL, payload: channel.id });
-    console.log(state);
   };
 
   const setCurrentChannel = (channel) => {

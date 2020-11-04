@@ -65,6 +65,7 @@ export default function Channels() {
   const changeChannel = (channel) => {
     setActiveChannel(channel);
     setCurrentChannel(channel);
+    console.log(channel);
   };
 
   const isFormValid = (channelName, channelDetails) =>

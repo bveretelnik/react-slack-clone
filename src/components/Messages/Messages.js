@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useContext } from "react";
+import React, { Fragment, useState, useContext } from "react";
 import { Segment, Comment } from "semantic-ui-react";
 import firebase from "../../firebase";
 import { ChannelContext } from "../context/channel/channelContext";
@@ -18,23 +18,23 @@ export default function Messages() {
     user: user.currentUser,
   });
 
-  const addListeners = (channelId) => {
-    setMessag({ ...messag, channal: channel.currentChannel });
-    addMessageListener(channelId);
-  };
+  // const addListeners = (channelId) => {
+  //   setMessag({ ...messag, channal: channel.currentChannel });
+  //   addMessageListener(channelId);
+  // };
 
-  const addMessageListener = (channelId) => {
-    let loadedMessages = [];
-    messag.messagesRef.child(channelId).on("child_added", (snap) => {
-      loadedMessages.push(snap.val());
-      setMessag({
-        ...messag,
-        messages: loadedMessages,
-        messagesLoading: false,
-      });
-    });
-    console.log(messag);
-  };
+  // const addMessageListener = (channelId) => {
+  //   let loadedMessages = [];
+  //   messag.messagesRef.child(channelId).on("child_added", (snap) => {
+  //     loadedMessages.push(snap.val());
+  //     setMessag({
+  //       ...messag,
+  //       messages: loadedMessages,
+  //       messagesLoading: false,
+  //     });
+  //   });
+  //   console.log(messag);
+  // };
 
   const { messagesRef, messages } = messag;
   return (
