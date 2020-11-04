@@ -1,23 +1,22 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import firebase from "../../firebase";
 import { Segment, Button, Input } from "semantic-ui-react";
 import { ChannelContext } from "../context/channel/channelContext";
 import { UserContext } from "../context/user/userContext";
+import { MessegesContext } from "../context/messeges/messegesContext";
 
-export default function MessagesForm({ messagesRef }) {
+export default function MessagesForm({}) {
   const { channel } = useContext(ChannelContext);
   const { user } = useContext(UserContext);
+  const { messege } = useContext(MessegesContext);
+  const { messagesRef } = messege;
+  const { currentChannel } = channel;
+  const { currentUser } = user;
   const [state, setstate] = useState({
-    message: "",
-    channelCur: null,
-    user: user.currentUser,
+    messag: "",
     loading: false,
     errors: [],
   });
-  useEffect(() => {
-    setstate({ ...state, channelCur: channel.currentChannel });
-    console.log(state);
-  }, [channel.currentChannel]);
 
   const handleChange = (e) => {
     setstate({ ...state, [e.target.name]: e.target.value });
@@ -26,25 +25,24 @@ export default function MessagesForm({ messagesRef }) {
     const message = {
       timestamp: firebase.database.ServerValue.TIMESTAMP,
       user: {
-        id: state.user.uid,
-        name: state.user.displayName,
-        avatar: state.user.photoURL,
+        // id: currentChannel.uid,
+        name: currentUser.displayName,
+        avatar: currentUser.photoURL,
       },
-      content: state.message,
+      content: state.messag,
     };
     return message;
   };
 
   const sendMessage = () => {
-    const { message, channelCur } = state;
-    if (message) {
+    if (state.messag) {
       setstate({ ...state, loading: true });
       messagesRef
-        .child(channelCur.id)
+        .child("MKomJJ70QO5piiQbDYg")
         .push()
         .set(createMessage())
         .then(() => {
-          setstate({ ...state, loading: false, message: "", errors: [] });
+          setstate({ ...state, loading: false, messag: "", errors: [] });
         })
         .catch((err) => {
           console.err(err);
@@ -58,24 +56,24 @@ export default function MessagesForm({ messagesRef }) {
       setstate({
         ...state,
         loading: false,
-        errors: errors.concat({ message: "Add a message" }),
+        errors: errors.concat({ messag: "Add a message" }),
       });
     }
   };
-  const { errors, message, loading } = state;
+  const { errors, messag, loading } = state;
   return (
     <Segment className="message__form">
       <Input
         fluid
-        name="message"
+        name="messag"
         onChange={handleChange}
-        value={message}
+        value={messag}
         style={{ marginBottom: "0.7em" }}
         label={<Button icon={"add"} />}
         labelPosition="left"
         placeholder="Write your message"
         className={
-          errors.some((error) => error.message.includes("message"))
+          errors.some((error) => error.messag.includes("message"))
             ? "error"
             : ""
         }

@@ -1,4 +1,3 @@
-import firebase from "../../firebase";
 import React, { Fragment, useState, useContext, useEffect } from "react";
 import { Menu, Icon, Modal, Form, Input, Button } from "semantic-ui-react";
 import { UserContext } from "../context/user/userContext";
@@ -6,78 +5,47 @@ import { ChannelContext } from "../context/channel/channelContext";
 
 export default function Channels() {
   const { user } = useContext(UserContext);
-  const { setCurrentChannel } = useContext(ChannelContext);
-  const [channal, setChannal] = useState({
-    activeChannel: "",
-    user: user.currentUser,
-    channels: [],
+  const {
+    setCurrentChannel,
+    setActiveChannel,
+    openModal,
+    closeModal,
+    channel,
+  } = useContext(ChannelContext);
+  const { activeChannel, channelsRef, channels, firstLoad, modal } = channel;
+  const [value, setValue] = useState({
     channelName: "",
     channelDetails: "",
-    channelsRef: firebase.database().ref("channels"),
-    modal: false,
-    firstLoad: true,
   });
 
   useEffect(() => {
-    addListeners();
-    // eslint-disable-next-line
-  }, []);
-
-  // useEffect(() => {
-  //     setFirstChannel();
-  //   // eslint-disable-next-line
-  // }, []);
-
-  // useEffect(() => {
-  //   return () => {
-  //     removeListeners();
-  //   };
-  //   // eslint-disable-next-line
-  // }, [channel]);
-
-  const addListeners = () => {
-    let loadedChannels = [];
-    channal.channelsRef.on("child_added", (snap) => {
-      loadedChannels.push(snap.val());
-      setChannal({ ...channal, channels: loadedChannels });
-    });
-
-    console.log(channal);
-  };
-
-  const removeListeners = () => {
-    channal.channelsRef.off();
-  };
+    setFirstChannel();
+  }, [channels]);
 
   const setFirstChannel = () => {
-    const firstChannel = channal.channels[0];
-    if (channal.firstLoad && channal.channels.length > 0) {
+    const firstChannel = channels[0];
+    if (firstLoad && channels.length > 0) {
       setCurrentChannel(firstChannel);
       setActiveChannel(firstChannel);
     }
-    setChannal({ ...channal, firstLoad: false });
-    console.log(channal);
   };
 
   const addChannel = () => {
-    const { channelsRef, channelName, channelDetails, user } = channal;
     const key = channelsRef.push().key;
-
     const newChannel = {
       id: key,
-      name: channelName,
-      details: channelDetails,
+      name: value.channelName,
+      details: value.channelDetails,
       createdBy: {
-        name: user.displayName,
-        avatar: user.photoURL,
+        name: user.currentUser.displayName,
+        avatar: user.currentUser.photoURL,
       },
     };
-
     channelsRef
       .child(key)
       .update(newChannel)
       .then(() => {
-        setChannal({ ...channal, channelName: "", channelDetails: "" });
+        setValue({ ...value, channelName: " ", channelDetails: " " });
         closeModal();
         console.log("channel added");
       })
@@ -86,45 +54,26 @@ export default function Channels() {
       });
   };
 
-  //   const displayChannels = (channels) => {
-  //     channels.length > 0 &&
-  //       channels.map((channel) => (
-  //         <Menu.Item
-  //           key={channel.id}
-  //           onClick={() => console.log(channel)}
-  //           name={channel.name}
-  //           style={{ opacity: 0.7 }}
-  //         >
-  //           # {channel.name}
-  //         </Menu.Item>
-  //       ));
-  //   };
-
   const changeChannel = (channel) => {
     setActiveChannel(channel);
     setCurrentChannel(channel);
+    // console.log(channel);
   };
-  const setActiveChannel = (channel) => {
-    setChannal({ ...channal, activeChannel: channel.id });
-    console.log(channal);
-  };
+
+  const isFormValid = (channelName, channelDetails) =>
+    channelName && channelDetails;
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isFormValid(channal)) {
+    if (isFormValid(value.channelName, value.channelDetails)) {
       addChannel();
     }
   };
-  const isFormValid = ({ channelName, channelDetails }) =>
-    channelName && channelDetails;
 
   const handleChange = (e) => {
-    setChannal({ ...channal, [e.target.name]: e.target.value });
+    setValue({ ...value, [e.target.name]: e.target.value });
   };
-  const openModal = () => setChannal({ ...channal, modal: true });
-  const closeModal = () => setChannal({ ...channal, modal: false });
 
-  const { channels, modal } = channal;
   return (
     <Fragment>
       <Menu.Menu style={{ paddingBottom: "2em" }}>
@@ -133,7 +82,8 @@ export default function Channels() {
             <Icon name="exchange" />
             CHANNELS
           </span>{" "}
-          ({channels.length}) <Icon name="add" onClick={openModal} />
+          ({channels.length ? channels.length : 0}){" "}
+          <Icon name="add" onClick={openModal} />
         </Menu.Item>
         {channels.length > 0 &&
           channels.map((channel) => (
@@ -142,7 +92,7 @@ export default function Channels() {
               onClick={() => changeChannel(channel)}
               name={channel.name}
               style={{ opacity: 0.7 }}
-              active={channel.id === channal.activeChannel}
+              active={channel.id === activeChannel}
             >
               # {channel.name}
             </Menu.Item>

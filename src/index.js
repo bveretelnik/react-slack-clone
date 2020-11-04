@@ -15,6 +15,7 @@ import "semantic-ui-css/semantic.min.css";
 import UserState from "./components/context/user/UserState";
 import { UserContext } from "./components/context/user/userContext";
 import ChannelState from "./components/context/channel/ChannelState";
+import MessegesState from "./components/context/messeges/MessegesState";
 
 const Root = ({ history }) => {
   const { setUser, clearUser, user } = useContext(UserContext);
@@ -22,7 +23,6 @@ const Root = ({ history }) => {
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        // console.log(user);
         setUser(user);
         history.push("/");
       } else {
@@ -30,7 +30,7 @@ const Root = ({ history }) => {
         clearUser();
       }
     });
-    // eslint-disable-next-line
+    //eslint-disable-next-line
   }, [user.currentUser]);
 
   return user.isLoading ? (
@@ -46,12 +46,14 @@ const Root = ({ history }) => {
 const RootWithAuth = withRouter(Root);
 
 ReactDOM.render(
-  <ChannelState>
-    <UserState>
-      <Router>
-        <RootWithAuth />
-      </Router>
-    </UserState>
-  </ChannelState>,
+  <MessegesState>
+    <ChannelState>
+      <UserState>
+        <Router>
+          <RootWithAuth />
+        </Router>
+      </UserState>
+    </ChannelState>
+  </MessegesState>,
   document.getElementById("root")
 );
