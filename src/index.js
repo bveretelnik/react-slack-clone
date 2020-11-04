@@ -19,7 +19,7 @@ import MessegesState from "./components/context/messeges/MessegesState";
 
 const Root = ({ history }) => {
   const { setUser, clearUser, user } = useContext(UserContext);
-
+  //
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
