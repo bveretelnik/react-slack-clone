@@ -14,6 +14,13 @@ export default function MessagesForm({ messagesRef }) {
     loading: false,
     errors: [],
   });
+<<<<<<< HEAD
+=======
+  useEffect(() => {
+    setstate({ ...state, channelCur: channel.currentChannel });
+    console.log(state);
+  }, [channel.currentChannel]);
+>>>>>>> 04cba0af2e4fdeb9e5720a89d2b36b29e726732a
 
   const handleChange = (e) => {
     setstate({ ...state, [e.target.name]: e.target.value });

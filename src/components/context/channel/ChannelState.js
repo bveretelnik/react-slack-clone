@@ -51,6 +51,10 @@ export default function ChannelState({ children }) {
         currentChannel: channel,
       },
     });
+<<<<<<< HEAD
+=======
+    console.log(state);
+>>>>>>> 04cba0af2e4fdeb9e5720a89d2b36b29e726732a
   };
 
   const openModal = () => dispatch({ type: OPEN_MODAL });

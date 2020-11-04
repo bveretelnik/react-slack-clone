@@ -4,7 +4,11 @@ import { Comment } from "semantic-ui-react";
 
 export default function Message({ message, user }) {
   const isOwnMessage = (message, user) => {
+<<<<<<< HEAD
     return message.user.id === user.id ? "message__self" : "";
+=======
+    return message.user.id === user.uid ? "message__self" : "";
+>>>>>>> 04cba0af2e4fdeb9e5720a89d2b36b29e726732a
   };
   const timeFromNow = (timestamp) => moment(timestamp).fromNow();
 

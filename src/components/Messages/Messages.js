@@ -18,8 +18,20 @@ export default function Messages() {
     user: user.currentUser,
   });
 
+<<<<<<< HEAD
   const addListeners = (channelId) => {
     setMessag({ ...messag, channal: channel.currentChannel });
+=======
+  useEffect(() => {
+    const { channal, user } = messag;
+    if (channal && user) {
+      addListeners(channal.id);
+    }
+    // eslint-disable-next-line
+  }, []);
+
+  const addListeners = (channelId) => {
+>>>>>>> 04cba0af2e4fdeb9e5720a89d2b36b29e726732a
     addMessageListener(channelId);
   };
 
@@ -28,13 +40,28 @@ export default function Messages() {
     messag.messagesRef.child(channelId).on("child_added", (snap) => {
       loadedMessages.push(snap.val());
       setMessag({
+<<<<<<< HEAD
         ...messag,
+=======
+>>>>>>> 04cba0af2e4fdeb9e5720a89d2b36b29e726732a
         messages: loadedMessages,
         messagesLoading: false,
       });
     });
     console.log(messag);
   };
+<<<<<<< HEAD
+=======
+  // displayMessages = messages =>
+  // messages.length > 0 &&
+  // messages.map(message => (
+  //   <Message
+  //     key={message.timestamp}
+  //     message={message}
+  //     user={this.state.user}
+  //   />
+  // ));
+>>>>>>> 04cba0af2e4fdeb9e5720a89d2b36b29e726732a
 
   const { messagesRef, messages } = messag;
   return (

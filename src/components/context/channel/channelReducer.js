@@ -10,6 +10,7 @@ const handlers = {
   [SET_CURRENT_CHANNEL]: (state, { payload }) => ({
     ...state,
     currentChannel: payload.currentChannel,
+<<<<<<< HEAD
   }),
   [ADD_LISTENER]: (state, { payload }) => ({
     ...state,
@@ -21,6 +22,8 @@ const handlers = {
     ...state,
     activeChannel: payload,
     firstLoad: false,
+=======
+>>>>>>> 04cba0af2e4fdeb9e5720a89d2b36b29e726732a
   }),
   DEFAULT: (state) => state,
 };

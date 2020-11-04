@@ -30,6 +30,10 @@ const Root = ({ history }) => {
         clearUser();
       }
     });
+<<<<<<< HEAD
+=======
+    // eslint-disable-next-line
+>>>>>>> 04cba0af2e4fdeb9e5720a89d2b36b29e726732a
   }, [user.currentUser]);
 
   return user.isLoading ? (
