@@ -5,7 +5,6 @@ import { ChannelContext } from "../context/channel/channelContext";
 
 export default function Channels() {
   const { user } = useContext(UserContext);
-<<<<<<< HEAD
   const {
     setCurrentChannel,
     setActiveChannel,
@@ -22,53 +21,14 @@ export default function Channels() {
     modal,
   } = channel;
   const [value, setValue] = useState({
-=======
-  const { setCurrentChannel } = useContext(ChannelContext);
-  const [channal, setChannal] = useState({
-    activeChannel: "",
-    user: user.currentUser,
-    channels: [],
->>>>>>> 04cba0af2e4fdeb9e5720a89d2b36b29e726732a
     channelName: "",
     channelDetails: "",
   });
 
   useEffect(() => {
-<<<<<<< HEAD
     setFirstChannel();
     //eslint-disable-next-line
   }, [channels]);
-=======
-    addListeners();
-    // eslint-disable-next-line
-  }, []);
-
-  // useEffect(() => {
-  //     setFirstChannel();
-  //   // eslint-disable-next-line
-  // }, []);
-
-  // useEffect(() => {
-  //   return () => {
-  //     removeListeners();
-  //   };
-  //   // eslint-disable-next-line
-  // }, [channel]);
-
-  const addListeners = () => {
-    let loadedChannels = [];
-    channal.channelsRef.on("child_added", (snap) => {
-      loadedChannels.push(snap.val());
-      setChannal({ ...channal, channels: loadedChannels });
-    });
-
-    console.log(channal);
-  };
-
-  const removeListeners = () => {
-    channal.channelsRef.off();
-  };
->>>>>>> 04cba0af2e4fdeb9e5720a89d2b36b29e726732a
 
   const setFirstChannel = () => {
     const firstChannel = channels[0];
@@ -76,11 +36,6 @@ export default function Channels() {
       setCurrentChannel(firstChannel);
       setActiveChannel(firstChannel);
     }
-<<<<<<< HEAD
-=======
-    setChannal({ ...channal, firstLoad: false });
-    console.log(channal);
->>>>>>> 04cba0af2e4fdeb9e5720a89d2b36b29e726732a
   };
 
   const addChannel = () => {
@@ -90,13 +45,8 @@ export default function Channels() {
       name: value.channelName,
       details: value.channelDetails,
       createdBy: {
-<<<<<<< HEAD
         name: user.currentUser.displayName,
         avatar: user.currentUser.photoURL,
-=======
-        name: user.displayName,
-        avatar: user.photoURL,
->>>>>>> 04cba0af2e4fdeb9e5720a89d2b36b29e726732a
       },
     };
     channelsRef
@@ -116,16 +66,9 @@ export default function Channels() {
     setActiveChannel(channel);
     setCurrentChannel(channel);
   };
-<<<<<<< HEAD
 
   const isFormValid = (channelName, channelDetails) =>
     channelName && channelDetails;
-=======
-  const setActiveChannel = (channel) => {
-    setChannal({ ...channal, activeChannel: channel.id });
-    console.log(channal);
-  };
->>>>>>> 04cba0af2e4fdeb9e5720a89d2b36b29e726732a
 
   const handleSubmit = (e) => {
     e.preventDefault();
