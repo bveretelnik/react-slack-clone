@@ -13,7 +13,7 @@ export default function Messages() {
   const { addMessageListener, messege } = useContext(MessegesContext);
   const { messages } = messege;
   useEffect(() => {
-    if (channel.activeChannel) {
+    if (channel && user) {
       addMessageListener("MKomJJ70QO5piiQbDYg");
     }
     console.log(channel);
