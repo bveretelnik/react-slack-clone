@@ -12,14 +12,7 @@ export default function Channels() {
     closeModal,
     channel,
   } = useContext(ChannelContext);
-  const {
-    activeChannel,
-    currentChannel,
-    channelsRef,
-    channels,
-    firstLoad,
-    modal,
-  } = channel;
+  const { activeChannel, channelsRef, channels, firstLoad, modal } = channel;
   const [value, setValue] = useState({
     channelName: "",
     channelDetails: "",
@@ -27,8 +20,7 @@ export default function Channels() {
 
   useEffect(() => {
     setFirstChannel();
-    //eslint-disable-next-line
-  }, [channels]);
+  }, [channel]);
 
   const setFirstChannel = () => {
     const firstChannel = channels[0];
@@ -65,7 +57,7 @@ export default function Channels() {
   const changeChannel = (channel) => {
     setActiveChannel(channel);
     setCurrentChannel(channel);
-    console.log(channel);
+    // console.log(channel);
   };
 
   const isFormValid = (channelName, channelDetails) =>

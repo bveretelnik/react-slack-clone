@@ -8,3 +8,6 @@ export const ADD_LISTENER = "ADD_LISTENER";
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
 export const SET_ACTIVE_CHANNEL = "SET_ACTIVE_CHANNEL";
+
+/* Messeges Action Types */
+export const ADD_MESSEGE_LISTENER = "ADD_MESSEGE_LISTENER";

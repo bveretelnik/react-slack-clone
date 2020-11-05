@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from "react";
+import React, { useReducer } from "react";
 import firebase from "../../../firebase";
 import { ChannelContext } from "./channelContext";
 import {
@@ -20,14 +20,6 @@ export default function ChannelState({ children }) {
     firstLoad: true,
   };
   const [state, dispatch] = useReducer(channelReducer, initialState);
-  useEffect(() => {
-    addListeners();
-    //eslint-disable-next-line
-  }, []);
-  useEffect(() => {
-    return () => removeListeners();
-    //eslint-disable-next-line
-  }, []);
 
   const addListeners = () => {
     let loadedChannels = [];
@@ -64,6 +56,7 @@ export default function ChannelState({ children }) {
     <ChannelContext.Provider
       value={{
         addListeners,
+        removeListeners,
         setCurrentChannel,
         setActiveChannel,
         openModal,
