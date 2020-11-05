@@ -14,7 +14,7 @@ export default function Messages() {
   const { messages } = messege;
 
   useEffect(() => {
-    if (channel.currentChannel && user) {
+    if (channel.currentChannel && user.currentUser) {
       addMessageListener(channel.currentChannel.id);
     }
   }, [channel.currentChannel]);
