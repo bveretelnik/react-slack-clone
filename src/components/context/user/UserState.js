@@ -18,14 +18,12 @@ export default function UserState({ children }) {
         currentUser: user,
       },
     });
-    console.log(state);
   };
 
   const clearUser = () => {
     dispatch({
       type: CLEAR_USER,
     });
-    // console.log(state);
   };
 
   return (
