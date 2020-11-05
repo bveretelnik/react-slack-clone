@@ -8,7 +8,6 @@ export default function UserState({ children }) {
     currentUser: null,
     isLoading: true,
   };
-  //
   const [state, dispatch] = useReducer(userReducer, initialState);
 
   const setUser = (user) => {
