@@ -20,7 +20,7 @@ export default function Channels() {
 
   useEffect(() => {
     setFirstChannel();
-  }, [channels]);
+  }, [channel]);
 
   const setFirstChannel = () => {
     const firstChannel = channels[0];

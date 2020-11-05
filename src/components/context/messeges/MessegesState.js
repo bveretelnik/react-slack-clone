@@ -21,7 +21,7 @@ export default function MessegesState({ children }) {
         payload: loadedMessages,
       });
     });
-    // console.log(messag);
+    console.log(state);
   };
 
   return (

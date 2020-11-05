@@ -12,12 +12,12 @@ export default function Messages() {
   const { user } = useContext(UserContext);
   const { addMessageListener, messege } = useContext(MessegesContext);
   const { messages } = messege;
+
   useEffect(() => {
-    if (channel && user) {
-      addMessageListener("MKomJJ70QO5piiQbDYg");
+    if (channel.currentChannel && user) {
+      addMessageListener(channel.currentChannel.id);
     }
-    console.log(channel);
-  }, [channel]);
+  }, [channel.currentChannel]);
 
   return (
     <Fragment>

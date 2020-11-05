@@ -38,7 +38,7 @@ export default function MessagesForm({}) {
     if (state.messag) {
       setstate({ ...state, loading: true });
       messagesRef
-        .child("MKomJJ70QO5piiQbDYg")
+        .child(currentChannel.id)
         .push()
         .set(createMessage())
         .then(() => {
