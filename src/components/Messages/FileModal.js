@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import mime from "mime-types";
 import { Modal, Input, Button, Icon } from "semantic-ui-react";
 
-export default function FileModal({ modal, closeModal }) {
+export default function FileModal({ modal, closeModal, uploadFile }) {
   const [state, setstate] = useState({
     file: null,
     authorized: ["image/jpeg", "image/png"],
@@ -27,10 +27,9 @@ export default function FileModal({ modal, closeModal }) {
   };
   const isAuthorized = (filename) =>
     state.authorized.includes(mime.lookup(filename));
+
   const clearFile = () => setstate({ ...state, file: null });
-  const uploadFile = (file, metadata) => {
-    console.log(file, metadata);
-  };
+
   return (
     <Modal basic open={modal} onClose={closeModal}>
       <Modal.Header>Select an Image File</Modal.Header>
