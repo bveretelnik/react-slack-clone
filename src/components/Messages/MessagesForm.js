@@ -40,9 +40,9 @@ export default function MessagesForm() {
       },
     };
     if (fileUrl !== null) {
-      messag["image"] = fileUrl;
+      message["image"] = fileUrl;
     } else {
-      messag["content"] = state.message;
+      message["content"] = state.messag;
     }
     return message;
   };
