@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useState } from "react";
 import mime from "mime-types";
 import { Modal, Input, Button, Icon } from "semantic-ui-react";
@@ -31,10 +32,17 @@ export default function FileModal({ modal, closeModal }) {
   const uploadFile = (file, metadata) => {
     console.log(file, metadata);
   };
+=======
+import React from "react";
+import { Modal, Input, Button, Icon } from "semantic-ui-react";
+
+export default function FileModal({ modal, closeModal }) {
+>>>>>>> 7479faa14529890dc31c8b677e8077b287d8c27a
   return (
     <Modal basic open={modal} onClose={closeModal}>
       <Modal.Header>Select an Image File</Modal.Header>
       <Modal.Content>
+<<<<<<< HEAD
         <Input
           onChange={addFile}
           fluid
@@ -45,6 +53,12 @@ export default function FileModal({ modal, closeModal }) {
       </Modal.Content>
       <Modal.Actions>
         <Button onClick={sendFile} color="green" inverted>
+=======
+        <Input fluid label="File types: jpg, png" name="files" type="file" />
+      </Modal.Content>
+      <Modal.Actions>
+        <Button color="green" inverted>
+>>>>>>> 7479faa14529890dc31c8b677e8077b287d8c27a
           <Icon name="checkmark" /> Send
         </Button>
         <Button color="red" inverted onClick={closeModal}>
