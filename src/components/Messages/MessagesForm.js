@@ -86,7 +86,9 @@ export default function MessagesForm() {
 
   useEffect(() => {
     debugger;
-    // fc();
+    if (state.uploadTask) {
+      fc();
+    }
   }, [state.uploadState]);
 
   const fc = () => {
