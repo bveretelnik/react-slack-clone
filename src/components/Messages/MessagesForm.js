@@ -4,6 +4,7 @@ import { Segment, Button, Input } from "semantic-ui-react";
 import { ChannelContext } from "../context/channel/channelContext";
 import { UserContext } from "../context/user/userContext";
 import { MessegesContext } from "../context/messeges/messegesContext";
+import FileModal from "./FileModal";
 
 export default function MessagesForm({}) {
   const { channel } = useContext(ChannelContext);
@@ -16,7 +17,10 @@ export default function MessagesForm({}) {
     messag: "",
     loading: false,
     errors: [],
+    modal: false,
   });
+  const openModal = () => setstate({ ...state, modal: true });
+  const closeModal = () => setstate({ ...state, modal: false });
 
   const handleChange = (e) => {
     setstate({ ...state, [e.target.name]: e.target.value });
@@ -89,10 +93,12 @@ export default function MessagesForm({}) {
         />
         <Button
           color="teal"
+          onClick={openModal}
           content="Upload Media"
           labelPosition="right"
           icon="cloud upload"
         />
+        <FileModal modal={state.modal} closeModal={closeModal} />
       </Button.Group>
     </Segment>
   );

@@ -8,7 +8,6 @@ export default function UserState({ children }) {
     currentUser: null,
     isLoading: true,
   };
-  //
   const [state, dispatch] = useReducer(userReducer, initialState);
 
   const setUser = (user) => {
@@ -18,14 +17,12 @@ export default function UserState({ children }) {
         currentUser: user,
       },
     });
-    console.log(state);
   };
 
   const clearUser = () => {
     dispatch({
       type: CLEAR_USER,
     });
-    // console.log(state);
   };
 
   return (
