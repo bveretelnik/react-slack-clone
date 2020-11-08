@@ -1,6 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
 import firebase from "../../firebase";
-// import { v4 as uuidv4 } from "uuid";
 import { Segment, Button, Input } from "semantic-ui-react";
 import { ChannelContext } from "../context/channel/channelContext";
 import { UserContext } from "../context/user/userContext";
@@ -18,9 +17,6 @@ export default function MessagesForm() {
   const { currentChannel } = channel;
   const { currentUser } = user;
   const [state, setstate] = useState({
-    // storageRef: firebase.storage().ref(),
-    // uploadTask: null,
-    // uploadState: "",
     percentUploaded: 0,
     messag: "",
     loading: false,
@@ -76,16 +72,6 @@ export default function MessagesForm() {
       });
     }
   };
-
-  // const uploadFile = (file, metadata) => {
-  //   const filePath = `chat/public/${uuidv4()}.jpg`;
-  //   setstate({
-  //     ...state,
-  //     uploadState: "uploading",
-  //     uploadTask: state.storageRef.child(filePath).put(file, metadata),
-  //   });
-  //   console.log(state);
-  // };
 
   useEffect(() => {
     if (uploadTask) {
@@ -185,11 +171,7 @@ export default function MessagesForm() {
           labelPosition="right"
           icon="cloud upload"
         />
-        <FileModal
-          modal={state.modal}
-          closeModal={closeModal}
-          // uploadFile={uploadFile}
-        />
+        <FileModal modal={state.modal} closeModal={closeModal} />
       </Button.Group>
     </Segment>
   );
