@@ -81,7 +81,7 @@ export default function MessagesForm() {
   }, [uploadTask]);
 
   const addFilesOnChat = () => {
-    const pathToUpload = "-MKomJJ70QO5piiQbDYg";
+    const pathToUpload = currentChannel.id;
     const ref = messagesRef;
 
     uploadTask.on(
