@@ -127,12 +127,13 @@ export default function MessagesForm() {
         setstate({
           ...state,
           uploadState: "done",
-          // }).catch((err) => {
-          //   console.log(err);
-          //   setstate({
-          //     ...state,
-          //     errors: state.errors.concat(err),
-          //   });
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        setstate({
+          ...state,
+          errors: state.errors.concat(err),
         });
       });
   };
