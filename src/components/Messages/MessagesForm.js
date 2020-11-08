@@ -6,6 +6,7 @@ import { UserContext } from "../context/user/userContext";
 import { MessegesContext } from "../context/messeges/messegesContext";
 import FileModal from "./FileModal";
 import { FileContext } from "../context/file/fileContext";
+import ProgressBar from "./ProgressBar";
 
 export default function MessagesForm() {
   const { channel } = useContext(ChannelContext);
@@ -17,6 +18,7 @@ export default function MessagesForm() {
   const { currentChannel } = channel;
   const { currentUser } = user;
   const [state, setstate] = useState({
+    uploadState: "",
     percentUploaded: 0,
     messag: "",
     loading: false,
@@ -77,7 +79,6 @@ export default function MessagesForm() {
     if (uploadTask) {
       addFilesOnChat();
     }
-    console.log("changed");
   }, [uploadTask]);
 
   const addFilesOnChat = () => {
@@ -138,7 +139,7 @@ export default function MessagesForm() {
       });
   };
 
-  const { errors, messag, loading } = state;
+  const { errors, messag, loading, percentUploaded, uploadState } = state;
   return (
     <Segment className="message__form">
       <Input
@@ -172,8 +173,12 @@ export default function MessagesForm() {
           labelPosition="right"
           icon="cloud upload"
         />
-        <FileModal modal={state.modal} closeModal={closeModal} />
       </Button.Group>
+      <FileModal modal={state.modal} closeModal={closeModal} />
+      <ProgressBar
+        uploadState={uploadState}
+        percentUploaded={percentUploaded}
+      />
     </Segment>
   );
 }
