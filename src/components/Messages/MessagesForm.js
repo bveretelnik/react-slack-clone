@@ -1,23 +1,26 @@
 import React, { useState, useContext, useEffect } from "react";
 import firebase from "../../firebase";
-import uuidv4 from "../../../node_modules/uuid/dist/esm-browser/v4";
+// import { v4 as uuidv4 } from "uuid";
 import { Segment, Button, Input } from "semantic-ui-react";
 import { ChannelContext } from "../context/channel/channelContext";
 import { UserContext } from "../context/user/userContext";
 import { MessegesContext } from "../context/messeges/messegesContext";
 import FileModal from "./FileModal";
+import { FileContext } from "../context/file/fileContext";
 
 export default function MessagesForm() {
   const { channel } = useContext(ChannelContext);
   const { user } = useContext(UserContext);
   const { messege } = useContext(MessegesContext);
+  const { file } = useContext(FileContext);
+  const { uploadTask } = file;
   const { messagesRef } = messege;
   const { currentChannel } = channel;
   const { currentUser } = user;
   const [state, setstate] = useState({
-    storageRef: firebase.storage().ref(),
-    uploadTask: null,
-    uploadState: "",
+    // storageRef: firebase.storage().ref(),
+    // uploadTask: null,
+    // uploadState: "",
     percentUploaded: 0,
     messag: "",
     loading: false,
@@ -74,26 +77,25 @@ export default function MessagesForm() {
     }
   };
 
-  const uploadFile = (file, metadata) => {
-    const filePath = `chat/public/${uuidv4()}.jpg`;
-    setstate({
-      ...state,
-      uploadState: "uploading",
-      uploadTask: state.storageRef.child(filePath).put(file, metadata),
-    });
-    console.log(state);
-  };
+  // const uploadFile = (file, metadata) => {
+  //   const filePath = `chat/public/${uuidv4()}.jpg`;
+  //   setstate({
+  //     ...state,
+  //     uploadState: "uploading",
+  //     uploadTask: state.storageRef.child(filePath).put(file, metadata),
+  //   });
+  //   console.log(state);
+  // };
 
   useEffect(() => {
-    debugger;
-    if (state.uploadTask) {
-      fc();
+    if (uploadTask) {
+      addFilesOnChat();
     }
-  }, [state.uploadState]);
+    console.log("changed");
+  }, [uploadTask]);
 
-  const fc = () => {
-    const { uploadTask } = state;
-    const pathToUpload = "MKou1KnyUWvOBRZJDRU";
+  const addFilesOnChat = () => {
+    const pathToUpload = "-MKomJJ70QO5piiQbDYg";
     const ref = messagesRef;
 
     uploadTask.on(
@@ -102,7 +104,7 @@ export default function MessagesForm() {
         const percentUploaded = Math.round(
           (snap.bytesTransferred / snap.totalBytes) * 100
         );
-        this.setstate({ percentUploaded });
+        setstate({ ...state, percentUploaded: percentUploaded });
       },
       (err) => {
         console.error(err);
@@ -113,7 +115,7 @@ export default function MessagesForm() {
         });
       },
       () => {
-        state.uploadTask.snapshot.ref
+        uploadTask.snapshot.ref
           .getDownloadURL()
           .then((downloadUrl) => {
             sendFileMessage(downloadUrl, ref, pathToUpload);
@@ -139,12 +141,12 @@ export default function MessagesForm() {
         setstate({
           ...state,
           uploadState: "done",
-        }).catch((err) => {
-          console.log(err);
-          setstate({
-            ...state,
-            errors: state.errors.concat(err),
-          });
+          // }).catch((err) => {
+          //   console.log(err);
+          //   setstate({
+          //     ...state,
+          //     errors: state.errors.concat(err),
+          //   });
         });
       });
   };
@@ -185,8 +187,8 @@ export default function MessagesForm() {
         />
         <FileModal
           modal={state.modal}
-          uploadFile={uploadFile}
           closeModal={closeModal}
+          // uploadFile={uploadFile}
         />
       </Button.Group>
     </Segment>
