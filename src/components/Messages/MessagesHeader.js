@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Header, Segment, Input, Icon } from "semantic-ui-react";
 import { ChannelContext } from "../context/channel/channelContext";
 import { MessegesContext } from "../context/messeges/messegesContext";
