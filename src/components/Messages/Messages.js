@@ -12,11 +12,11 @@ export default function Messages() {
   const { user } = useContext(UserContext);
   const { addMessageListener, messege } = useContext(MessegesContext);
   const { messages } = messege;
-
   useEffect(() => {
     if (channel.currentChannel && user.currentUser) {
       addMessageListener(channel.currentChannel.id);
     }
+    //eslint-disable-next-line
   }, [channel.currentChannel]);
 
   return (

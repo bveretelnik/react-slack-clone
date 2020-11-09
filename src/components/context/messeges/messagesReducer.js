@@ -1,10 +1,14 @@
-import { ADD_MESSEGE_LISTENER } from "../types";
+import { ADD_MESSEGE_LISTENER, NUM_UNIQUE_USERS } from "../types";
 
 const handlers = {
   [ADD_MESSEGE_LISTENER]: (state, { payload }) => ({
     ...state,
     messages: payload,
     messagesLoading: false,
+  }),
+  [NUM_UNIQUE_USERS]: (state, { payload }) => ({
+    ...state,
+    numUniqueUsers: payload,
   }),
   DEFAULT: (state) => state,
 };

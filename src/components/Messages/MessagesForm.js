@@ -96,6 +96,7 @@ export default function MessagesForm() {
       (err) => {
         console.error(err);
         setstate({
+          ...state,
           errors: state.errors.concat(err),
           uploadState: "error",
           uploadTask: null,
@@ -129,6 +130,7 @@ export default function MessagesForm() {
           ...state,
           uploadState: "done",
         });
+        console.log(state);
       })
       .catch((err) => {
         console.log(err);
