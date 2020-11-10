@@ -17,6 +17,7 @@ export default function UserState({ children }) {
         currentUser: user,
       },
     });
+    console.log(state);
   };
 
   const clearUser = () => {

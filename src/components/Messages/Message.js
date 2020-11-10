@@ -4,7 +4,9 @@ import { Comment, Image } from "semantic-ui-react";
 
 export default function Message({ message, user }) {
   const isOwnMessage = (message, user) => {
-    return message.user.id === user.id ? "message__self" : "";
+    return message.user.name === user.currentUser.displayName
+      ? "message__self"
+      : "";
   };
   const isImage = (message) => {
     return (

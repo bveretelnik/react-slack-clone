@@ -5,7 +5,7 @@ export default function ProgressBar({ uploadState, percentUploaded }) {
     uploadState === "uploading" && (
       <Progress
         className="progress__bar"
-        percent={100}
+        percent={percentUploaded}
         progress
         indicating
         size="medium"
