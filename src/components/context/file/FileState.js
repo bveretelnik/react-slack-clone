@@ -20,7 +20,7 @@ export default function FileState({ children }) {
       ...state,
       payload: state.storageRef.child(filePath).put(file, metadata),
     });
-    console.log(state);
+    // console.log(state);
   };
 
   return (

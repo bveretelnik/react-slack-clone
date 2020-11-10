@@ -91,7 +91,7 @@ export default function MessagesForm() {
         const percentUploaded = Math.round(
           (snap.bytesTransferred / snap.totalBytes) * 100
         );
-        setstate({ ...state, percentUploaded: percentUploaded });
+        setstate({ ...state, percentUploaded });
       },
       (err) => {
         console.error(err);

@@ -39,7 +39,15 @@ export default function MessegesState({ children }) {
       payload: numUniqueUsers,
     });
   };
-
+  // const displayMessages = messages =>
+  // messages.length > 0 &&
+  // messages.map(message => (
+  //   <Message
+  //     key={message.timestamp}
+  //     message={message}
+  //     user={user}
+  //   />
+  // ));
   const displayChannelName = (channel) => (channel ? `#${channel.name}` : "");
 
   return (
