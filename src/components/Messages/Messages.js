@@ -27,7 +27,6 @@ export default function Messages() {
   useEffect(() => {
     if (search.searchTerm && search.searchLoading) handleSearchMessages();
     console.log(search);
-    //eslint-disable-next-line
   }, [search.searchTerm]);
 
   const handleSearchChange = (e) => {
@@ -65,7 +64,7 @@ export default function Messages() {
 
       <Segment>
         <Comment.Group className="messages">
-          {searchResults && searchTerm != ""
+          {searchResults && searchTerm !== ""
             ? searchResults.length > 0 &&
               searchResults.map((item) => (
                 <Message key={item.timestamp} message={item} user={user} />
