@@ -27,6 +27,7 @@ export default function Messages() {
   useEffect(() => {
     if (search.searchTerm && search.searchLoading) handleSearchMessages();
     console.log(search);
+    //eslint-disable-next-line
   }, [search.searchTerm]);
 
   const handleSearchChange = (e) => {
