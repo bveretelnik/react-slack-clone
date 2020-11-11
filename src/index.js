@@ -33,7 +33,6 @@ const Root = ({ history }) => {
         clearUser();
       }
     });
-    //eslint-disable-next-line
   }, [user.currentUser]);
 
   useEffect(() => {

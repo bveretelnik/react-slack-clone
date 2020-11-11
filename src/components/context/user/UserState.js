@@ -13,11 +13,9 @@ export default function UserState({ children }) {
   const setUser = (user) => {
     dispatch({
       type: SET_USER,
-      payload: {
-        currentUser: user,
-      },
+      payload: user,
     });
-    console.log(state);
+    // console.log(state.currentUser);
   };
 
   const clearUser = () => {
