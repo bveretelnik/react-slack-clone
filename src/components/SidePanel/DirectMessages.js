@@ -14,7 +14,7 @@ export default function DirectMessages() {
   });
 
   useEffect(() => {
-    addListeners(currentUser.uid);
+    if (currentUser) addListeners(currentUser.uid);
   }, []);
 
   const addListeners = (currentUserUid) => {
