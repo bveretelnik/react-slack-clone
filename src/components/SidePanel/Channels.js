@@ -1,37 +1,64 @@
 import React, { Fragment, useState, useContext, useEffect } from "react";
+import firebase from "../../firebase";
 import { Menu, Icon, Modal, Form, Input, Button } from "semantic-ui-react";
 import { UserContext } from "../context/user/userContext";
 import { ChannelContext } from "../context/channel/channelContext";
 
 export default function Channels() {
   const { user } = useContext(UserContext);
-  const {
-    setCurrentChannel,
-    setActiveChannel,
-    openModal,
-    closeModal,
-    channel,
-  } = useContext(ChannelContext);
-  const { activeChannel, channelsRef, channels, firstLoad, modal } = channel;
+  const { setCurrentChannel } = useContext(ChannelContext);
+
   const [value, setValue] = useState({
     channelName: "",
     channelDetails: "",
+    activeChannel: "",
+    channels: [],
+    channelsRef: firebase.database().ref("channels"),
+    modal: false,
+    firstLoad: true,
   });
 
   useEffect(() => {
     setFirstChannel();
-  }, [channel]);
+  }, [value.channels]);
+
+  useEffect(() => {
+    addListeners();
+  }, []);
+
+  useEffect(() => {
+    return () => removeListeners();
+  }, [value.channels]);
+
+  const addListeners = () => {
+    let loadedChannels = [];
+    value.channelsRef.on("child_added", (snap) => {
+      loadedChannels.push(snap.val());
+      setValue({
+        ...value,
+        channels: loadedChannels,
+      });
+    });
+  };
+
+  const removeListeners = () => {
+    value.channelsRef.off();
+  };
+
+  const setActiveChannel = (channel) => {
+    setValue({ ...value, activeChannel: channel.id });
+  };
 
   const setFirstChannel = () => {
-    const firstChannel = channels[0];
-    if (firstLoad && channels.length > 0) {
+    const firstChannel = value.channels[0];
+    if (value.firstLoad && value.channels.length > 0) {
       setCurrentChannel(firstChannel);
       setActiveChannel(firstChannel);
     }
   };
 
   const addChannel = () => {
-    const key = channelsRef.push().key;
+    const key = value.channelsRef.push().key;
     const newChannel = {
       id: key,
       name: value.channelName,
@@ -41,7 +68,7 @@ export default function Channels() {
         avatar: user.currentUser.photoURL,
       },
     };
-    channelsRef
+    value.channelsRef
       .child(key)
       .update(newChannel)
       .then(() => {
@@ -57,7 +84,6 @@ export default function Channels() {
   const changeChannel = (channel) => {
     setActiveChannel(channel);
     setCurrentChannel(channel);
-    // console.log(channel);
   };
 
   const isFormValid = (channelName, channelDetails) =>
@@ -73,7 +99,8 @@ export default function Channels() {
   const handleChange = (e) => {
     setValue({ ...value, [e.target.name]: e.target.value });
   };
-
+  const openModal = () => setValue({ ...value, modal: true });
+  const closeModal = () => setValue({ ...value, modal: false });
   return (
     <Fragment>
       <Menu.Menu className="menu">
@@ -82,17 +109,17 @@ export default function Channels() {
             <Icon name="exchange" />
             CHANNELS
           </span>{" "}
-          ({channels.length ? channels.length : 0}){" "}
+          ({value.channels.length ? value.channels.length : 0}){" "}
           <Icon name="add" onClick={openModal} />
         </Menu.Item>
-        {channels.length > 0 &&
-          channels.map((channel) => (
+        {value.channels.length > 0 &&
+          value.channels.map((channel) => (
             <Menu.Item
               key={channel.id}
               onClick={() => changeChannel(channel)}
               name={channel.name}
               style={{ opacity: 0.7 }}
-              active={channel.id === activeChannel}
+              active={channel.id === value.activeChannel}
             >
               # {channel.name}
             </Menu.Item>
@@ -100,7 +127,7 @@ export default function Channels() {
       </Menu.Menu>
 
       {/* Add Channel Modal */}
-      <Modal basic open={modal} onClose={closeModal}>
+      <Modal basic open={value.modal} onClose={closeModal}>
         <Modal.Header>Add a Channel</Modal.Header>
         <Modal.Content>
           <Form onSubmit={handleSubmit}>

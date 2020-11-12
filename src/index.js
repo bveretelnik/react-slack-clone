@@ -16,12 +16,10 @@ import UserState from "./components/context/user/UserState";
 import { UserContext } from "./components/context/user/userContext";
 import ChannelState from "./components/context/channel/ChannelState";
 import MessegesState from "./components/context/messeges/MessegesState";
-import { ChannelContext } from "./components/context/channel/channelContext";
 import FileState from "./components/context/file/FileState";
 
 const Root = ({ history }) => {
   const { setUser, clearUser, user } = useContext(UserContext);
-  const { addListeners, removeListeners } = useContext(ChannelContext);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
@@ -34,15 +32,6 @@ const Root = ({ history }) => {
       }
     });
   }, [user.currentUser]);
-
-  useEffect(() => {
-    addListeners();
-    //eslint-disable-next-line
-  }, []);
-  useEffect(() => {
-    return () => removeListeners();
-    //eslint-disable-next-line
-  }, []);
 
   return user.isLoading ? (
     <Spinner />

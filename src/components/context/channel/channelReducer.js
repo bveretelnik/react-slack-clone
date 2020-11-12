@@ -1,26 +1,13 @@
-import {
-  ADD_LISTENER,
-  CLOSE_MODAL,
-  OPEN_MODAL,
-  SET_ACTIVE_CHANNEL,
-  SET_CURRENT_CHANNEL,
-} from "../types";
+import { SET_CURRENT_CHANNEL, SET_PRIVATE_CHANNEL } from "../types";
 
 const handlers = {
   [SET_CURRENT_CHANNEL]: (state, { payload }) => ({
     ...state,
-    currentChannel: payload.currentChannel,
+    currentChannel: payload,
   }),
-  [ADD_LISTENER]: (state, { payload }) => ({
+  [SET_PRIVATE_CHANNEL]: (state, { payload }) => ({
     ...state,
-    channels: payload,
-  }),
-  [OPEN_MODAL]: (state) => ({ ...state, modal: true }),
-  [CLOSE_MODAL]: (state) => ({ ...state, modal: false }),
-  [SET_ACTIVE_CHANNEL]: (state, { payload }) => ({
-    ...state,
-    activeChannel: payload,
-    firstLoad: false,
+    isPrivateChannel: payload,
   }),
   DEFAULT: (state) => state,
 };

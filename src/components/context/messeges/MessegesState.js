@@ -39,6 +39,7 @@ export default function MessegesState({ children }) {
       payload: numUniqueUsers,
     });
   };
+
   // const displayMessages = messages =>
   // messages.length > 0 &&
   // messages.map(message => (
@@ -48,6 +49,7 @@ export default function MessegesState({ children }) {
   //     user={user}
   //   />
   // ));
+
   const displayChannelName = (channel) => (channel ? `#${channel.name}` : "");
 
   return (
