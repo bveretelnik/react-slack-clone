@@ -1,7 +1,7 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
+import firebase from "../../firebase";
 import { Segment, Comment } from "semantic-ui-react";
 import { ChannelContext } from "../context/channel/channelContext";
-import { MessegesContext } from "../context/messeges/messegesContext";
 import { UserContext } from "../context/user/userContext";
 import Message from "./Message";
 import MessagesForm from "./MessagesForm";
@@ -10,25 +10,41 @@ import MessagesHeader from "./MessagesHeader";
 export default function Messages() {
   const { channel } = useContext(ChannelContext);
   const { user } = useContext(UserContext);
-  const { addMessageListener, messege } = useContext(MessegesContext);
-  const { messages } = messege;
   const [search, setSearch] = useState({
+    messagesRef: firebase.database().ref("messages"),
+    messages: [],
+    messagesLoading: true,
+    numUniqueUsers: "",
     searchTerm: "",
     searchLoading: false,
     searchResults: null,
   });
+
   useEffect(() => {
-    if (channel.currentChannel && user.currentUser) {
+    if (channel.currentChannel && user.currentUser)
       addMessageListener(channel.currentChannel.id);
-    }
-    //eslint-disable-next-line
+
+    console.log(search);
   }, [channel.currentChannel]);
+  useEffect(() => {
+    countUniqueUsers(search.messages);
+  }, [search.messages]);
 
   useEffect(() => {
     if (search.searchTerm && search.searchLoading) handleSearchMessages();
-    console.log(search);
-    //eslint-disable-next-line
   }, [search.searchTerm]);
+
+  const addMessageListener = (channelId) => {
+    let loadedMessages = [];
+    search.messagesRef.child(channelId).on("child_added", (snap) => {
+      loadedMessages.push(snap.val());
+      return setSearch({
+        ...search,
+        messages: loadedMessages,
+        messagesLoading: false,
+      });
+    });
+  };
 
   const handleSearchChange = (e) => {
     setSearch({
@@ -38,6 +54,7 @@ export default function Messages() {
     });
   };
   const handleSearchMessages = () => {
+    const { messages } = search;
     const channelMessages = [...messages];
     const regex = new RegExp(search.searchTerm, "gi");
     const searchResult = channelMessages.reduce((acc, message) => {
@@ -55,33 +72,52 @@ export default function Messages() {
     });
     setTimeout(() => setSearch({ ...search, searchLoading: false }), 1000);
   };
-  const { searchResults, searchLoading, searchTerm } = search;
+
+  const countUniqueUsers = (messages) => {
+    const uniqueUsers = messages.reduce((acc, message) => {
+      if (!acc.includes(message.user.name)) {
+        acc.push(message.user.name);
+      }
+      return acc;
+    }, []);
+    const plural = uniqueUsers.length > 1 || uniqueUsers.length === 0;
+    const numUniqueUsers = `${uniqueUsers.length} user${plural ? "s" : ""}`;
+    setSearch({ ...search, numUniqueUsers: numUniqueUsers });
+  };
+
+  const displayMessages = (messages) =>
+    messages.length > 0 &&
+    messages.map((message) => (
+      <Message key={message.timestamp} message={message} user={user} />
+    ));
+  const displayChannelName = (channel) => (channel ? `#${channel.name}` : "");
+
+  const {
+    searchResults,
+    searchLoading,
+    searchTerm,
+    messages,
+    numUniqueUsers,
+    messagesRef,
+  } = search;
   return (
     <Fragment>
       <MessagesHeader
+        displayChannelName={displayChannelName}
+        numUniqueUsers={numUniqueUsers}
         handleSearchChange={handleSearchChange}
         searchLoading={searchLoading}
       />
 
       <Segment>
         <Comment.Group className="messages">
-          {searchResults && searchTerm !== ""
-            ? searchResults.length > 0 &&
-              searchResults.map((item) => (
-                <Message key={item.timestamp} message={item} user={user} />
-              ))
-            : messages.length > 0 &&
-              messages.map((message) => (
-                <Message
-                  key={message.timestamp}
-                  message={message}
-                  user={user}
-                />
-              ))}
+          {searchTerm
+            ? displayMessages(searchResults)
+            : displayMessages(messages)}
         </Comment.Group>
       </Segment>
 
-      <MessagesForm />
+      <MessagesForm messagesRef={messagesRef} />
     </Fragment>
   );
 }

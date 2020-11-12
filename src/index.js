@@ -15,8 +15,6 @@ import "semantic-ui-css/semantic.min.css";
 import UserState from "./components/context/user/UserState";
 import { UserContext } from "./components/context/user/userContext";
 import ChannelState from "./components/context/channel/ChannelState";
-import MessegesState from "./components/context/messeges/MessegesState";
-import FileState from "./components/context/file/FileState";
 
 const Root = ({ history }) => {
   const { setUser, clearUser, user } = useContext(UserContext);
@@ -46,16 +44,12 @@ const Root = ({ history }) => {
 const RootWithAuth = withRouter(Root);
 
 ReactDOM.render(
-  <FileState>
-    <MessegesState>
-      <ChannelState>
-        <UserState>
-          <Router>
-            <RootWithAuth />
-          </Router>
-        </UserState>
-      </ChannelState>
-    </MessegesState>
-  </FileState>,
+  <ChannelState>
+    <UserState>
+      <Router>
+        <RootWithAuth />
+      </Router>
+    </UserState>
+  </ChannelState>,
   document.getElementById("root")
 );

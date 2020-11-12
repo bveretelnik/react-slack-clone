@@ -1,12 +1,14 @@
 import React, { useContext } from "react";
 import { Header, Segment, Input, Icon } from "semantic-ui-react";
 import { ChannelContext } from "../context/channel/channelContext";
-import { MessegesContext } from "../context/messeges/messegesContext";
 
-export default function MessagesHeader({ searchLoading, handleSearchChange }) {
+export default function MessagesHeader({
+  searchLoading,
+  handleSearchChange,
+  displayChannelName,
+  numUniqueUsers,
+}) {
   const { channel } = useContext(ChannelContext);
-  const { messege, displayChannelName } = useContext(MessegesContext);
-  const { numUniqueUsers } = messege;
 
   return (
     <Segment clearing>

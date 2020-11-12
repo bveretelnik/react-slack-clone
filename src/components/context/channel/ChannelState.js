@@ -21,7 +21,6 @@ export default function ChannelState({ children }) {
       type: SET_PRIVATE_CHANNEL,
       payload: isPrivateChannel,
     });
-    console.log(state);
   };
   return (
     <ChannelContext.Provider

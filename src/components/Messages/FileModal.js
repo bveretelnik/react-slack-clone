@@ -1,10 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import mime from "mime-types";
 import { Modal, Input, Button, Icon } from "semantic-ui-react";
-import { FileContext } from "../context/file/fileContext";
 
-export default function FileModal({ modal, closeModal }) {
-  const { uploadFile } = useContext(FileContext);
+export default function FileModal({ modal, closeModal, uploadFile }) {
   const [state, setstate] = useState({
     file: null,
     authorized: ["image/jpeg", "image/png"],
