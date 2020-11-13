@@ -29,6 +29,7 @@ const Root = ({ history }) => {
         clearUser();
       }
     });
+    // eslint-disable-next-line
   }, [user.currentUser]);
 
   return user.isLoading ? (

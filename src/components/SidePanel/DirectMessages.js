@@ -17,6 +17,7 @@ export default function DirectMessages() {
 
   useEffect(() => {
     if (currentUser) addListeners(currentUser.uid);
+    // eslint-disable-next-line
   }, []);
 
   const addListeners = (currentUserUid) => {
