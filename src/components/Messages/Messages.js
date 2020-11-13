@@ -23,9 +23,9 @@ export default function Messages() {
   useEffect(() => {
     if (channel.currentChannel && user.currentUser)
       addMessageListener(channel.currentChannel.id);
-
-    console.log(search);
+    // console.log(search);
   }, [channel.currentChannel]);
+
   useEffect(() => {
     countUniqueUsers(search.messages);
   }, [search.messages]);

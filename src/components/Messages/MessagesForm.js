@@ -53,18 +53,18 @@ export default function MessagesForm({ messagesRef }) {
         .push()
         .set(createMessage())
         .then(() => {
-          setstate({ ...state, loading: false, messag: "", errors: [] });
+          return setstate({ ...state, loading: false, messag: "", errors: [] });
         })
         .catch((err) => {
           console.err(err);
-          setstate({
+          return setstate({
             ...state,
             loading: false,
             errors: errors.concat(err),
           });
         });
     } else {
-      setstate({
+      return setstate({
         ...state,
         loading: false,
         errors: errors.concat({ messag: "Add a message" }),
@@ -87,8 +87,8 @@ export default function MessagesForm({ messagesRef }) {
   };
 
   const addFilesOnChat = () => {
-    const pathToUpload = channel.id;
-    const ref = state.messagesRef;
+    const pathToUpload = currentChannel.id;
+    const ref = messagesRef;
 
     state.uploadTask.on(
       "state_changed",
@@ -96,7 +96,7 @@ export default function MessagesForm({ messagesRef }) {
         const percentUploaded = Math.round(
           (snap.bytesTransferred / snap.totalBytes) * 100
         );
-        setstate({ ...state, percentUploaded });
+        setstate({ ...state, percentUploaded: percentUploaded });
       },
       (err) => {
         console.error(err);
@@ -135,7 +135,6 @@ export default function MessagesForm({ messagesRef }) {
           ...state,
           uploadState: "done",
         });
-        console.log(state);
       })
       .catch((err) => {
         console.log(err);

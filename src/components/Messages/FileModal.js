@@ -10,7 +10,7 @@ export default function FileModal({ modal, closeModal, uploadFile }) {
   const addFile = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setstate({ ...state, file: file });
+      return setstate({ ...state, file: file });
     }
   };
 
@@ -20,11 +20,10 @@ export default function FileModal({ modal, closeModal, uploadFile }) {
       if (isAuthorized(file.name)) {
         const metadata = { contentType: mime.lookup(file.name) };
         uploadFile(file, metadata);
-        closeModal();
-        clearFile();
       }
     }
   };
+
   const isAuthorized = (filename) =>
     state.authorized.includes(mime.lookup(filename));
 
@@ -43,7 +42,7 @@ export default function FileModal({ modal, closeModal, uploadFile }) {
         />
       </Modal.Content>
       <Modal.Actions>
-        <Button onClick={sendFile} color="green" inverted>
+        <Button onClick={() => sendFile()} color="green" inverted>
           <Icon name="checkmark" /> Send
         </Button>
         <Button color="red" inverted onClick={closeModal}>
