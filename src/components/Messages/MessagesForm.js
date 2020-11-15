@@ -74,7 +74,6 @@ export default function MessagesForm({ messagesRef }) {
 
   useEffect(() => {
     if (state.uploadTask) addFilesOnChat();
-    console.log(state);
   }, [state.uploadTask]);
 
   const uploadFile = (file, metadata) => {
@@ -134,6 +133,7 @@ export default function MessagesForm({ messagesRef }) {
         setstate({
           ...state,
           uploadState: "done",
+          modal: false,
         });
       })
       .catch((err) => {
