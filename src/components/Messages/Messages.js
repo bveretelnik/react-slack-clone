@@ -17,13 +17,12 @@ export default function Messages() {
     numUniqueUsers: "",
     searchTerm: "",
     searchLoading: false,
-    searchResults: null,
+    searchResults: [],
   });
 
   useEffect(() => {
     if (channel.currentChannel && user.currentUser)
       addMessageListener(channel.currentChannel.id);
-    // console.log(search);
   }, [channel.currentChannel]);
 
   useEffect(() => {
