@@ -108,9 +108,9 @@ export default function Channels() {
     if (value.firstLoad && value.channels.length > 0) {
       setCurrentChannel(firstChannel);
       setActiveChannel(firstChannel);
-      setValue({ ...value, channel: firstChannel });
+      // setValue({ ...value, channel: firstChannel });
     }
-    setValue({ ...value, firstLoad: false });
+    // setValue({ ...value, firstLoad: false });
   };
 
   const addChannel = () => {
