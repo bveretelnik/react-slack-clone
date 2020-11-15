@@ -11,6 +11,8 @@ export default function Messages() {
   const { channel } = useContext(ChannelContext);
   const { user } = useContext(UserContext);
   const [search, setSearch] = useState({
+    // privateChannel: channel.isPrivateChannel,
+    privateMessagesRef: firebase.database().ref("privateMessages"),
     messagesRef: firebase.database().ref("messages"),
     messages: [],
     messagesLoading: true,
@@ -35,7 +37,8 @@ export default function Messages() {
 
   const addMessageListener = (channelId) => {
     let loadedMessages = [];
-    search.messagesRef.child(channelId).on("child_added", (snap) => {
+    const ref = getMessagesRef();
+    ref.child(channelId).on("child_added", (snap) => {
       loadedMessages.push(snap.val());
       return setSearch({
         ...search,
@@ -45,6 +48,10 @@ export default function Messages() {
     });
   };
 
+  const getMessagesRef = () => {
+    const { messagesRef, privateMessagesRef } = search;
+    return channel.isPrivateChannel ? privateMessagesRef : messagesRef;
+  };
   const handleSearchChange = (e) => {
     setSearch({
       ...search,
@@ -98,14 +105,16 @@ export default function Messages() {
     messages,
     numUniqueUsers,
     messagesRef,
+    privateChannel,
   } = search;
   return (
     <Fragment>
       <MessagesHeader
-        displayChannelName={displayChannelName}
+        channelName={() => displayChannelName(channel.currentChannel)}
         numUniqueUsers={numUniqueUsers}
         handleSearchChange={handleSearchChange}
         searchLoading={searchLoading}
+        isPrivateChannel={privateChannel}
       />
 
       <Segment>
@@ -116,7 +125,11 @@ export default function Messages() {
         </Comment.Group>
       </Segment>
 
-      <MessagesForm messagesRef={messagesRef} />
+      <MessagesForm
+        messagesRef={messagesRef}
+        isPrivateChannel={privateChannel}
+        getMessagesRef={getMessagesRef}
+      />
     </Fragment>
   );
 }

@@ -6,7 +6,7 @@ import { ChannelContext } from "../context/channel/channelContext";
 
 export default function Channels() {
   const { user } = useContext(UserContext);
-  const { setCurrentChannel } = useContext(ChannelContext);
+  const { setCurrentChannel, setPrivateChannel } = useContext(ChannelContext);
 
   const [value, setValue] = useState({
     channelName: "",
@@ -84,6 +84,7 @@ export default function Channels() {
   const changeChannel = (channel) => {
     setActiveChannel(channel);
     setCurrentChannel(channel);
+    setPrivateChannel(false);
   };
 
   const isFormValid = (channelName, channelDetails) =>

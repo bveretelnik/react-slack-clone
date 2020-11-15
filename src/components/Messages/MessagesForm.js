@@ -7,7 +7,11 @@ import { UserContext } from "../context/user/userContext";
 import FileModal from "./FileModal";
 import ProgressBar from "./ProgressBar";
 
-export default function MessagesForm({ messagesRef }) {
+export default function MessagesForm({
+  messagesRef,
+  getMessagesRef,
+  // isPrivateChannel,
+}) {
   const { channel } = useContext(ChannelContext);
   const { user } = useContext(UserContext);
   const { currentChannel } = channel;
@@ -48,7 +52,7 @@ export default function MessagesForm({ messagesRef }) {
   const sendMessage = () => {
     if (state.messag) {
       setstate({ ...state, loading: true });
-      messagesRef
+      getMessagesRef()
         .child(currentChannel.id)
         .push()
         .set(createMessage())
@@ -76,8 +80,16 @@ export default function MessagesForm({ messagesRef }) {
     if (state.uploadTask) addFilesOnChat();
   }, [state.uploadTask]);
 
+  const getPath = () => {
+    if (channel.isPrivateChannel) {
+      return `chat/private-${channel.currentChannel.id}`;
+    } else {
+      return `chat/public`;
+    }
+  };
+
   const uploadFile = (file, metadata) => {
-    const filePath = `chat/public/${uuidv4()}.jpg`;
+    const filePath = `${getPath()}/${uuidv4()}.jpg`;
     setstate({
       ...state,
       uploadState: "uploading",
@@ -87,7 +99,7 @@ export default function MessagesForm({ messagesRef }) {
 
   const addFilesOnChat = () => {
     const pathToUpload = currentChannel.id;
-    const ref = messagesRef;
+    const ref = getMessagesRef();
 
     state.uploadTask.on(
       "state_changed",
