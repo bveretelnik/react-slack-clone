@@ -7,11 +7,7 @@ import { UserContext } from "../context/user/userContext";
 import FileModal from "./FileModal";
 import ProgressBar from "./ProgressBar";
 
-export default function MessagesForm({
-  messagesRef,
-  getMessagesRef,
-  // isPrivateChannel,
-}) {
+export default function MessagesForm({ getMessagesRef }) {
   const { channel } = useContext(ChannelContext);
   const { user } = useContext(UserContext);
   const { currentChannel } = channel;

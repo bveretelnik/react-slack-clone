@@ -11,7 +11,6 @@ export default function Messages() {
   const { channel } = useContext(ChannelContext);
   const { user } = useContext(UserContext);
   const [search, setSearch] = useState({
-    // privateChannel: channel.isPrivateChannel,
     privateMessagesRef: firebase.database().ref("privateMessages"),
     messagesRef: firebase.database().ref("messages"),
     messages: [],
@@ -104,7 +103,6 @@ export default function Messages() {
     searchTerm,
     messages,
     numUniqueUsers,
-    messagesRef,
     privateChannel,
   } = search;
   return (
@@ -126,7 +124,6 @@ export default function Messages() {
       </Segment>
 
       <MessagesForm
-        messagesRef={messagesRef}
         isPrivateChannel={privateChannel}
         getMessagesRef={getMessagesRef}
       />

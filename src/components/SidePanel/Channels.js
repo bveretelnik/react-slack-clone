@@ -3,11 +3,9 @@ import firebase from "../../firebase";
 import { Menu, Icon, Modal, Form, Input, Button } from "semantic-ui-react";
 import { UserContext } from "../context/user/userContext";
 import { ChannelContext } from "../context/channel/channelContext";
-
 export default function Channels() {
   const { user } = useContext(UserContext);
   const { setCurrentChannel, setPrivateChannel } = useContext(ChannelContext);
-
   const [value, setValue] = useState({
     channelName: "",
     channelDetails: "",
