@@ -39,11 +39,19 @@ export default function Messages() {
     const ref = getMessagesRef();
     ref.child(channelId).on("child_added", (snap) => {
       loadedMessages.push(snap.val());
-      return setSearch({
-        ...search,
-        messages: loadedMessages,
-        messagesLoading: false,
-      });
+      if (search.messages) {
+        setSearch({
+          ...search,
+          messages: loadedMessages,
+          messagesLoading: false,
+        });
+      } else {
+        setSearch({
+          ...search,
+          messages: [],
+          messagesLoading: false,
+        });
+      }
     });
   };
 
@@ -95,7 +103,8 @@ export default function Messages() {
     messages.map((message) => (
       <Message key={message.timestamp} message={message} user={user} />
     ));
-  const displayChannelName = (channel) => (channel ? `#${channel.name}` : "");
+
+  const displayChannelName = (channel) => (channel ? `#${channel.name}` : " ");
 
   const {
     searchResults,

@@ -29,12 +29,12 @@ export default function Channels() {
 
   useEffect(() => {
     setFirstChannel();
+    // console.log(value);
   }, [value.channels]);
 
   useEffect(() => {
     addListeners();
-    console.log(value);
-  }, []);
+  }, [value.channel]);
 
   useEffect(() => {
     return () => removeListeners();
@@ -48,9 +48,10 @@ export default function Channels() {
         ...value,
         channels: loadedChannels,
       });
-      return addNotificationListener(snap.key);
+      addNotificationListener(snap.key);
     });
   };
+
   const addNotificationListener = (channelId) => {
     value.messagesRef.child(channelId).on("value", (snap) => {
       if (value.channel) {
@@ -63,6 +64,7 @@ export default function Channels() {
       }
     });
   };
+
   const handleNotifications = (
     channelId,
     currentChannelId,
@@ -100,7 +102,12 @@ export default function Channels() {
   };
 
   const setActiveChannel = (channel) => {
-    setValue({ ...value, activeChannel: channel.id });
+    setValue({
+      ...value,
+      activeChannel: channel.id,
+      firstLoad: false,
+      channel: channel,
+    });
   };
 
   const setFirstChannel = () => {
@@ -108,9 +115,8 @@ export default function Channels() {
     if (value.firstLoad && value.channels.length > 0) {
       setCurrentChannel(firstChannel);
       setActiveChannel(firstChannel);
-      // setValue({ ...value, channel: firstChannel });
     }
-    // setValue({ ...value, firstLoad: false });
+    // setValue({ ...value, channel: firstChannel, firstLoad: false });
   };
 
   const addChannel = () => {
@@ -138,12 +144,13 @@ export default function Channels() {
   };
 
   const changeChannel = (channel) => {
-    setActiveChannel(channel);
-    clearNotifications();
+    // setActiveChannel(channel);
     setCurrentChannel(channel);
+    clearNotifications();
     setPrivateChannel(false);
-    setValue({ ...value, channel: channel });
+    setValue({ ...value, activeChannel: channel.id, channel: channel });
   };
+
   const clearNotifications = () => {
     let index = value.notifications.findIndex(
       (notification) => notification.id === value.channel.id
@@ -159,12 +166,13 @@ export default function Channels() {
   const getNotificationCount = (channel) => {
     let count = 0;
     value.notifications.forEach((notification) => {
-      if (notification.id == channel.id) {
+      if (notification.id === channel.id) {
         count = notification.count;
       }
     });
     if (count > 0) return count;
   };
+
   const isFormValid = (channelName, channelDetails) =>
     channelName && channelDetails;
 
@@ -201,7 +209,7 @@ export default function Channels() {
               active={channel.id === value.activeChannel}
             >
               {getNotificationCount(channel) && (
-                <Label color="red">{() => getNotificationCount(channel)}</Label>
+                <Label color="red">{getNotificationCount(channel)}</Label>
               )}
               # {channel.name}
             </Menu.Item>

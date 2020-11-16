@@ -32,7 +32,7 @@ export default function MessagesForm({ getMessagesRef }) {
     const message = {
       timestamp: firebase.database.ServerValue.TIMESTAMP,
       user: {
-        // id: currentChannel.uid,
+        id: currentUser.uid,
         name: currentUser.displayName,
         avatar: currentUser.photoURL,
       },

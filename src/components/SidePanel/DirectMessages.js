@@ -17,9 +17,9 @@ export default function DirectMessages() {
   });
 
   useEffect(() => {
-    if (currentUser) addListeners(currentUser.uid);
-    // eslint-disable-next-line
-  }, []);
+    addListeners(currentUser.uid);
+    // console.log(state);
+  }, [currentUser]);
 
   const addListeners = (currentUserUid) => {
     const { usersRef, connectedRef, presenceRef } = state;
@@ -30,7 +30,7 @@ export default function DirectMessages() {
         usernet["uid"] = snap.key;
         usernet["status"] = "offline";
         loadedUsers.push(usernet);
-        setState({
+        return setState({
           ...state,
           users: loadedUsers,
         });
@@ -67,7 +67,7 @@ export default function DirectMessages() {
       }
       return acc.concat(user);
     }, []);
-    setState({
+    return setState({
       ...state,
       users: updatedUsers,
     });
