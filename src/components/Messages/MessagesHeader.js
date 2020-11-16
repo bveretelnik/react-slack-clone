@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Header, Segment, Input, Icon } from "semantic-ui-react";
-import { ChannelContext } from "../context/channel/channelContext";
 
 export default function MessagesHeader({
   searchLoading,
@@ -9,8 +8,6 @@ export default function MessagesHeader({
   numUniqueUsers,
   isPrivateChannel,
 }) {
-  const { channel } = useContext(ChannelContext);
-
   return (
     <Segment clearing>
       {/* Channel Title */}
