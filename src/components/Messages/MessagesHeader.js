@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Header, Segment, Input, Icon } from "semantic-ui-react";
 
 export default function MessagesHeader({
@@ -8,13 +8,23 @@ export default function MessagesHeader({
   numUniqueUsers,
   isPrivateChannel,
 }) {
+  const [isChannelStarred, setIsChannelStarred] = useState(false);
+  const handleStar = () => {
+    setIsChannelStarred(!isChannelStarred);
+  };
   return (
     <Segment clearing>
       {/* Channel Title */}
       <Header fliud="true" as="h2" floated="left" style={{ marginBottom: 0 }}>
         <span>
           {channelName()}
-          {!isPrivateChannel && <Icon name={"star outline"} color="black" />}
+          {!isPrivateChannel && (
+            <Icon
+              onClick={() => handleStar()}
+              name={isChannelStarred ? "star" : "star outline"}
+              color={isChannelStarred ? "yellow" : "black"}
+            />
+          )}
         </span>
         <Header.Subheader>{numUniqueUsers}</Header.Subheader>
       </Header>
