@@ -29,7 +29,7 @@ export default function Channels() {
 
   useEffect(() => {
     setFirstChannel();
-    console.log(value);
+    // console.log(value);
   }, [value.channels]);
 
   useEffect(() => {
@@ -148,7 +148,6 @@ export default function Channels() {
     setCurrentChannel(channel);
     clearNotifications();
     setPrivateChannel(false);
-    console.log(value);
     setValue({ ...value, activeChannel: channel.id, channel: channel });
   };
 
