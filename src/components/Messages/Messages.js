@@ -39,7 +39,8 @@ export default function Messages() {
   }, [search.searchTerm]);
 
   useEffect(() => {
-    if (search.isChannelStarred) starChannel();
+    if (channel.currentChannel) starChannel();
+    console.log(search);
   }, [search.isChannelStarred]);
 
   const addMessageListener = (channelId) => {
