@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Header, Segment, Input, Icon } from "semantic-ui-react";
 
 export default function MessagesHeader({
@@ -10,10 +10,6 @@ export default function MessagesHeader({
   handleStar,
   isChannelStarred,
 }) {
-  const [isChannelStarred, setIsChannelStarred] = useState(false);
-  const handleStar = () => {
-    setIsChannelStarred(!isChannelStarred);
-  };
   return (
     <Segment clearing>
       {/* Channel Title */}
