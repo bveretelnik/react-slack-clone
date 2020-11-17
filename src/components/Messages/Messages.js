@@ -16,14 +16,18 @@ export default function Messages() {
     messages: [],
     messagesLoading: true,
     numUniqueUsers: "",
+    isChannelStarred: false,
+    usersRef: firebase.database().ref("user"),
     searchTerm: "",
     searchLoading: false,
     searchResults: [],
   });
 
   useEffect(() => {
-    if (channel.currentChannel && user.currentUser)
+    if (channel.currentChannel && user.currentUser) {
       addMessageListener(channel.currentChannel.id);
+      addUserStarsListener(channel.currentChannel.id, user.currentUser.uid);
+    }
   }, [channel.currentChannel]);
 
   useEffect(() => {
@@ -33,6 +37,10 @@ export default function Messages() {
   useEffect(() => {
     if (search.searchTerm && search.searchLoading) handleSearchMessages();
   }, [search.searchTerm]);
+
+  useEffect(() => {
+    if (search.isChannelStarred) starChannel();
+  }, [search.isChannelStarred]);
 
   const addMessageListener = (channelId) => {
     let loadedMessages = [];
@@ -59,6 +67,54 @@ export default function Messages() {
     const { messagesRef, privateMessagesRef } = search;
     return channel.isPrivateChannel ? privateMessagesRef : messagesRef;
   };
+
+  const addUserStarsListener = (channelId, userId) => {
+    search.usersRef
+      .child(userId)
+      .child("starred")
+      .once("value")
+      .then((data) => {
+        if (data.val() !== null) {
+          const channelIds = Object.keys(data.val());
+          const prevStarred = channelIds.includes(channelId);
+          setSearch({
+            ...search,
+            isChannelStarred: prevStarred,
+          });
+        }
+      });
+  };
+
+  const handleStar = () => {
+    setSearch({
+      ...search,
+      isChannelStarred: !isChannelStarred,
+    });
+  };
+  const starChannel = () => {
+    if (search.isChannelStarred) {
+      search.usersRef.child(`${user.currentUser.uid}/starred`).update({
+        [channel.currentChannel.id]: {
+          name: channel.currentChannel.name,
+          details: channel.currentChannel.details,
+          createdBy: {
+            name: channel.currentChannel.createdBy.name,
+            avatar: channel.currentChannel.createdBy.avatar,
+          },
+        },
+      });
+    } else {
+      search.usersRef
+        .child(`${user.currentUser.uid}/starred`)
+        .child(channel.currentChannel.id)
+        .remove((err) => {
+          if (err !== null) {
+            console.error(err);
+          }
+        });
+    }
+  };
+
   const handleSearchChange = (e) => {
     setSearch({
       ...search,
@@ -112,7 +168,7 @@ export default function Messages() {
     searchTerm,
     messages,
     numUniqueUsers,
-    privateChannel,
+    isChannelStarred,
   } = search;
   return (
     <Fragment>
@@ -121,7 +177,9 @@ export default function Messages() {
         numUniqueUsers={numUniqueUsers}
         handleSearchChange={handleSearchChange}
         searchLoading={searchLoading}
-        isPrivateChannel={privateChannel}
+        isPrivateChannel={channel.isPrivateChannel}
+        handleStar={handleStar}
+        isChannelStarred={isChannelStarred}
       />
 
       <Segment>
@@ -132,10 +190,7 @@ export default function Messages() {
         </Comment.Group>
       </Segment>
 
-      <MessagesForm
-        isPrivateChannel={privateChannel}
-        getMessagesRef={getMessagesRef}
-      />
+      <MessagesForm getMessagesRef={getMessagesRef} />
     </Fragment>
   );
 }
