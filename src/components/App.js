@@ -9,7 +9,7 @@ import { ChannelContext } from "./context/channel/channelContext";
 
 function App() {
   const { channel } = useContext(ChannelContext);
-  const { isPrivateChannel, currentChannel } = channel;
+  const { isPrivateChannel, currentChannel, userPosts } = channel;
   return (
     <Grid columns="equal" className="app" style={{ background: "#eee" }}>
       <ColorPanel />
@@ -23,6 +23,7 @@ function App() {
           key={currentChannel && currentChannel.id}
           currentChannel={currentChannel}
           isPrivateChannel={isPrivateChannel}
+          userPosts={userPosts}
         />
       </Grid.Column>
     </Grid>

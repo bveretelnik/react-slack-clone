@@ -8,7 +8,7 @@ import MessagesForm from "./MessagesForm";
 import MessagesHeader from "./MessagesHeader";
 
 export default function Messages() {
-  const { channel } = useContext(ChannelContext);
+  const { channel, setUserPost } = useContext(ChannelContext);
   const { user } = useContext(UserContext);
   const [search, setSearch] = useState({
     privateMessagesRef: firebase.database().ref("privateMessages"),
@@ -32,6 +32,7 @@ export default function Messages() {
 
   useEffect(() => {
     countUniqueUsers(search.messages);
+    countUserPosts(search.messages);
   }, [search.messages]);
 
   useEffect(() => {
@@ -153,6 +154,21 @@ export default function Messages() {
     const plural = uniqueUsers.length > 1 || uniqueUsers.length === 0;
     const numUniqueUsers = `${uniqueUsers.length} user${plural ? "s" : ""}`;
     setSearch({ ...search, numUniqueUsers: numUniqueUsers });
+  };
+
+  const countUserPosts = (messages) => {
+    let userPosts = messages.reduce((acc, message) => {
+      if (message.user.name in acc) {
+        acc[message.user.name].count += 1;
+      } else {
+        acc[message.user.name] = {
+          avatar: message.user.avatar,
+          count: 1,
+        };
+      }
+      return acc;
+    }, {});
+    setUserPost(userPosts);
   };
 
   const displayMessages = (messages) =>
