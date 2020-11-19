@@ -15,6 +15,7 @@ import "semantic-ui-css/semantic.min.css";
 import UserState from "./components/context/user/UserState";
 import { UserContext } from "./components/context/user/userContext";
 import ChannelState from "./components/context/channel/ChannelState";
+import ColorsState from "./components/context/colors/ColorsState";
 
 const Root = ({ history }) => {
   const { setUser, clearUser, user } = useContext(UserContext);
@@ -45,12 +46,14 @@ const Root = ({ history }) => {
 const RootWithAuth = withRouter(Root);
 
 ReactDOM.render(
-  <ChannelState>
-    <UserState>
-      <Router>
-        <RootWithAuth />
-      </Router>
-    </UserState>
-  </ChannelState>,
+  <ColorsState>
+    <ChannelState>
+      <UserState>
+        <Router>
+          <RootWithAuth />
+        </Router>
+      </UserState>
+    </ChannelState>
+  </ColorsState>,
   document.getElementById("root")
 );
