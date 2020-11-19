@@ -171,11 +171,15 @@ export default function Messages() {
     setUserPost(userPosts);
   };
 
-  const displayMessages = (messages) =>
-    messages.length > 0 &&
-    messages.map((message) => (
-      <Message key={message.timestamp} message={message} user={user} />
-    ));
+  const displayMessages = (messages) => {
+    return messages.length > 0 ? (
+      messages.map((message) => (
+        <Message key={message.timestamp} message={message} user={user} />
+      ))
+    ) : (
+      <h3>Empty</h3>
+    );
+  };
 
   const displayChannelName = (channel) => (channel ? `#${channel.name}` : " ");
 
