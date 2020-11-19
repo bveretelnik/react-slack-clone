@@ -112,13 +112,6 @@ export default function ColorPanel() {
     >
       <Divider />
       <Button icon="add" size="small" color="blue" onClick={openModal} />
-      <Divider />
-      <Button
-        icon="undo"
-        size="small"
-        color="red"
-        onClick={() => setColors("#4c3c4c", "#eee")}
-      />
       {displayUserColors(userColors)}
       {/* Color Picker Modal */}
       <Modal basic open={modal} onClose={closeModal}>
@@ -142,6 +135,14 @@ export default function ColorPanel() {
           </Button>
         </Modal.Actions>
       </Modal>
+      <Divider />
+      <Button
+        icon="undo"
+        size="small"
+        color="red"
+        onClick={() => setColors("#4c3c4c", "#eee")}
+      />
+      <Divider />
     </Sidebar>
   );
 }
