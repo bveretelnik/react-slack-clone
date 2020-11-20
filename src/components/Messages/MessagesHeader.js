@@ -24,7 +24,9 @@ export default function MessagesHeader({
             />
           )}
         </span>
-        <Header.Subheader>{numUniqueUsers}</Header.Subheader>
+        <Header.Subheader>
+          {!isPrivateChannel && numUniqueUsers}
+        </Header.Subheader>
       </Header>
 
       {/* Channel Search Input */}
