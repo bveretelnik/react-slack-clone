@@ -1,16 +1,9 @@
 import React, { Fragment, useState, useContext, useEffect } from "react";
 import firebase from "../../firebase";
-import {
-  Menu,
-  Icon,
-  Modal,
-  Form,
-  Input,
-  Button,
-  Label,
-} from "semantic-ui-react";
+import { Menu, Icon, Label } from "semantic-ui-react";
 import { UserContext } from "../context/user/userContext";
 import { ChannelContext } from "../context/channel/channelContext";
+import ChannelsModal from "./ChannelsModal";
 export default function Channels() {
   const { user } = useContext(UserContext);
   const { setCurrentChannel, setPrivateChannel } = useContext(ChannelContext);
@@ -188,6 +181,8 @@ export default function Channels() {
   };
   const openModal = () => setValue({ ...value, modal: true });
   const closeModal = () => setValue({ ...value, modal: false });
+
+  const { modal, channels } = value;
   return (
     <Fragment>
       <Menu.Menu className="menu">
@@ -196,7 +191,7 @@ export default function Channels() {
             <Icon name="exchange" />
             CHANNELS
           </span>{" "}
-          ({value.channels.length ? value.channels.length : 0}){" "}
+          ({value.channels.length ? channels.length : 0}){" "}
           <Icon name="add" onClick={openModal} />
         </Menu.Item>
         {value.channels.length > 0 &&
@@ -215,40 +210,12 @@ export default function Channels() {
             </Menu.Item>
           ))}
       </Menu.Menu>
-
-      {/* Add Channel Modal */}
-      <Modal basic open={value.modal} onClose={closeModal}>
-        <Modal.Header>Add a Channel</Modal.Header>
-        <Modal.Content>
-          <Form onSubmit={handleSubmit}>
-            <Form.Field>
-              <Input
-                fluid
-                label="Name of Channel"
-                name="channelName"
-                onChange={handleChange}
-              />
-            </Form.Field>
-
-            <Form.Field>
-              <Input
-                fluid
-                label="About the Channel"
-                name="channelDetails"
-                onChange={handleChange}
-              />
-            </Form.Field>
-          </Form>
-        </Modal.Content>
-        <Modal.Actions>
-          <Button color="green" inverted onClick={handleSubmit}>
-            <Icon name="checkmark" /> Add
-          </Button>
-          <Button color="red" inverted onClick={closeModal}>
-            <Icon name="remove" /> Cancel
-          </Button>
-        </Modal.Actions>
-      </Modal>
+      <ChannelsModal
+        modal={modal}
+        closeModal={closeModal}
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+      />
     </Fragment>
   );
 }

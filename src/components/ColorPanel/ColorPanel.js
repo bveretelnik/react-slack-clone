@@ -1,18 +1,9 @@
 import React, { useState, useContext, Fragment, useEffect } from "react";
 import firebase from "../../firebase";
-import {
-  Sidebar,
-  Menu,
-  Divider,
-  Button,
-  Modal,
-  Icon,
-  Label,
-  Segment,
-} from "semantic-ui-react";
-import { SliderPicker } from "react-color";
+import { Sidebar, Menu, Divider, Button } from "semantic-ui-react";
 import { UserContext } from "../context/user/userContext";
 import { ColorsContext } from "../context/colors/colorsContext";
+import ColorPanelModal from "./ColorPanelModal";
 
 export default function ColorPanel() {
   const { user } = useContext(UserContext);
@@ -114,7 +105,16 @@ export default function ColorPanel() {
       <Button icon="add" size="small" color="blue" onClick={openModal} />
       {displayUserColors(userColors)}
       {/* Color Picker Modal */}
-      <Modal basic open={modal} onClose={closeModal}>
+      <ColorPanelModal
+        modal={modal}
+        closeModal={closeModal}
+        handleChangePrimary={handleChangePrimary}
+        handleChangeSecondary={handleChangeSecondary}
+        primary={primary}
+        secondary={secondary}
+        handleSaveColors={handleSaveColors}
+      />
+      {/* <Modal basic open={modal} onClose={closeModal}>
         <Modal.Header>Choose App Colors</Modal.Header>
         <Modal.Content>
           <Segment inverted>
@@ -134,7 +134,7 @@ export default function ColorPanel() {
             <Icon name="remove" /> Cancel
           </Button>
         </Modal.Actions>
-      </Modal>
+      </Modal> */}
       <Divider />
       <Button
         icon="undo"
