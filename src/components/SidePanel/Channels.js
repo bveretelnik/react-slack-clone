@@ -137,11 +137,11 @@ export default function Channels() {
   };
 
   const changeChannel = (channel) => {
-    // setActiveChannel(channel);
     setCurrentChannel(channel);
     clearNotifications();
     setPrivateChannel(false);
-    setValue({ ...value, activeChannel: channel.id, channel: channel });
+    setActiveChannel(channel);
+    // setValue({ ...value, activeChannel: channel.id, channel: channel });
   };
 
   const clearNotifications = () => {

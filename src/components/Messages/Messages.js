@@ -3,14 +3,14 @@ import firebase from "../../firebase";
 import { Segment, Comment } from "semantic-ui-react";
 import { ChannelContext } from "../context/channel/channelContext";
 import { UserContext } from "../context/user/userContext";
-import Message from "./Message";
 import MessagesForm from "./MessagesForm";
 import MessagesHeader from "./MessagesHeader";
+import DisplayMessage from "./DisplayMessage";
 
 export default function Messages() {
   const { channel, setUserPost } = useContext(ChannelContext);
   const { user } = useContext(UserContext);
-  const [search, setSearch] = useState({
+  const [state, setState] = useState({
     privateMessagesRef: firebase.database().ref("privateMessages"),
     messagesRef: firebase.database().ref("messages"),
     messages: [],
@@ -31,47 +31,38 @@ export default function Messages() {
   }, [channel.currentChannel]);
 
   useEffect(() => {
-    countUniqueUsers(search.messages);
-    countUserPosts(search.messages);
-  }, [search.messages]);
+    countUniqueUsers(state.messages);
+    countUserPosts(state.messages);
+  }, [state.messages]);
 
   useEffect(() => {
-    if (search.searchTerm && search.searchLoading) handleSearchMessages();
-  }, [search.searchTerm]);
+    if (state.searchTerm && state.searchLoading) handleSearchMessages();
+  }, [state.searchTerm]);
 
   useEffect(() => {
     if (channel.currentChannel) starChannel();
-    console.log(search);
-  }, [search.isChannelStarred]);
+  }, [state.isChannelStarred]);
 
   const addMessageListener = (channelId) => {
     let loadedMessages = [];
     const ref = getMessagesRef();
     ref.child(channelId).on("child_added", (snap) => {
-      loadedMessages.push(snap.val());
-      if (search.messages) {
-        setSearch({
-          ...search,
-          messages: loadedMessages,
-          messagesLoading: false,
-        });
-      } else {
-        setSearch({
-          ...search,
-          messages: [],
-          messagesLoading: false,
-        });
-      }
+      loadedMessages.push(snap.val() ? snap.val() : null);
+      setState({
+        ...state,
+        messages: loadedMessages,
+        messagesLoading: false,
+      });
     });
   };
 
   const getMessagesRef = () => {
-    const { messagesRef, privateMessagesRef } = search;
+    const { messagesRef, privateMessagesRef } = state;
     return channel.isPrivateChannel ? privateMessagesRef : messagesRef;
   };
 
   const addUserStarsListener = (channelId, userId) => {
-    search.usersRef
+    state.usersRef
       .child(userId)
       .child("starred")
       .once("value")
@@ -79,8 +70,8 @@ export default function Messages() {
         if (data.val() !== null) {
           const channelIds = Object.keys(data.val());
           const prevStarred = channelIds.includes(channelId);
-          setSearch({
-            ...search,
+          setState({
+            ...state,
             isChannelStarred: prevStarred,
           });
         }
@@ -88,14 +79,14 @@ export default function Messages() {
   };
 
   const handleStar = () => {
-    setSearch({
-      ...search,
+    setState({
+      ...state,
       isChannelStarred: !isChannelStarred,
     });
   };
   const starChannel = () => {
-    if (search.isChannelStarred) {
-      search.usersRef.child(`${user.currentUser.uid}/starred`).update({
+    if (state.isChannelStarred) {
+      state.usersRef.child(`${user.currentUser.uid}/starred`).update({
         [channel.currentChannel.id]: {
           name: channel.currentChannel.name,
           details: channel.currentChannel.details,
@@ -106,7 +97,7 @@ export default function Messages() {
         },
       });
     } else {
-      search.usersRef
+      state.usersRef
         .child(`${user.currentUser.uid}/starred`)
         .child(channel.currentChannel.id)
         .remove((err) => {
@@ -118,16 +109,16 @@ export default function Messages() {
   };
 
   const handleSearchChange = (e) => {
-    setSearch({
-      ...search,
+    setState({
+      ...state,
       searchTerm: e.target.value,
       searchLoading: true,
     });
   };
   const handleSearchMessages = () => {
-    const { messages } = search;
+    const { messages } = state;
     const channelMessages = [...messages];
-    const regex = new RegExp(search.searchTerm, "gi");
+    const regex = new RegExp(state.searchTerm, "gi");
     const searchResult = channelMessages.reduce((acc, message) => {
       if (
         (message.content && message.content.match(regex)) ||
@@ -137,11 +128,11 @@ export default function Messages() {
       }
       return acc;
     }, []);
-    setSearch({
-      ...search,
+    setState({
+      ...state,
       searchResults: searchResult,
     });
-    setTimeout(() => setSearch({ ...search, searchLoading: false }), 1000);
+    setTimeout(() => setState({ ...state, searchLoading: false }), 1000);
   };
 
   const countUniqueUsers = (messages) => {
@@ -153,7 +144,7 @@ export default function Messages() {
     }, []);
     const plural = uniqueUsers.length > 1 || uniqueUsers.length === 0;
     const numUniqueUsers = `${uniqueUsers.length} user${plural ? "s" : ""}`;
-    setSearch({ ...search, numUniqueUsers: numUniqueUsers });
+    setState({ ...state, numUniqueUsers: numUniqueUsers });
   };
 
   const countUserPosts = (messages) => {
@@ -171,16 +162,6 @@ export default function Messages() {
     setUserPost(userPosts);
   };
 
-  const displayMessages = (messages) => {
-    return messages.length > 0 ? (
-      messages.map((message) => (
-        <Message key={message.timestamp} message={message} user={user} />
-      ))
-    ) : (
-      <h3>Empty</h3>
-    );
-  };
-
   const displayChannelName = (channel) => (channel ? `#${channel.name}` : " ");
 
   const {
@@ -190,7 +171,7 @@ export default function Messages() {
     messages,
     numUniqueUsers,
     isChannelStarred,
-  } = search;
+  } = state;
   return (
     <Fragment>
       <MessagesHeader
@@ -205,9 +186,12 @@ export default function Messages() {
 
       <Segment>
         <Comment.Group className="messages">
-          {searchTerm
-            ? displayMessages(searchResults)
-            : displayMessages(messages)}
+          <DisplayMessage
+            searchTerm={searchTerm}
+            searchResults={searchResults}
+            messages={messages}
+            user={user}
+          />
         </Comment.Group>
       </Segment>
 

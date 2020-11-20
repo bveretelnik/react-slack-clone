@@ -1,12 +1,6 @@
 import React, { useState } from "react";
-import {
-  Segment,
-  Accordion,
-  Header,
-  Icon,
-  Image,
-  List,
-} from "semantic-ui-react";
+import { Segment, Accordion, Header, Icon, Image } from "semantic-ui-react";
+import TopPoster from "./TopPoster";
 
 export default function MetaPanel({
   isPrivateChannel,
@@ -26,23 +20,6 @@ export default function MetaPanel({
       ...state,
       activeIndex: newIndex,
     });
-  };
-  const formatCount = (num) =>
-    num > 1 || num === 0 ? `${num} posts` : `${num} post`;
-
-  const displayTopPosters = (post) => {
-    return Object.entries(post)
-      .sort((a, b) => b[1] - a[1])
-      .map(([key, val], i) => (
-        <List.Item key={i}>
-          <Image avatar src={val.avatar} />
-          <List.Content>
-            <List.Header as="a">{key}</List.Header>
-            <List.Description>{formatCount(val.count)}</List.Description>
-          </List.Content>
-        </List.Item>
-      ))
-      .slice(0, 5);
   };
 
   const { privateChannel, activeIndex, channel } = state;
@@ -75,7 +52,7 @@ export default function MetaPanel({
           Top Posters
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 1}>
-          <List>{userPosts && displayTopPosters(userPosts)}</List>
+          <TopPoster userPosts={userPosts} />
         </Accordion.Content>
 
         <Accordion.Title
