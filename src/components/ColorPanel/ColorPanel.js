@@ -1,9 +1,10 @@
-import React, { useState, useContext, Fragment, useEffect } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import firebase from "../../firebase";
 import { Sidebar, Menu, Divider, Button } from "semantic-ui-react";
 import { UserContext } from "../context/user/userContext";
 import { ColorsContext } from "../context/colors/colorsContext";
 import ColorPanelModal from "./ColorPanelModal";
+import UserColors from "./UserColors";
 
 export default function ColorPanel() {
   const { user } = useContext(UserContext);
@@ -63,31 +64,6 @@ export default function ColorPanel() {
       .catch((err) => console.error(err));
   };
 
-  const displayUserColors = (colors) => {
-    return (
-      colors.length > 0 &&
-      colors.map((color, i) => (
-        <Fragment key={i}>
-          <Divider />
-          <div
-            className="color__container"
-            onClick={() => setColors(color.primary, color.secondary)}
-          >
-            <div
-              className="color__square"
-              style={{ background: color.primary }}
-            >
-              <div
-                className="color__overlay"
-                style={{ background: color.secondary }}
-              ></div>
-            </div>
-          </div>
-        </Fragment>
-      ))
-    );
-  };
-
   const openModal = () => setstate({ ...state, modal: true });
   const closeModal = () => setstate({ ...state, modal: false });
 
@@ -103,7 +79,8 @@ export default function ColorPanel() {
     >
       <Divider />
       <Button icon="add" size="small" color="blue" onClick={openModal} />
-      {displayUserColors(userColors)}
+
+      <UserColors colors={userColors} setColors={setColors} />
       {/* Color Picker Modal */}
       <ColorPanelModal
         modal={modal}
@@ -114,27 +91,7 @@ export default function ColorPanel() {
         secondary={secondary}
         handleSaveColors={handleSaveColors}
       />
-      {/* <Modal basic open={modal} onClose={closeModal}>
-        <Modal.Header>Choose App Colors</Modal.Header>
-        <Modal.Content>
-          <Segment inverted>
-            <Label content="Primary Color" />
-            <SliderPicker color={primary} onChange={handleChangePrimary} />
-          </Segment>
-          <Segment inverted>
-            <Label content="Secondary Color" />
-            <SliderPicker color={secondary} onChange={handleChangeSecondary} />
-          </Segment>
-        </Modal.Content>
-        <Modal.Actions>
-          <Button color="green" inverted onClick={handleSaveColors}>
-            <Icon name="checkmark" /> Save Colors
-          </Button>
-          <Button color="red" inverted onClick={closeModal}>
-            <Icon name="remove" /> Cancel
-          </Button>
-        </Modal.Actions>
-      </Modal> */}
+
       <Divider />
       <Button
         icon="undo"
