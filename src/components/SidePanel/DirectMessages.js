@@ -3,6 +3,7 @@ import firebase from "../../firebase";
 import { Menu, Icon } from "semantic-ui-react";
 import { UserContext } from "../context/user/userContext";
 import { ChannelContext } from "../context/channel/channelContext";
+import DirectChannelItems from "./DirectChannelItems";
 
 export default function DirectMessages() {
   const { user } = useContext(UserContext);
@@ -18,7 +19,6 @@ export default function DirectMessages() {
 
   useEffect(() => {
     addListeners(currentUser.uid);
-    // console.log(state);
   }, [currentUser]);
 
   const addListeners = (currentUserUid) => {
@@ -107,17 +107,12 @@ export default function DirectMessages() {
         </span>{" "}
         ({users.length})
       </Menu.Item>
-      {users.map((user) => (
-        <Menu.Item
-          key={user.uid}
-          active={user.uid === activeChannel}
-          onClick={() => changeChannel(user)}
-          style={{ opacity: 0.7, fontStyle: "italic" }}
-        >
-          <Icon name="circle" color={isUserOnline(user) ? "green" : "red"} />@{" "}
-          {user.name}
-        </Menu.Item>
-      ))}
+      <DirectChannelItems
+        users={users}
+        activeChannel={activeChannel}
+        changeChannel={changeChannel}
+        isUserOnline={isUserOnline}
+      />
     </Menu.Menu>
   );
 }

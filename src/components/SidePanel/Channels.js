@@ -1,9 +1,10 @@
 import React, { Fragment, useState, useContext, useEffect } from "react";
 import firebase from "../../firebase";
-import { Menu, Icon, Label } from "semantic-ui-react";
+import { Menu, Icon } from "semantic-ui-react";
 import { UserContext } from "../context/user/userContext";
 import { ChannelContext } from "../context/channel/channelContext";
 import ChannelsModal from "./ChannelsModal";
+import ChannelsItems from "./ChannelsItems";
 export default function Channels() {
   const { user } = useContext(UserContext);
   const { setCurrentChannel, setPrivateChannel } = useContext(ChannelContext);
@@ -141,7 +142,6 @@ export default function Channels() {
     clearNotifications();
     setPrivateChannel(false);
     setActiveChannel(channel);
-    // setValue({ ...value, activeChannel: channel.id, channel: channel });
   };
 
   const clearNotifications = () => {
@@ -182,7 +182,7 @@ export default function Channels() {
   const openModal = () => setValue({ ...value, modal: true });
   const closeModal = () => setValue({ ...value, modal: false });
 
-  const { modal, channels } = value;
+  const { modal, channels, activeChannel } = value;
   return (
     <Fragment>
       <Menu.Menu className="menu">
@@ -191,24 +191,15 @@ export default function Channels() {
             <Icon name="exchange" />
             CHANNELS
           </span>{" "}
-          ({value.channels.length ? channels.length : 0}){" "}
+          ({channels.length ? channels.length : 0}){" "}
           <Icon name="add" onClick={openModal} />
         </Menu.Item>
-        {value.channels.length > 0 &&
-          value.channels.map((channel) => (
-            <Menu.Item
-              key={channel.id}
-              onClick={() => changeChannel(channel)}
-              name={channel.name}
-              style={{ opacity: 0.7 }}
-              active={channel.id === value.activeChannel}
-            >
-              {getNotificationCount(channel) && (
-                <Label color="red">{getNotificationCount(channel)}</Label>
-              )}
-              # {channel.name}
-            </Menu.Item>
-          ))}
+        <ChannelsItems
+          channels={channels}
+          activeChannel={activeChannel}
+          changeChannel={changeChannel}
+          getNotificationCount={getNotificationCount}
+        />
       </Menu.Menu>
       <ChannelsModal
         modal={modal}

@@ -1,5 +1,6 @@
 import React from "react";
 import { Image, List } from "semantic-ui-react";
+
 export default function TopPoster({ userPosts }) {
   const formatCount = (num) =>
     num > 1 || num === 0 ? `${num} posts` : `${num} post`;
