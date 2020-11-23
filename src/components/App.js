@@ -7,6 +7,7 @@ import Messages from "./Messages/Messages";
 import MetaPanel from "./MetaPanel/MetaPanel";
 import { ChannelContext } from "./context/channel/channelContext";
 import { ColorsContext } from "./context/colors/colorsContext";
+import AboutPanel from "./MetaPanel/AboutPanel";
 
 function App() {
   const { channel } = useContext(ChannelContext);
@@ -32,6 +33,7 @@ function App() {
           isPrivateChannel={isPrivateChannel}
           userPosts={userPosts}
         />
+        <AboutPanel />
       </Grid.Column>
     </Grid>
   );
