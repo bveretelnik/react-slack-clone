@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Accordion, Icon, Segment } from "semantic-ui-react";
 
-export default function AboutPanel() {
+export default function InformationPanel() {
   const [activeIndex, setActiveIndex] = useState(0);
+
   const handleClick = (e, titlePost) => {
     const { index } = titlePost;
     const newIndex = activeIndex === index ? -1 : index;
