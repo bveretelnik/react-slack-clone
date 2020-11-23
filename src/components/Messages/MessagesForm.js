@@ -22,8 +22,11 @@ export default function MessagesForm({ getMessagesRef }) {
     errors: [],
     modal: false,
   });
-  const openModal = () => setstate({ ...state, modal: true });
-  const closeModal = () => setstate({ ...state, modal: false });
+
+  useEffect(() => {
+    if (state.uploadTask) addFilesOnChat();
+    // eslint-disable-next-line
+  }, [state.uploadTask]);
 
   const handleChange = (e) => {
     setstate({ ...state, [e.target.name]: e.target.value });
@@ -71,10 +74,6 @@ export default function MessagesForm({ getMessagesRef }) {
       });
     }
   };
-
-  useEffect(() => {
-    if (state.uploadTask) addFilesOnChat();
-  }, [state.uploadTask]);
 
   const getPath = () => {
     if (channel.isPrivateChannel) {
@@ -152,6 +151,8 @@ export default function MessagesForm({ getMessagesRef }) {
         });
       });
   };
+  const openModal = () => setstate({ ...state, modal: true });
+  const closeModal = () => setstate({ ...state, modal: false });
 
   const { errors, messag, loading, percentUploaded, uploadState } = state;
   return (

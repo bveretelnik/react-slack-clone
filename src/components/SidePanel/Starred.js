@@ -15,6 +15,7 @@ export default function Starred() {
 
   useEffect(() => {
     if (user) addListeners(user.currentUser.uid);
+    // eslint-disable-next-line
   }, [user.currentUser]);
 
   const addListeners = (userId) => {

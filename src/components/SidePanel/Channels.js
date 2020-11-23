@@ -23,15 +23,17 @@ export default function Channels() {
 
   useEffect(() => {
     setFirstChannel();
-    // console.log(value);
+    // eslint-disable-next-line
   }, [value.channels]);
 
   useEffect(() => {
     addListeners();
+    // eslint-disable-next-line
   }, [value.channel]);
 
   useEffect(() => {
     return () => removeListeners();
+    // eslint-disable-next-line
   }, [value.channels]);
 
   const addListeners = () => {

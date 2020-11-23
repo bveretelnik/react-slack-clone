@@ -9,3 +9,4 @@ export const SET_USER_POSTS = "SET_USER_POSTS";
 
 /* Colors Action Types */
 export const SET_COLORS = "SET_COLORS";
+export const ADD_COLORS = "ADD_COLORS";

@@ -28,19 +28,23 @@ export default function Messages() {
       addMessageListener(channel.currentChannel.id);
       addUserStarsListener(channel.currentChannel.id, user.currentUser.uid);
     }
+    // eslint-disable-next-line
   }, [channel.currentChannel]);
 
   useEffect(() => {
     countUniqueUsers(state.messages);
     countUserPosts(state.messages);
+    // eslint-disable-next-line
   }, [state.messages]);
 
   useEffect(() => {
     if (state.searchTerm && state.searchLoading) handleSearchMessages();
+    // eslint-disable-next-line
   }, [state.searchTerm]);
 
   useEffect(() => {
     if (channel.currentChannel) starChannel();
+    // eslint-disable-next-line
   }, [state.isChannelStarred]);
 
   const addMessageListener = (channelId) => {

@@ -1,5 +1,4 @@
 import React, { useState, useContext, useEffect } from "react";
-import firebase from "../../firebase";
 import { Sidebar, Menu, Divider, Button } from "semantic-ui-react";
 import { UserContext } from "../context/user/userContext";
 import { ColorsContext } from "../context/colors/colorsContext";
@@ -8,30 +7,19 @@ import UserColors from "./UserColors";
 
 export default function ColorPanel() {
   const { user } = useContext(UserContext);
-  const { setColors } = useContext(ColorsContext);
+  const { setColors, addListener, colors } = useContext(ColorsContext);
+  const { userColors, usersRef } = colors;
   const [state, setstate] = useState({
     modal: false,
     primary: "",
     secondary: "",
-    user: user.currentUser,
-    usersRef: firebase.database().ref("user"),
-    userColors: [],
   });
 
   useEffect(() => {
     if (user) addListener(user.currentUser.uid);
     // eslint-disable-next-line
   }, []);
-  const addListener = (userId) => {
-    let userColors = [];
-    state.usersRef.child(`${userId}/colors`).on("child_added", (snap) => {
-      userColors.unshift(snap.val());
-      setstate({
-        ...state,
-        userColors: userColors,
-      });
-    });
-  };
+
   const handleChangePrimary = (color) =>
     setstate({
       ...state,
@@ -50,7 +38,7 @@ export default function ColorPanel() {
     }
   };
   const saveColors = (primary, secondary) => {
-    state.usersRef
+    usersRef
       .child(`${user.currentUser.uid}/colors`)
       .push()
       .update({
@@ -67,7 +55,7 @@ export default function ColorPanel() {
   const openModal = () => setstate({ ...state, modal: true });
   const closeModal = () => setstate({ ...state, modal: false });
 
-  const { modal, primary, secondary, userColors } = state;
+  const { modal, primary, secondary } = state;
   return (
     <Sidebar
       as={Menu}

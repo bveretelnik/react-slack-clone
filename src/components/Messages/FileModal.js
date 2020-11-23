@@ -20,8 +20,7 @@ export default function FileModal({ modal, closeModal, uploadFile }) {
       if (isAuthorized(file.name)) {
         const metadata = { contentType: mime.lookup(file.name) };
         uploadFile(file, metadata);
-        // clearFile();
-        // closeModal();
+        clearFile();
       }
     }
   };
