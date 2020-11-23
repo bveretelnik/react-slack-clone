@@ -1,15 +1,11 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import firebase from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
 import { Segment, Button, Input } from "semantic-ui-react";
-import { ChannelContext } from "../context/channel/channelContext";
-import { UserContext } from "../context/user/userContext";
 import FileModal from "./FileModal";
 import ProgressBar from "./ProgressBar";
 
-export default function MessagesForm({ getMessagesRef }) {
-  const { channel } = useContext(ChannelContext);
-  const { user } = useContext(UserContext);
+export default function MessagesForm({ getMessagesRef, channel, user }) {
   const { currentChannel } = channel;
   const { currentUser } = user;
   const [state, setstate] = useState({

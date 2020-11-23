@@ -1,14 +1,16 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Sidebar, Menu, Divider, Button } from "semantic-ui-react";
-import { UserContext } from "../context/user/userContext";
-import { ColorsContext } from "../context/colors/colorsContext";
+
 import ColorPanelModal from "./ColorPanelModal";
 import UserColors from "./UserColors";
 
-export default function ColorPanel() {
-  const { user } = useContext(UserContext);
-  const { setColors, addListener, colors } = useContext(ColorsContext);
-  const { userColors, usersRef } = colors;
+export default function ColorPanel({
+  user,
+  setColors,
+  addListener,
+  userColors,
+  usersRef,
+}) {
   const [state, setstate] = useState({
     modal: false,
     primary: "",

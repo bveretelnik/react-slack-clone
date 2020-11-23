@@ -10,14 +10,15 @@ export default function InformationPanel() {
     setActiveIndex(newIndex);
   };
   return (
-    <Segment Styled>
-      <Accordion Styled>
+    <Segment>
+      <Accordion styled>
         <Accordion.Title
           active={activeIndex === 0}
           index={0}
           onClick={handleClick}
         >
           <Icon name="dropdown" />
+          <Icon disabled name="sun" />
           Weather in Kyiv
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 0}>
@@ -30,6 +31,7 @@ export default function InformationPanel() {
           onClick={handleClick}
         >
           <Icon name="dropdown" />
+          <Icon disabled name="usd" />
           Currency USD
         </Accordion.Title>
         <Accordion.Content active={activeIndex === 1}>

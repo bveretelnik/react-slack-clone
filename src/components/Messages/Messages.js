@@ -1,15 +1,11 @@
-import React, { Fragment, useContext, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import firebase from "../../firebase";
 import { Segment, Comment } from "semantic-ui-react";
-import { ChannelContext } from "../context/channel/channelContext";
-import { UserContext } from "../context/user/userContext";
 import MessagesForm from "./MessagesForm";
 import MessagesHeader from "./MessagesHeader";
 import DisplayMessage from "./DisplayMessage";
 
-export default function Messages() {
-  const { channel, setUserPost } = useContext(ChannelContext);
-  const { user } = useContext(UserContext);
+export default function Messages({ channel, setUserPost, user }) {
   const [state, setState] = useState({
     privateMessagesRef: firebase.database().ref("privateMessages"),
     messagesRef: firebase.database().ref("messages"),
@@ -199,7 +195,11 @@ export default function Messages() {
         </Comment.Group>
       </Segment>
 
-      <MessagesForm getMessagesRef={getMessagesRef} />
+      <MessagesForm
+        getMessagesRef={getMessagesRef}
+        user={user}
+        channel={channel}
+      />
     </Fragment>
   );
 }

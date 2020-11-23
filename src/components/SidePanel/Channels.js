@@ -1,13 +1,13 @@
-import React, { Fragment, useState, useContext, useEffect } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import firebase from "../../firebase";
 import { Menu, Icon } from "semantic-ui-react";
-import { UserContext } from "../context/user/userContext";
-import { ChannelContext } from "../context/channel/channelContext";
 import ChannelsModal from "./ChannelsModal";
 import ChannelsItems from "./ChannelsItems";
-export default function Channels() {
-  const { user } = useContext(UserContext);
-  const { setCurrentChannel, setPrivateChannel } = useContext(ChannelContext);
+export default function Channels({
+  user,
+  setPrivateChannel,
+  setCurrentChannel,
+}) {
   const [value, setValue] = useState({
     channelName: "",
     channelDetails: "",
