@@ -1,9 +1,9 @@
 import React from "react";
 import UserPanel from "./UserPanel";
 import { Menu } from "semantic-ui-react";
-import Channels from "./Channels";
-import DirectMessages from "./DirectMessages";
-import Starred from "./Starred";
+import Channels from "./Channel/Channels";
+import DirectMessages from "./DirectMessage/DirectMessages";
+import Starred from "./Starred/Starred";
 
 export default function SidePanel({
   primaryColor,
@@ -20,13 +20,21 @@ export default function SidePanel({
       style={{ background: primaryColor, fontSize: "1.2rem" }}
     >
       <UserPanel primaryColor={primaryColor} />
-      <Starred />
+      <Starred
+        user={user}
+        setCurrentChannel={setCurrentChannel}
+        setPrivateChannel={setPrivateChannel}
+      />
       <Channels
         user={user}
         setCurrentChannel={setCurrentChannel}
         setPrivateChannel={setPrivateChannel}
       />
-      <DirectMessages />
+      <DirectMessages
+        user={user}
+        setCurrentChannel={setCurrentChannel}
+        setPrivateChannel={setPrivateChannel}
+      />
     </Menu>
   );
 }

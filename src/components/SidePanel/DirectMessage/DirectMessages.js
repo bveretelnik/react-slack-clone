@@ -1,13 +1,13 @@
-import React, { useState, useContext, useEffect } from "react";
-import firebase from "../../firebase";
+import React, { useState, useEffect } from "react";
+import firebase from "../../../firebase";
 import { Menu, Icon } from "semantic-ui-react";
-import { UserContext } from "../context/user/userContext";
-import { ChannelContext } from "../context/channel/channelContext";
 import DirectChannelItems from "./DirectChannelItems";
 
-export default function DirectMessages() {
-  const { user } = useContext(UserContext);
-  const { setCurrentChannel, setPrivateChannel } = useContext(ChannelContext);
+export default function DirectMessages({
+  user,
+  setCurrentChannel,
+  setPrivateChannel,
+}) {
   const { currentUser } = user;
   const [state, setState] = useState({
     activeChannel: "",

@@ -1,5 +1,5 @@
 import React, { Fragment, useState, useEffect } from "react";
-import firebase from "../../firebase";
+import firebase from "../../../firebase";
 import { Menu, Icon } from "semantic-ui-react";
 import ChannelsModal from "./ChannelsModal";
 import ChannelsItems from "./ChannelsItems";

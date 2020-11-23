@@ -1,12 +1,13 @@
-import React, { useState, useContext, useEffect } from "react";
-import firebase from "../../firebase";
+import React, { useState, useEffect } from "react";
+import firebase from "../../../firebase";
 import { Menu, Icon } from "semantic-ui-react";
-import { ChannelContext } from "../context/channel/channelContext";
-import { UserContext } from "../context/user/userContext";
+import StarredChannel from "./StarredChannel";
 
-export default function Starred() {
-  const { setCurrentChannel, setPrivateChannel } = useContext(ChannelContext);
-  const { user } = useContext(UserContext);
+export default function Starred({
+  user,
+  setPrivateChannel,
+  setCurrentChannel,
+}) {
   const [state, setstate] = useState({
     usersRef: firebase.database().ref("user"),
     activeChannel: "",
@@ -52,20 +53,8 @@ export default function Starred() {
     setCurrentChannel(channel);
     setPrivateChannel(false);
   };
-  const displayChannels = (starredChannels) =>
-    starredChannels.length > 0 &&
-    starredChannels.map((channel) => (
-      <Menu.Item
-        key={channel.id}
-        onClick={() => changeChannel(channel)}
-        name={channel.name}
-        style={{ opacity: 0.7 }}
-        active={channel.id === state.activeChannel}
-      >
-        # {channel.name}
-      </Menu.Item>
-    ));
-  const { starredChannels } = state;
+
+  const { starredChannels, activeChannel } = state;
   return (
     <Menu.Menu className="menu">
       <Menu.Item>
@@ -75,7 +64,11 @@ export default function Starred() {
         </span>{" "}
         ({starredChannels.length})
       </Menu.Item>
-      {displayChannels(starredChannels)}
+      <StarredChannel
+        starredChannels={starredChannels}
+        changeChannel={changeChannel}
+        activeChannel={activeChannel}
+      />
     </Menu.Menu>
   );
 }
