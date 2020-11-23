@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import Message from "./Message";
 
-export default function DisplayMessage({
+export default function MessageItems({
   messages,
   searchTerm,
   searchResults,

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import firebase from "../../firebase";
+import firebase from "../../../firebase";
 import { v4 as uuidv4 } from "uuid";
 import { Segment, Button, Input } from "semantic-ui-react";
-import FileModal from "./FileModal";
-import ProgressBar from "./ProgressBar";
+import FileModal from "../FileModal";
+import ProgressBar from "../ProgressBar";
 
 export default function MessagesForm({ getMessagesRef, channel, user }) {
   const { currentChannel } = channel;

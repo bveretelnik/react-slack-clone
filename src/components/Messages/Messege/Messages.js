@@ -1,9 +1,9 @@
 import React, { Fragment, useEffect, useState } from "react";
-import firebase from "../../firebase";
+import firebase from "../../../firebase";
 import { Segment, Comment } from "semantic-ui-react";
 import MessagesForm from "./MessagesForm";
 import MessagesHeader from "./MessagesHeader";
-import DisplayMessage from "./DisplayMessage";
+import MessageItems from "./MessageItems";
 
 export default function Messages({ channel, setUserPost, user }) {
   const [state, setState] = useState({
@@ -186,7 +186,7 @@ export default function Messages({ channel, setUserPost, user }) {
 
       <Segment>
         <Comment.Group className="messages">
-          <DisplayMessage
+          <MessageItems
             searchTerm={searchTerm}
             searchResults={searchResults}
             messages={messages}

@@ -3,7 +3,7 @@ import "./App.css";
 import { Grid } from "semantic-ui-react";
 import ColorPanel from "./ColorPanel/ColorPanel";
 import SidePanel from "./SidePanel/SidePanel";
-import Messages from "./Messages/Messages";
+import Messages from "./Messages/Messege/Messages";
 import MetaPanel from "./MetaPanel/MetaPanel";
 import { ChannelContext } from "./context/channel/channelContext";
 import { ColorsContext } from "./context/colors/colorsContext";
