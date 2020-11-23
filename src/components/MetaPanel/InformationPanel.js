@@ -10,8 +10,8 @@ export default function InformationPanel() {
     setActiveIndex(newIndex);
   };
   return (
-    <Segment inverted>
-      <Accordion inverted>
+    <Segment Styled>
+      <Accordion Styled>
         <Accordion.Title
           active={activeIndex === 0}
           index={0}
