@@ -14,3 +14,6 @@ export const ADD_STATUS_TO_USER = "ADD_STATUS_TO_USER";
 /* Colors Action Types */
 export const SET_COLORS = "SET_COLORS";
 export const ADD_COLORS = "ADD_COLORS";
+
+/* Messages Action Types */
+export const ADD_MESSAGES = "ADD_MESSAGES";

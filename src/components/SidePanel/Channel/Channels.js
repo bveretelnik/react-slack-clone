@@ -29,7 +29,7 @@ export default function Channels({
   useEffect(() => {
     addListeners();
     // eslint-disable-next-line
-  }, [value.channel]);
+  }, []);
 
   useEffect(() => {
     return () => removeListeners();

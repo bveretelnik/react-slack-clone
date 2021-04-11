@@ -20,10 +20,8 @@ export default function Messages({ channel, setUserPost, user }) {
   });
 
   useEffect(() => {
-    if (channel.currentChannel && user.currentUser) {
-      addMessageListener(channel.currentChannel.id);
-      addUserStarsListener(channel.currentChannel.id, user.currentUser.uid);
-    }
+    if (channel.currentChannel) addMessageListener(channel.currentChannel.id);
+    // addUserStarsListener(channel.currentChannel.id, user.currentUser.uid);
     // eslint-disable-next-line
   }, [channel.currentChannel]);
 
@@ -47,12 +45,12 @@ export default function Messages({ channel, setUserPost, user }) {
     let loadedMessages = [];
     const ref = getMessagesRef();
     ref.child(channelId).on("child_added", (snap) => {
-      loadedMessages.push(snap.val() ? snap.val() : null);
-      setState({
-        ...state,
-        messages: loadedMessages,
-        messagesLoading: false,
-      });
+      loadedMessages.push(snap.val());
+    });
+    setState({
+      ...state,
+      messages: loadedMessages,
+      messagesLoading: false,
     });
   };
 
