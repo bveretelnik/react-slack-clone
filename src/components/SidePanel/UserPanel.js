@@ -1,10 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import firebase from "../../firebase";
 import { Grid, Header, Icon, Dropdown, Image } from "semantic-ui-react";
 import { UserContext } from "../context/user/userContext";
 
+import ModalChangeAvatar from "./ModalChangeAvatar";
+
 export default function UserPanel({ primaryColor }) {
   const { user } = useContext(UserContext);
+  const [modal, setModal] = useState(false);
+
+  const openModal = () => setModal(true);
+  const closeModal = () => setModal(false);
   const dropdownOptions = () => [
     {
       key: "user",
@@ -17,7 +23,7 @@ export default function UserPanel({ primaryColor }) {
     },
     {
       key: "avatar",
-      text: <span>Change Avatar</span>,
+      text: <span onClick={openModal}>Change Avatar</span>,
     },
     {
       key: "signout",
@@ -31,6 +37,7 @@ export default function UserPanel({ primaryColor }) {
       .signOut()
       .then(() => console.log("signed out!"));
   };
+
   const { currentUser } = user;
   return (
     <Grid style={{ background: primaryColor }}>
@@ -55,6 +62,8 @@ export default function UserPanel({ primaryColor }) {
             />
           </Header>
         </Grid.Row>
+        {/* Change User Avatar Modal   */}
+        <ModalChangeAvatar modal={modal} closeModal={closeModal} />
       </Grid.Column>
     </Grid>
   );
