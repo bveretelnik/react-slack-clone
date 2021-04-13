@@ -1,12 +1,21 @@
 import React from "react";
+import firebase from "../../firebase";
 import AvatarEditor from "react-avatar-editor";
 import { Button, Grid, Icon, Image, Input, Modal } from "semantic-ui-react";
 
 class ModalChangeAvatar extends React.Component {
   state = {
+    user: this.props.currentUser,
     previewImage: "",
     croppedImage: "",
-    blob: "",
+    blob: null,
+    uploadedCroppedImage: "",
+    storageRef: firebase.storage().ref(),
+    userRef: firebase.auth().currentUser,
+    usersRef: firebase.database().ref("users"),
+    metadata: {
+      contentType: "image/jpeg",
+    },
   };
 
   handleChange = (event) => {
@@ -32,6 +41,44 @@ class ModalChangeAvatar extends React.Component {
       });
     }
   };
+  uploadCroppedImage = () => {
+    const { storageRef, userRef, blob, metadata } = this.state;
+
+    storageRef
+      .child(`avatars/user-${userRef.uid}`)
+      .put(blob, metadata)
+      .then((snap) => {
+        snap.ref.getDownloadURL().then((downloadURL) => {
+          this.setState({ uploadedCroppedImage: downloadURL }, () =>
+            this.changeAvatar()
+          );
+        });
+      });
+  };
+
+  changeAvatar = () => {
+    this.state.userRef
+      .updateProfile({
+        photoURL: this.state.uploadedCroppedImage,
+      })
+      .then(() => {
+        console.log("PhotoURL updated");
+        this.props.closeModal();
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+    this.state.usersRef
+      .child(this.state.user.uid)
+      .update({ avatar: this.state.uploadedCroppedImage })
+      .then(() => {
+        console.log("User avatar updated");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
+
   render() {
     const { previewImage, croppedImage } = this.state;
 
@@ -76,7 +123,7 @@ class ModalChangeAvatar extends React.Component {
           </Modal.Content>
           <Modal.Actions>
             {croppedImage && (
-              <Button color="green" inverted>
+              <Button color="green" inverted onClick={this.uploadCroppedImage}>
                 <Icon name="save" /> Change Avatar
               </Button>
             )}

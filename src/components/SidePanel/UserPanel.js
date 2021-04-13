@@ -63,7 +63,11 @@ export default function UserPanel({ primaryColor }) {
           </Header>
         </Grid.Row>
         {/* Change User Avatar Modal   */}
-        <ModalChangeAvatar modal={modal} closeModal={closeModal} />
+        <ModalChangeAvatar
+          currentUser={currentUser}
+          modal={modal}
+          closeModal={closeModal}
+        />
       </Grid.Column>
     </Grid>
   );
