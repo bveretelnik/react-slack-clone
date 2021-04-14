@@ -16,6 +16,7 @@ export default function Channels({
     channels: [],
     channelsRef: firebase.database().ref("channels"),
     messagesRef: firebase.database().ref("messages"),
+    typingRef: firebase.database().ref("typing"),
     notifications: [],
     modal: false,
     firstLoad: true,
@@ -101,8 +102,6 @@ export default function Channels({
     setValue({
       ...value,
       activeChannel: channel.id,
-      firstLoad: false,
-      channel: channel,
     });
   };
 
@@ -112,7 +111,7 @@ export default function Channels({
       setCurrentChannel(firstChannel);
       setActiveChannel(firstChannel);
     }
-    // setValue({ ...value, channel: firstChannel, firstLoad: false });
+    setValue({ ...value, firstLoad: false });
   };
 
   const addChannel = () => {
@@ -140,10 +139,17 @@ export default function Channels({
   };
 
   const changeChannel = (channel) => {
-    setCurrentChannel(channel);
-    clearNotifications();
-    setPrivateChannel(false);
     setActiveChannel(channel);
+    if (channel.id === null) {
+      value.typingRef
+        .child(value.channel.id)
+        .child(user.currentUser.uid)
+        .remove();
+    }
+    clearNotifications();
+    setCurrentChannel(channel);
+    setPrivateChannel(false);
+    setValue({ ...value, channel });
   };
 
   const clearNotifications = () => {

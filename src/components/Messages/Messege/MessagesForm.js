@@ -10,6 +10,7 @@ export default function MessagesForm({ getMessagesRef, channel, user }) {
   const { currentUser } = user;
   const [state, setstate] = useState({
     storageRef: firebase.storage().ref(),
+    typingRef: firebase.database().ref("typing"),
     uploadTask: null,
     uploadState: "",
     percentUploaded: 0,
@@ -45,6 +46,7 @@ export default function MessagesForm({ getMessagesRef, channel, user }) {
   };
 
   const sendMessage = () => {
+    const { typingRef } = state;
     if (state.messag) {
       setstate({ ...state, loading: true });
       getMessagesRef()
@@ -52,18 +54,19 @@ export default function MessagesForm({ getMessagesRef, channel, user }) {
         .push()
         .set(createMessage())
         .then(() => {
-          return setstate({ ...state, loading: false, messag: "", errors: [] });
+          setstate({ ...state, loading: false, messag: "", errors: [] });
+          typingRef.child(currentChannel.id).child(currentUser.uid).remove();
         })
         .catch((err) => {
           console.err(err);
-          return setstate({
+          setstate({
             ...state,
             loading: false,
             errors: errors.concat(err),
           });
         });
     } else {
-      return setstate({
+      setstate({
         ...state,
         loading: false,
         errors: errors.concat({ messag: "Add a message" }),
@@ -126,7 +129,17 @@ export default function MessagesForm({ getMessagesRef, channel, user }) {
       }
     );
   };
-
+  const handleKeyDown = () => {
+    const { messag, typingRef } = state;
+    if (messag) {
+      typingRef
+        .child(currentChannel.id)
+        .child(currentUser.uid)
+        .set(currentUser.displayName);
+    } else {
+      typingRef.child(currentChannel.id).child(currentUser.uid).remove();
+    }
+  };
   const sendFileMessage = (fileUrl, ref, pathToUpload) => {
     ref
       .child(pathToUpload)
@@ -157,6 +170,7 @@ export default function MessagesForm({ getMessagesRef, channel, user }) {
         fluid
         name="messag"
         onChange={handleChange}
+        onKeyDown={handleKeyDown}
         value={messag}
         style={{ marginBottom: "0.7em" }}
         label={<Button icon={"add"} />}

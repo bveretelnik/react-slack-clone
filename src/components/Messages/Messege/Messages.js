@@ -17,11 +17,19 @@ export default function Messages({ channel, setUserPost, user }) {
     searchTerm: "",
     searchLoading: false,
     searchResults: [],
+    typingRef: firebase.database().ref("typing"),
+    typingUsers: [],
+    connectedRef: firebase.database().ref(".info/connected"),
   });
 
   useEffect(() => {
-    if (channel.currentChannel) addMessageListener(channel.currentChannel.id);
-    // addUserStarsListener(channel.currentChannel.id, user.currentUser.uid);
+    if (channel.currentChannel) {
+      addMessageListener(channel.currentChannel.id);
+
+      addTypingListeners(channel.currentChannel.id);
+      addUserStarsListener(channel.currentChannel.id, user.currentUser.uid);
+    }
+
     // eslint-disable-next-line
   }, [channel.currentChannel]);
 
@@ -40,6 +48,41 @@ export default function Messages({ channel, setUserPost, user }) {
     if (channel.currentChannel) starChannel();
     // eslint-disable-next-line
   }, [state.isChannelStarred]);
+
+  const addTypingListeners = (channelId) => {
+    let typingUsers = [];
+    state.typingRef.child(channelId).on("child_added", (snap) => {
+      if (snap.key !== user.uid) {
+        typingUsers = typingUsers.concat({
+          id: snap.key,
+          name: snap.val(),
+        });
+        setState({ ...state, typingUsers });
+      }
+    });
+
+    state.typingRef.child(channelId).on("child_removed", (snap) => {
+      const index = typingUsers.findIndex((user) => user.id !== snap.key);
+      if (index !== -1) {
+        typingUsers = typingUsers.filter((user) => user.id !== snap.key);
+        setState({ ...state, typingUsers });
+      }
+    });
+
+    state.connectedRef.on("value", (snap) => {
+      if (snap.val() === true) {
+        state.typingRef
+          .child(channelId)
+          .child(user.currentUser.uid)
+          .onDisconnect()
+          .remove((err) => {
+            if (err !== null) {
+              console.error(err);
+            }
+          });
+      }
+    });
+  };
 
   const addMessageListener = (channelId) => {
     let loadedMessages = [];
@@ -169,6 +212,7 @@ export default function Messages({ channel, setUserPost, user }) {
     messages,
     numUniqueUsers,
     isChannelStarred,
+    typingUsers,
   } = state;
   return (
     <Fragment>
@@ -189,6 +233,7 @@ export default function Messages({ channel, setUserPost, user }) {
             searchResults={searchResults}
             messages={messages}
             user={user}
+            typingUsers={typingUsers}
           />
         </Comment.Group>
       </Segment>
