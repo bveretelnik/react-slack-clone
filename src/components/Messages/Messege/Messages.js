@@ -4,6 +4,7 @@ import { Segment, Comment } from "semantic-ui-react";
 import MessagesForm from "./MessagesForm";
 import MessagesHeader from "./MessagesHeader";
 import MessageItems from "./MessageItems";
+import Skeleton from "./Skeleton";
 
 export default function Messages({ channel, setUserPost, user }) {
   const [state, setState] = useState({
@@ -205,6 +206,15 @@ export default function Messages({ channel, setUserPost, user }) {
 
   const displayChannelName = (channel) => (channel ? `#${channel.name}` : " ");
 
+  const displayMessageSkeleton = (loading) =>
+    loading ? (
+      <>
+        {[...Array(10)].map((_, i) => (
+          <Skeleton key={i} />
+        ))}
+      </>
+    ) : null;
+
   const {
     searchResults,
     searchLoading,
@@ -213,6 +223,7 @@ export default function Messages({ channel, setUserPost, user }) {
     numUniqueUsers,
     isChannelStarred,
     typingUsers,
+    messagesLoading,
   } = state;
   return (
     <Fragment>
@@ -228,6 +239,7 @@ export default function Messages({ channel, setUserPost, user }) {
 
       <Segment>
         <Comment.Group className="messages">
+          {displayMessageSkeleton(messagesLoading)}
           <MessageItems
             searchTerm={searchTerm}
             searchResults={searchResults}
@@ -235,6 +247,7 @@ export default function Messages({ channel, setUserPost, user }) {
             user={user}
             typingUsers={typingUsers}
           />
+          {/* <div ref={(node) => (this.messagesEnd = node)} /> */}
         </Comment.Group>
       </Segment>
 
