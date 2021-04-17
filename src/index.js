@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App";
 import Login from "./components/Auth/Login";
@@ -8,55 +8,67 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  withRouter,
+  useHistory,
 } from "react-router-dom";
-import Spinner from "./components/Spiner/Spiner";
+import Spiner from "./components/Spiner/Spiner";
 import "semantic-ui-css/semantic.min.css";
-import UserState from "./components/context/user/UserState";
-import { UserContext } from "./components/context/user/userContext";
-import ChannelState from "./components/context/channel/ChannelState";
-import ColorsState from "./components/context/colors/ColorsState";
-import DirectState from "./components/context/direct/DirectState";
+import { Provider, useDispatch, connect, useSelector } from "react-redux";
+import { compose, createStore } from "redux";
+import { setUser, clearUser } from "./components/redux/user/UserActions";
+import { rootReducer } from "./components/redux/rootReducer";
 
-const Root = ({ history }) => {
-  const { setUser, clearUser, user } = useContext(UserContext);
+const store = createStore(
+  rootReducer,
+  compose(
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
+);
+
+const Root = () => {
+  let history = useHistory();
+  const dispatch = useDispatch();
+  const isLoading = useSelector((state) => state.user.isLoading);
 
   useEffect(() => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        setUser(user);
+        dispatch(setUser(user));
+
         history.push("/");
       } else {
+        dispatch(clearUser());
         history.push("/login");
-        clearUser();
       }
     });
-    // eslint-disable-next-line
-  }, [user.currentUser]);
+  }, []);
 
-  return user.isLoading ? (
-    <Spinner />
-  ) : (
-    <Switch>
-      <Route exact path="/" component={App} />
-      <Route path="/login" component={Login} />
-      <Route path="/register" component={Register} />
-    </Switch>
+  return (
+    <>
+      {isLoading ? (
+        <Spiner />
+      ) : (
+        <Switch>
+          <Route exact path="/" component={App} />
+          <Route path="/login" component={Login} />
+          <Route path="/register" component={Register} />
+        </Switch>
+      )}
+    </>
   );
 };
-const RootWithAuth = withRouter(Root);
+
+const mapdispatchToProps = {
+  setUser,
+  clearUser,
+};
+
+connect(null, mapdispatchToProps)(Root);
 
 ReactDOM.render(
-  <DirectState>
-    <ColorsState>
-      <ChannelState>
-        <UserState>
-          <Router>
-            <RootWithAuth />
-          </Router>
-        </UserState>
-      </ChannelState>
-    </ColorsState>
-  </DirectState>,
+  <Provider store={store}>
+    <Router>
+      <Root />
+    </Router>
+  </Provider>,
   document.getElementById("root")
 );

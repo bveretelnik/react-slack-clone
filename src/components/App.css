@@ -18,6 +18,7 @@ body,
 
 /* MessageForm.js */
 .message__form {
+  background-color: #350d36 !important;
   position: fixed !important;
   bottom: 1em;
   margin-left: 320px !important;
@@ -46,6 +47,7 @@ body,
 }
 
 /* ColorPanel.js */
+
 .color__container {
   cursor: pointer;
   position: relative;

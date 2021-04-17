@@ -1,29 +1,24 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import firebase from "../../firebase";
 import { Grid, Header, Icon, Dropdown, Image } from "semantic-ui-react";
-import { UserContext } from "../context/user/userContext";
+import { useSelector } from "react-redux";
 
-import ModalChangeAvatar from "./ModalChangeAvatar";
+const UserPanel = () => {
+  const user = useSelector((state) => state.user.currentUser);
 
-export default function UserPanel({ primaryColor }) {
-  const { user } = useContext(UserContext);
-  const [modal, setModal] = useState(false);
-
-  const openModal = () => setModal(true);
-  const closeModal = () => setModal(false);
   const dropdownOptions = () => [
     {
       key: "user",
       text: (
         <span>
-          Signed in as <strong>{user.currentUser.displayName}</strong>
+          Signed in as <strong>{user.displayName}</strong>
         </span>
       ),
       disabled: true,
     },
     {
       key: "avatar",
-      text: <span onClick={openModal}>Change Avatar</span>,
+      text: <span>Change Avatar</span>,
     },
     {
       key: "signout",
@@ -38,37 +33,34 @@ export default function UserPanel({ primaryColor }) {
       .then(() => console.log("signed out!"));
   };
 
-  const { currentUser } = user;
   return (
-    <Grid style={{ background: primaryColor }}>
-      <Grid.Column>
-        <Grid.Row style={{ padding: "1.2em", margin: 0 }}>
-          {/* App Header */}
-          <Header inverted floated="left" as="h2">
-            <Icon name="code" />
-            <Header.Content>SlackChat</Header.Content>
-          </Header>
+    <>
+      <Grid style={{ background: "#3F0E40" }}>
+        <Grid.Column>
+          <Grid.Row style={{ padding: "1.2em", margin: 0 }}>
+            {/* App Header */}
+            <Header inverted floated="left" as="h2">
+              <Icon name="code" />
+              <Header.Content>DevChat</Header.Content>
+            </Header>
 
-          {/* User Dropdown */}
-          <Header style={{ padding: "0.25em" }} as="h4" inverted>
-            <Dropdown
-              trigger={
-                <span>
-                  <Image src={currentUser.photoURL} spaced="right" avatar />
-                  {currentUser.displayName}
-                </span>
-              }
-              options={dropdownOptions()}
-            />
-          </Header>
-        </Grid.Row>
-        {/* Change User Avatar Modal   */}
-        <ModalChangeAvatar
-          currentUser={currentUser}
-          modal={modal}
-          closeModal={closeModal}
-        />
-      </Grid.Column>
-    </Grid>
+            {/* User Dropdown  */}
+            <Header style={{ padding: "0.25em" }} as="h4" inverted>
+              <Dropdown
+                trigger={
+                  <span>
+                    <Image src={user.photoURL} spaced="right" avatar />
+                    {user.displayName}
+                  </span>
+                }
+                options={dropdownOptions()}
+              />
+            </Header>
+          </Grid.Row>
+        </Grid.Column>
+      </Grid>
+    </>
   );
-}
+};
+
+export default UserPanel;

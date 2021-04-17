@@ -1,40 +1,25 @@
 import React from "react";
 import UserPanel from "./UserPanel";
-import { Menu } from "semantic-ui-react";
-import Channels from "./Channel/Channels";
-import DirectMessages from "./DirectMessage/DirectMessages";
-import Starred from "./Starred/Starred";
+import Channels from "./Channels";
+import { Divider, Menu } from "semantic-ui-react";
+import { useSelector } from "react-redux";
 
-export default function SidePanel({
-  primaryColor,
-  user,
-  setPrivateChannel,
-  setCurrentChannel,
-}) {
+const SidePanel = () => {
+  const currentUser = useSelector((state) => state.user.currentUser);
   return (
     <Menu
       size="large"
       inverted
       fixed="left"
       vertical
-      style={{ background: primaryColor, fontSize: "1.2rem" }}
+      style={{ background: "#3F0E40", fontSize: "1.2rem" }}
     >
-      <UserPanel primaryColor={primaryColor} />
-      <Starred
-        user={user}
-        setCurrentChannel={setCurrentChannel}
-        setPrivateChannel={setPrivateChannel}
-      />
-      <Channels
-        user={user}
-        setCurrentChannel={setCurrentChannel}
-        setPrivateChannel={setPrivateChannel}
-      />
-      <DirectMessages
-        user={user}
-        setCurrentChannel={setCurrentChannel}
-        setPrivateChannel={setPrivateChannel}
-      />
+      <UserPanel />
+      <Divider />
+      <Channels currentUser={currentUser} />
+      <Divider />
     </Menu>
   );
-}
+};
+
+export default SidePanel;
