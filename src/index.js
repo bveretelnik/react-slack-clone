@@ -10,7 +10,7 @@ import {
   Route,
   useHistory,
 } from "react-router-dom";
-import Spiner from "./components/Spiner/Spiner";
+import Spinner from "./components/Spinner/Spinner";
 import "semantic-ui-css/semantic.min.css";
 import { Provider, useDispatch, connect, useSelector } from "react-redux";
 import { compose, createStore } from "redux";
@@ -45,7 +45,7 @@ const Root = () => {
   return (
     <>
       {isLoading ? (
-        <Spiner />
+        <Spinner />
       ) : (
         <Switch>
           <Route exact path="/" component={App} />
