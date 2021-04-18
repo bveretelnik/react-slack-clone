@@ -24,7 +24,6 @@ function MessagesHeader({
           {numUniqueUsers}
         </Header.Subheader>
       </Header>
-
       {/* Channel Search Input */}
       <Header floated="right">
         <Input

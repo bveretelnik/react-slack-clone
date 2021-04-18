@@ -18,7 +18,7 @@ body,
 
 /* MessageForm.js */
 .message__form {
-  background-color: #350d36 !important;
+  background-color: #350d36;
   position: fixed !important;
   bottom: 1em;
   margin-left: 320px !important;
