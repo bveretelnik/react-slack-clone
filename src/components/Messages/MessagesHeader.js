@@ -13,7 +13,7 @@ function MessagesHeader() {
       >
         <span>
           Channel
-          <Icon name={"star outline"} color="white" />
+          <Icon name={"star outline"} />
         </span>
         <Header.Subheader style={{ color: "white" }}>2 Users</Header.Subheader>
       </Header>
