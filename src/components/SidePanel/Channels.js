@@ -1,7 +1,10 @@
 import React from "react";
 import firebase from "../../firebase";
 import { connect } from "react-redux";
-import { setCurrentChannel } from "../redux/channel/channelAction";
+import {
+  setCurrentChannel,
+  setPrivateChannel,
+} from "../redux/channel/channelAction";
 import { Menu, Icon } from "semantic-ui-react";
 import ChanModal from "./ChanModal";
 
@@ -84,6 +87,7 @@ class Channels extends React.Component {
   changeChannel = (channel) => {
     this.setActiveChannel(channel);
     this.props.setCurrentChannel(channel);
+    this.props.setPrivateChannel(false);
   };
   setActiveChannel = (channel) => {
     this.setState({ activeChannel: channel.id });
@@ -143,4 +147,6 @@ class Channels extends React.Component {
   }
 }
 
-export default connect(null, { setCurrentChannel })(Channels);
+export default connect(null, { setCurrentChannel, setPrivateChannel })(
+  Channels
+);

@@ -6,6 +6,7 @@ function MessagesHeader({
   numUniqueUsers,
   handleSearchChange,
   searchLoading,
+  privateChannel,
 }) {
   return (
     <Segment clearing style={{ background: "#350d36" }}>
@@ -18,7 +19,7 @@ function MessagesHeader({
       >
         <span>
           {channelName}
-          <Icon name={"star outline"} />
+          {!privateChannel && <Icon name={"star outline"} />}
         </span>
         <Header.Subheader style={{ color: "white" }}>
           {numUniqueUsers}
