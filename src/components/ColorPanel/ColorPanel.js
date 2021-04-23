@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import { Sidebar, Menu, Divider, Button } from "semantic-ui-react";
 
 function ColorPanel() {
+  const [them, setThem] = useState(true);
   return (
     <Sidebar
-      style={{ background: "#350d36" }}
+      style={{ background: them ? "#350d36" : "#121417" }}
       as={Menu}
       icon="labeled"
       inverted
@@ -14,6 +15,14 @@ function ColorPanel() {
     >
       <Divider />
       <Button icon="add" size="small" inverted />
+
+      <Divider />
+      <Button
+        onClick={() => setThem(!them)}
+        icon={them ? "sun" : "moon"}
+        inverted
+        size="small"
+      />
     </Sidebar>
   );
 }

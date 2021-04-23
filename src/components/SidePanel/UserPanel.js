@@ -2,7 +2,6 @@ import React from "react";
 import firebase from "../../firebase";
 import { Grid, Header, Icon, Dropdown, Image } from "semantic-ui-react";
 import { useSelector } from "react-redux";
-import Them from "./Them";
 
 const UserPanel = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -58,7 +57,6 @@ const UserPanel = () => {
               />
             </Header>
           </Grid.Row>
-          <Them />
         </Grid.Column>
       </Grid>
     </>
