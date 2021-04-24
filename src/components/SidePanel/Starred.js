@@ -9,7 +9,7 @@ import { Menu, Icon } from "semantic-ui-react";
 
 const Starred = ({ user }) => {
   const initialState = {
-    usersRef: firebase.database().ref("users"),
+    usersRef: firebase.database().ref("user"),
     activeChannel: "",
     starredChannels: [],
   };
@@ -20,6 +20,7 @@ const Starred = ({ user }) => {
   useEffect(() => {
     if (user) {
       addListeners(user.uid);
+      console.log(state.starredChannels);
     }
     // react-hooks/exhaustive-deps
   }, []);
@@ -38,7 +39,7 @@ const Starred = ({ user }) => {
     state.usersRef
       .child(userId)
       .child("starred")
-      .on("child_added", (snap) => {
+      .on("child_removed", (snap) => {
         const channelToRemove = { id: snap.key, ...snap.val() };
         const filteredChannels = state.starredChannels.filter((channel) => {
           return channel.id !== channelToRemove.id;
@@ -57,30 +58,27 @@ const Starred = ({ user }) => {
     dispatch(setPrivateChannel(false));
   };
 
-  const displayChannels = (starredChannels) => {
-    starredChannels.length > 0 &&
-      starredChannels.map((channel) => (
-        <Menu.Item
-          key={channel.id}
-          onClick={() => changeChannel(channel)}
-          name={channel.name}
-          style={{ opacity: 0.8 }}
-          active={channel.id === state.activeChannel}
-        >
-          # {channel.name}
-        </Menu.Item>
-      ));
-  };
   const { starredChannels } = state;
   return (
     <Menu.Menu className="menu">
-      <Menu.Item>
+      <Menu.Item onClick={() => console.log(starredChannels)}>
         <span>
           <Icon name="star" /> STARRED
         </span>{" "}
         ({starredChannels.length})
       </Menu.Item>
-      {displayChannels(starredChannels)}
+      {starredChannels.length > 0 &&
+        starredChannels.map((channel) => (
+          <Menu.Item
+            key={channel.id}
+            onClick={() => changeChannel(channel)}
+            name={channel.name}
+            style={{ opacity: 0.8 }}
+            active={channel.id === state.activeChannel}
+          >
+            # {channel.name}
+          </Menu.Item>
+        ))}
     </Menu.Menu>
   );
 };

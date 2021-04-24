@@ -17,7 +17,7 @@ class Messages extends React.Component {
     channel: this.props.currentChannel,
     isChannelStarred: false,
     user: this.props.currentUser,
-    usersRef: firebase.database().ref("users"),
+    usersRef: firebase.database().ref("user"),
     numUniqueUsers: "",
     searchTerm: "",
     searchLoading: false,
