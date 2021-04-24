@@ -7,6 +7,8 @@ function MessagesHeader({
   handleSearchChange,
   searchLoading,
   privateChannel,
+  handleStar,
+  isChannelStarred,
 }) {
   return (
     <Segment clearing style={{ background: "#350d36" }}>
@@ -19,7 +21,13 @@ function MessagesHeader({
       >
         <span>
           {channelName}
-          {!privateChannel && <Icon name={"star outline"} />}
+          {!privateChannel && (
+            <Icon
+              onClick={handleStar}
+              name={isChannelStarred ? "star" : "star outline"}
+              color={isChannelStarred ? "yellow" : "grey"}
+            />
+          )}
         </span>
         <Header.Subheader style={{ color: "white" }}>
           {numUniqueUsers}

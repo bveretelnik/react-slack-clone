@@ -4,6 +4,7 @@ import Channels from "./Channels";
 import { Divider, Menu } from "semantic-ui-react";
 import { useSelector } from "react-redux";
 import DirectMessages from "./DirectMessages";
+import Starred from "./Starred";
 
 const SidePanel = () => {
   const currentUser = useSelector((state) => state.user.currentUser);
@@ -16,6 +17,8 @@ const SidePanel = () => {
       style={{ background: "#3F0E40", fontSize: "1.2rem" }}
     >
       <UserPanel />
+      <Divider />
+      <Starred user={currentUser} />
       <Divider />
       <Channels currentUser={currentUser} />
       <Divider />
