@@ -15,7 +15,7 @@ function MetaPanel({ privateChannel, channel }) {
   };
   const [state, setState] = useState(initialState);
   const userPosts = useSelector((state) => state.channel.userPosts);
-
+  const { primaryColor } = useSelector((state) => state.colors);
   const setActiveIndex = (event, titleProps) => {
     const { index } = titleProps;
     const { activeIndex } = state;
@@ -45,18 +45,18 @@ function MetaPanel({ privateChannel, channel }) {
   const { activeIndex } = state;
   return (
     !privateChannel && (
-      <Segment loading={!channel} style={{ background: "#3F0E40" }}>
+      <Segment loading={!channel} style={{ background: primaryColor }}>
         <Header
           as="h3"
           attached="top"
-          style={{ background: "#3F0E40", color: "white" }}
+          style={{ background: primaryColor, color: "white" }}
         >
           About # {channel && channel.name}
         </Header>
         <Accordion
           styled
           attached="true"
-          style={{ background: "#3F0E40", color: "white" }}
+          style={{ background: primaryColor, color: "white" }}
         >
           <Accordion.Title
             active={activeIndex === 0}

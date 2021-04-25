@@ -7,10 +7,10 @@ import Messages from "../components/Messages/Messages";
 import MetaPanel from "../components/MetaPanel.js/MetaPanel";
 import { Grid } from "semantic-ui-react";
 
-function App({ currentUser, currentChannel, isPrivateChannel }) {
+function App({ currentUser, currentChannel, isPrivateChannel, primaryColor }) {
   return (
     <Grid columns="equal" className="app" style={{ background: "#eee" }}>
-      <ColorPanel />
+      <ColorPanel key={currentUser && currentUser.name} user={currentUser} />
       <SidePanel key={currentUser && currentUser.uid} />
 
       <Grid.Column style={{ marginLeft: 320 }}>
@@ -19,13 +19,14 @@ function App({ currentUser, currentChannel, isPrivateChannel }) {
           currentChannel={currentChannel}
           currentUser={currentUser}
           isPrivateChannel={isPrivateChannel}
+          primaryColor={primaryColor}
         />
       </Grid.Column>
 
       <Grid.Column width={4}>
         <MetaPanel
           channel={currentChannel}
-          key={currentChannel && currentChannel.id}
+          key={currentChannel && currentChannel.name}
           privateChannel={isPrivateChannel}
         />
       </Grid.Column>
@@ -36,5 +37,7 @@ const mapStateToProps = (state) => ({
   currentUser: state.user.currentUser,
   currentChannel: state.channel.currentChannel,
   isPrivateChannel: state.channel.isPrivateChannel,
+  primaryColor: state.colors.primaryColor,
+  secondaryColor: state.colors.secondaryColor,
 });
 export default connect(mapStateToProps)(App);

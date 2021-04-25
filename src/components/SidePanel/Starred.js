@@ -1,86 +1,90 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import firebase from "../../firebase";
-import { connect, useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import {
   setCurrentChannel,
   setPrivateChannel,
 } from "../redux/channel/channelAction";
 import { Menu, Icon } from "semantic-ui-react";
 
-const Starred = ({ user }) => {
-  const initialState = {
+class Starred extends React.Component {
+  state = {
+    user: this.props.user,
     usersRef: firebase.database().ref("user"),
     activeChannel: "",
     starredChannels: [],
   };
 
-  const [state, setState] = useState(initialState);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (user) {
-      addListeners(user.uid);
-      console.log(state.starredChannels);
+  componentDidMount() {
+    if (this.state.user) {
+      this.addListeners(this.state.user.uid);
     }
-    // react-hooks/exhaustive-deps
-  }, []);
+  }
 
-  const addListeners = (userId) => {
-    state.usersRef
+  addListeners = (userId) => {
+    this.state.usersRef
       .child(userId)
       .child("starred")
       .on("child_added", (snap) => {
         const starredChannel = { id: snap.key, ...snap.val() };
-        setState({
-          ...state,
-          starredChannels: [...starredChannels, starredChannel],
+        this.setState({
+          starredChannels: [...this.state.starredChannels, starredChannel],
         });
       });
-    state.usersRef
+
+    this.state.usersRef
       .child(userId)
       .child("starred")
       .on("child_removed", (snap) => {
         const channelToRemove = { id: snap.key, ...snap.val() };
-        const filteredChannels = state.starredChannels.filter((channel) => {
-          return channel.id !== channelToRemove.id;
-        });
-        setState({ ...state, starredChannels: filteredChannels });
+        const filteredChannels = this.state.starredChannels.filter(
+          (channel) => {
+            return channel.id !== channelToRemove.id;
+          }
+        );
+        this.setState({ starredChannels: filteredChannels });
       });
   };
 
-  const setActiveChannel = (channel) => {
-    setState({ ...state, activeChannel: channel.id });
+  setActiveChannel = (channel) => {
+    this.setState({ activeChannel: channel.id });
   };
 
-  const changeChannel = (channel) => {
-    setActiveChannel(channel);
-    dispatch(setCurrentChannel(channel));
-    dispatch(setPrivateChannel(false));
+  changeChannel = (channel) => {
+    this.setActiveChannel(channel);
+    this.props.setCurrentChannel(channel);
+    this.props.setPrivateChannel(false);
   };
 
-  const { starredChannels } = state;
-  return (
-    <Menu.Menu className="menu">
-      <Menu.Item onClick={() => console.log(starredChannels)}>
-        <span>
-          <Icon name="star" /> STARRED
-        </span>{" "}
-        ({starredChannels.length})
+  displayChannels = (starredChannels) =>
+    starredChannels.length > 0 &&
+    starredChannels.map((channel) => (
+      <Menu.Item
+        key={channel.id}
+        onClick={() => this.changeChannel(channel)}
+        name={channel.name}
+        style={{ opacity: 0.7 }}
+        active={channel.id === this.state.activeChannel}
+      >
+        # {channel.name}
       </Menu.Item>
-      {starredChannels.length > 0 &&
-        starredChannels.map((channel) => (
-          <Menu.Item
-            key={channel.id}
-            onClick={() => changeChannel(channel)}
-            name={channel.name}
-            style={{ opacity: 0.8 }}
-            active={channel.id === state.activeChannel}
-          >
-            # {channel.name}
-          </Menu.Item>
-        ))}
-    </Menu.Menu>
-  );
-};
+    ));
+
+  render() {
+    const { starredChannels } = this.state;
+
+    return (
+      <Menu.Menu className="menu">
+        <Menu.Item>
+          <span>
+            <Icon name="star" /> STARRED
+          </span>{" "}
+          ({starredChannels.length})
+        </Menu.Item>
+        {this.displayChannels(starredChannels)}
+      </Menu.Menu>
+    );
+  }
+}
 
 export default connect(null, { setCurrentChannel, setPrivateChannel })(Starred);

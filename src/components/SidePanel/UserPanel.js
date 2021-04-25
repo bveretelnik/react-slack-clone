@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 
 const UserPanel = () => {
   const user = useSelector((state) => state.user.currentUser);
-
+  const { secondaryColor } = useSelector((state) => state.colors);
   const dropdownOptions = () => [
     {
       key: "user",
@@ -35,7 +35,7 @@ const UserPanel = () => {
 
   return (
     <>
-      <Grid style={{ background: "#3F0E40" }}>
+      <Grid style={{ background: secondaryColor }}>
         <Grid.Column>
           <Grid.Row style={{ padding: "1.2em", margin: 0 }}>
             {/* App Header */}

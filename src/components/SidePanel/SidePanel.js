@@ -7,6 +7,7 @@ import DirectMessages from "./DirectMessages";
 import Starred from "./Starred";
 
 const SidePanel = () => {
+  const { secondaryColor } = useSelector((state) => state.colors);
   const currentUser = useSelector((state) => state.user.currentUser);
   return (
     <Menu
@@ -14,7 +15,7 @@ const SidePanel = () => {
       inverted
       fixed="left"
       vertical
-      style={{ background: "#3F0E40", fontSize: "1.2rem" }}
+      style={{ background: secondaryColor, fontSize: "1.2rem" }}
     >
       <UserPanel />
       <Divider />

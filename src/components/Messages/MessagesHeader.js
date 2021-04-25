@@ -1,4 +1,5 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { Header, Segment, Input, Icon } from "semantic-ui-react";
 
 function MessagesHeader({
@@ -10,8 +11,9 @@ function MessagesHeader({
   handleStar,
   isChannelStarred,
 }) {
+  const { primaryColor } = useSelector((state) => state.colors);
   return (
-    <Segment clearing style={{ background: "#350d36" }}>
+    <Segment clearing style={{ background: primaryColor }}>
       {/* Channel Title */}
       <Header
         fluid="true"

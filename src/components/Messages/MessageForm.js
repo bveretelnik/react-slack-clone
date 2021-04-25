@@ -149,7 +149,10 @@ class MessageForm extends React.Component {
       percentUploaded,
     } = this.state;
     return (
-      <Segment className="message__form">
+      <Segment
+        className="message__form"
+        style={{ background: this.props.primaryColor }}
+      >
         <Input
           fluid
           name="message"

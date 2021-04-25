@@ -209,6 +209,7 @@ class Messages extends React.Component {
           currentUser={user}
           isPrivateChannel={privateChannel}
           getMessagesRef={this.getMessagesRef}
+          primaryColor={this.props.primaryColor}
         />
       </React.Fragment>
     );
