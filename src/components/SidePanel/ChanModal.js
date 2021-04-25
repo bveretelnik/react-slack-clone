@@ -30,7 +30,7 @@ function ChanModal({ modal, closeModal, handleChange, handleSubmit }) {
 
         <Modal.Actions>
           <Button color="green" inverted>
-            <Icon name="checkmark" /> Add
+            <Icon name="checkmark" onClick={handleSubmit} /> Add
           </Button>
           <Button color="red" inverted onClick={closeModal}>
             <Icon name="remove" /> Cancel

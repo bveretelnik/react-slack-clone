@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Header, Icon, Modal } from "semantic-ui-react";
+import { Header, Icon, Modal } from "semantic-ui-react";
 
 function InfoModal({ modal, closeModal }) {
   return (

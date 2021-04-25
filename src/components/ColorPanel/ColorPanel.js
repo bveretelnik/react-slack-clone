@@ -20,7 +20,7 @@ function ColorPanel({ user }) {
 
   useEffect(() => {
     if (user) addListener(user.uid);
-    console.log(state.userColors);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -84,7 +84,8 @@ function ColorPanel({ user }) {
       <Divider />
       <Button icon="caret up" color="red" size="small" />
       <Divider />
-      <div>
+      <div style={{ position: "relative", top: "248px" }}>
+        <Divider />
         <Button
           onClick={setThem}
           icon={them ? "moon" : "sun"}
@@ -92,14 +93,15 @@ function ColorPanel({ user }) {
           size="small"
         />
         <Divider />
+
+        <Button
+          onClick={openInfoModal}
+          icon={"info circle"}
+          inverted
+          color="blue"
+          size="small"
+        />
       </div>
-      <Button
-        onClick={openInfoModal}
-        icon={"info circle"}
-        inverted
-        color="blue"
-        size="small"
-      />
       {/* Color Picker Modal */}
       <ModalColor user={user} closeModal={closeModal} modal={modal} />
       {/* Info  Modal */}
