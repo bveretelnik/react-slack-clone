@@ -4,6 +4,7 @@ import { Sidebar, Menu, Divider, Button } from "semantic-ui-react";
 import { setColor } from "../redux/colors/colorAction";
 import ModalColor from "./ModalColor";
 import { connect, useDispatch, useSelector } from "react-redux";
+import InfoModal from "./InfoModal";
 
 function ColorPanel({ user }) {
   const { primaryColor } = useSelector((state) => state.colors);
@@ -11,13 +12,16 @@ function ColorPanel({ user }) {
     usersRef: firebase.database().ref("user"),
     userColors: [],
     modal: false,
-    them: true,
+    infoModal: false,
+    them: false,
   };
   const dispatch = useDispatch();
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
     if (user) addListener(user.uid);
+    console.log(state.userColors);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const addListener = (userId) => {
@@ -30,6 +34,17 @@ function ColorPanel({ user }) {
 
   const openModal = () => setState({ ...state, modal: true });
   const closeModal = () => setState({ ...state, modal: false });
+  const openInfoModal = () => setState({ ...state, infoModal: true });
+  const closeInfoModal = () => setState({ ...state, infoModal: false });
+
+  const setThem = () => {
+    setState({ ...state, them: !state.them });
+    if (them) {
+      dispatch(setColor("#121417", "#191A1C"));
+    } else {
+      dispatch(setColor("#350d36", "#3F0E40"));
+    }
+  };
 
   const displayUserColors = (colors) =>
     colors.length > 0 &&
@@ -50,7 +65,7 @@ function ColorPanel({ user }) {
       </React.Fragment>
     ));
 
-  const { them, modal, userColors } = state;
+  const { infoModal, them, modal, userColors } = state;
 
   return (
     <Sidebar
@@ -67,24 +82,28 @@ function ColorPanel({ user }) {
 
       {displayUserColors(userColors)}
       <Divider />
+      <Button icon="caret up" color="red" size="small" />
       <Divider />
       <div>
         <Button
-          onClick={() => dispatch(setColor("#121417", "#191A1C"))}
-          icon="moon"
+          onClick={setThem}
+          icon={them ? "moon" : "sun"}
           inverted
           size="small"
         />
         <Divider />
-        <Button
-          onClick={() => dispatch(setColor("#350d36", "#3F0E40"))}
-          icon="sun"
-          inverted
-          size="small"
-        />
       </div>
+      <Button
+        onClick={openInfoModal}
+        icon={"info circle"}
+        inverted
+        color="blue"
+        size="small"
+      />
       {/* Color Picker Modal */}
       <ModalColor user={user} closeModal={closeModal} modal={modal} />
+      {/* Info  Modal */}
+      <InfoModal closeModal={closeInfoModal} modal={infoModal} />
     </Sidebar>
   );
 }
