@@ -84,7 +84,7 @@ function ColorPanel({ user }) {
       <Divider />
       <Button icon="caret up" color="red" size="small" />
       <Divider />
-      <div style={{ position: "relative", top: "248px" }}>
+      <div style={{ position: "absolute", top: "500px" }}>
         <Divider />
         <Button
           onClick={setThem}
