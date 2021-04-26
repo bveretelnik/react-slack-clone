@@ -6,7 +6,7 @@ import {
   setPrivateChannel,
 } from "../redux/channel/channelAction";
 import { Menu, Icon, Label } from "semantic-ui-react";
-import ChanModal from "./ChanModal";
+import AddChannelModal from "./AddChannelModal";
 
 class Channels extends React.Component {
   state = {
@@ -211,7 +211,7 @@ class Channels extends React.Component {
         </Menu.Menu>
 
         {/* Add Channel Modal */}
-        <ChanModal
+        <AddChannelModal
           handleSubmit={this.handleSubmit}
           modal={modal}
           closeModal={this.closeModal}

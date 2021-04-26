@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import firebase from "../../firebase";
 import { Grid, Header, Icon, Dropdown, Image } from "semantic-ui-react";
 import { useSelector } from "react-redux";
+import ChangeAvatarModal from "./ChangeAvatarModal";
 
 const UserPanel = () => {
   const user = useSelector((state) => state.user.currentUser);
   const { secondaryColor } = useSelector((state) => state.colors);
+  const [modal, setModal] = useState(false);
+
+  const openModal = () => setModal(true);
+  const closeModal = () => setModal(false);
+
   const dropdownOptions = () => [
     {
       key: "user",
@@ -18,7 +24,7 @@ const UserPanel = () => {
     },
     {
       key: "avatar",
-      text: <span>Change Avatar</span>,
+      text: <span onClick={openModal}>Change Avatar</span>,
     },
     {
       key: "signout",
@@ -57,6 +63,12 @@ const UserPanel = () => {
               />
             </Header>
           </Grid.Row>
+          {/* Change User Avatar Modal   */}
+          <ChangeAvatarModal
+            user={user}
+            modal={modal}
+            closeModal={closeModal}
+          />
         </Grid.Column>
       </Grid>
     </>

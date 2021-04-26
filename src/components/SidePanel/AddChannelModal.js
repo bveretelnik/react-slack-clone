@@ -1,7 +1,7 @@
 import React from "react";
 import { Button, Form, Icon, Input, Modal } from "semantic-ui-react";
 
-function ChanModal({ modal, closeModal, handleChange, handleSubmit }) {
+function AddChannelModal({ modal, closeModal, handleChange, handleSubmit }) {
   return (
     <>
       <Modal basic open={modal} onClose={closeModal}>
@@ -41,4 +41,4 @@ function ChanModal({ modal, closeModal, handleChange, handleSubmit }) {
   );
 }
 
-export default ChanModal;
+export default AddChannelModal;
