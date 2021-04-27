@@ -19,9 +19,9 @@ function ChangeAvatarModal({ user, modal, closeModal }) {
   const [state, setState] = useState(initialState);
   let avatarEd = useRef(null);
 
-  //   useEffect(() => {
-  //     changeAvatar();
-  //   }, [state.uploadedCroppedImage]);
+  useEffect(() => {
+    if (state.uploadedCroppedImage) changeAvatar();
+  }, [state.uploadedCroppedImage]);
 
   const uploadCroppedImage = () => {
     const { storageRef, userRef, blob, metadata } = state;
