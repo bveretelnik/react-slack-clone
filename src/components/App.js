@@ -6,6 +6,7 @@ import SidePanel from "../components/SidePanel/SidePanel";
 import Messages from "../components/Messages/Messages";
 import MetaPanel from "../components/MetaPanel.js/MetaPanel";
 import { Grid } from "semantic-ui-react";
+import MetaInfoPanel from "./MetaInfoPanel/MetaInfoPanel";
 
 function App({ currentUser, currentChannel, isPrivateChannel, primaryColor }) {
   return (
@@ -29,6 +30,7 @@ function App({ currentUser, currentChannel, isPrivateChannel, primaryColor }) {
           key={currentChannel && currentChannel.name}
           privateChannel={isPrivateChannel}
         />
+        <MetaInfoPanel />
       </Grid.Column>
     </Grid>
   );
