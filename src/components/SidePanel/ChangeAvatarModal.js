@@ -21,6 +21,8 @@ function ChangeAvatarModal({ user, modal, closeModal }) {
 
   useEffect(() => {
     if (state.uploadedCroppedImage) changeAvatar();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [state.uploadedCroppedImage]);
 
   const uploadCroppedImage = () => {
@@ -32,7 +34,6 @@ function ChangeAvatarModal({ user, modal, closeModal }) {
       .then((snap) => {
         snap.ref.getDownloadURL().then((downloadURL) => {
           setState({ ...state, uploadedCroppedImage: downloadURL });
-          //   changeAvatar();
         });
       });
   };
