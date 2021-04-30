@@ -25,7 +25,7 @@ function ColorPanel({ user }) {
   }, []);
 
   useEffect(() => {
-    return removeListener();
+    return () => removeListener();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
