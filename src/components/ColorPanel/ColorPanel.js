@@ -24,6 +24,16 @@ function ColorPanel({ user }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    return removeListener();
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const removeListener = () => {
+    state.usersRef.child(`${user.uid}/colors`).off();
+  };
+
   const addListener = (userId) => {
     let userColors = [];
     state.usersRef.child(`${userId}/colors`).on("child_added", (snap) => {
