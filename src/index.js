@@ -33,7 +33,6 @@ const Root = () => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         dispatch(setUser(user));
-
         history.push("/");
       } else {
         dispatch(clearUser());

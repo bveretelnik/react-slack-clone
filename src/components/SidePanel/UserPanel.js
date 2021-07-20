@@ -17,7 +17,7 @@ const UserPanel = () => {
       key: "user",
       text: (
         <span>
-          Signed in as <strong>{user.displayName}</strong>
+          Signed in as <strong>{user && user.displayName}</strong>
         </span>
       ),
       disabled: true,
@@ -55,8 +55,8 @@ const UserPanel = () => {
               <Dropdown
                 trigger={
                   <span>
-                    <Image src={user.photoURL} spaced="right" avatar />
-                    {user.displayName}
+                    <Image src={user && user.photoURL} spaced="right" avatar />
+                    {user && user.displayName}
                   </span>
                 }
                 options={dropdownOptions()}

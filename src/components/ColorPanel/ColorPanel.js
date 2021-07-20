@@ -24,15 +24,16 @@ function ColorPanel({ user }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  useEffect(() => {
-    return () => removeListener();
+  // useEffect(() => {
+  //   if (user) {
+  //     return () => removeListener();
+  //   }
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const removeListener = () => {
-    state.usersRef.child(`${user.uid}/colors`).off();
-  };
+  // const removeListener = () => {
+  //   state.usersRef.child(`${user.uid}/colors`).off();
+  // };
 
   const addListener = (userId) => {
     let userColors = [];
@@ -75,6 +76,10 @@ function ColorPanel({ user }) {
       </React.Fragment>
     ));
 
+  const removeColor = () => {
+    console.log("delete color");
+  };
+
   const { infoModal, them, modal, userColors } = state;
 
   return (
@@ -92,7 +97,12 @@ function ColorPanel({ user }) {
 
       {displayUserColors(userColors)}
       <Divider />
-      <Button icon="caret up" color="red" size="small" />
+      <Button
+        icon="caret up"
+        color="red"
+        size="small"
+        onClick={() => removeColor()}
+      />
       <Divider />
       <div style={{ position: "absolute", top: "500px" }}>
         <Divider />
