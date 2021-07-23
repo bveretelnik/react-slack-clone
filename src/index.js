@@ -16,6 +16,7 @@ import { Provider, useDispatch, connect, useSelector } from "react-redux";
 import { compose, createStore } from "redux";
 import { setUser, clearUser } from "./components/redux/user/UserActions";
 import { rootReducer } from "./components/redux/rootReducer";
+import PrivateRoute from "./PrivateRoute";
 
 const store = createStore(
   rootReducer,
@@ -48,7 +49,7 @@ const Root = () => {
         <Spinner />
       ) : (
         <Switch>
-          <Route exact path="/" component={App} />
+          <PrivateRoute exact path="/" component={App} />
           <Route path="/login" component={Login} />
           <Route path="/register" component={Register} />
         </Switch>

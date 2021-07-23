@@ -11,9 +11,30 @@ function InfoModal({ modal, closeModal }) {
         <p>{moonLanding.getFullYear()}</p>
       </Header>
       <Modal.Actions>
-        <Icon name="github" />
-        <Icon name="linkedin" />
-        <Icon name="facebook" />
+        <a
+          className="link"
+          target="_blank"
+          rel="noreferrer"
+          href="https://github.com/bveretelnik"
+        >
+          <Icon name="github" />
+        </a>
+        <a
+          className="link"
+          target="_blank"
+          rel="noreferrer"
+          href="https://www.linkedin.com/in/bohdan-veretelnik-15a834147"
+        >
+          <Icon name="linkedin" />
+        </a>
+        <a
+          className="link"
+          target="_blank"
+          rel="noreferrer"
+          href="https://www.facebook.com/bogdan.veretelnik"
+        >
+          <Icon name="facebook" />
+        </a>
       </Modal.Actions>
     </Modal>
   );

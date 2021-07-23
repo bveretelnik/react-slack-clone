@@ -24,16 +24,16 @@ function ColorPanel({ user }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     return () => removeListener();
-  //   }
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, []);
+  useEffect(() => {
+    if (user) {
+      return () => removeListener();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // const removeListener = () => {
-  //   state.usersRef.child(`${user.uid}/colors`).off();
-  // };
+  const removeListener = () => {
+    state.usersRef.child(`${user.uid}/colors`).off();
+  };
 
   const addListener = (userId) => {
     let userColors = [];

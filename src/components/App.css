@@ -182,3 +182,11 @@ body,
   left: 40px;
   right: 20px;
 }
+.link {
+  color: white;
+  cursor: pointer;
+}
+.link:hover {
+  font-size: large;
+  color: #8d8c91;
+}
