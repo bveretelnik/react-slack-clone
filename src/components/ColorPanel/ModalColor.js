@@ -17,6 +17,9 @@ function ModalColor({ modal, closeModal, user }) {
     setState({ ...state, secondary: color.hex });
 
   const handleSaveColors = () => {
+    if (state.primary === "#000000" && state.secondary === "#000000") {
+      return;
+    }
     if (state.primary && state.secondary)
       saveColors(state.primary, state.secondary);
   };
@@ -30,7 +33,6 @@ function ModalColor({ modal, closeModal, user }) {
         secondary,
       })
       .then(() => {
-        console.log("Colors added");
         closeModal();
       })
       .catch((err) => console.error(err));
@@ -51,7 +53,14 @@ function ModalColor({ modal, closeModal, user }) {
         </Segment>
       </Modal.Content>
       <Modal.Actions>
-        <Button color="green" inverted onClick={handleSaveColors}>
+        <Button
+          disabled={
+            primary === "#000000" && secondary === "#000000" ? true : false
+          }
+          color="green"
+          inverted
+          onClick={handleSaveColors}
+        >
           <Icon name="checkmark" /> Save Colors
         </Button>
         <Button color="red" inverted onClick={closeModal}>

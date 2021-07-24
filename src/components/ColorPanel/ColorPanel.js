@@ -5,6 +5,7 @@ import { setColor } from "../redux/colors/colorAction";
 import ModalColor from "./ModalColor";
 import { connect, useDispatch, useSelector } from "react-redux";
 import InfoModal from "./InfoModal";
+import axios from "axios";
 
 function ColorPanel({ user }) {
   const { primaryColor } = useSelector((state) => state.colors);
@@ -76,8 +77,11 @@ function ColorPanel({ user }) {
       </React.Fragment>
     ));
 
-  const removeColor = () => {
-    console.log("delete color");
+  const removeColor = async () => {
+    await axios.delete(
+      `https://react-slack-clone-527e8.firebaseio.com/user/${user.uid}/colors.json`
+    );
+    setState({ ...state, userColors: [] });
   };
 
   const { infoModal, them, modal, userColors } = state;
@@ -97,14 +101,17 @@ function ColorPanel({ user }) {
 
       {displayUserColors(userColors)}
       <Divider />
-      <Button
-        icon="caret up"
-        color="red"
-        size="small"
-        onClick={() => removeColor()}
-      />
+      {userColors.length > 0 && (
+        <Button
+          icon="caret up"
+          color="red"
+          size="small"
+          onClick={() => removeColor()}
+        />
+      )}
+
       <Divider />
-      <div style={{ position: "absolute", top: "500px" }}>
+      <div style={{ position: "absolute", bottom: "30px" }}>
         <Divider />
         <Button
           onClick={setThem}

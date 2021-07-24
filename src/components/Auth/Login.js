@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import firebase from "../../firebase";
+import firebase, { provider, auth } from "../../firebase";
 import {
   Grid,
   Form,
@@ -18,6 +18,7 @@ export default function Login() {
     errors: [],
     loading: false,
   });
+
   const displayErrors = (errors) =>
     errors.map((error, i) => <p key={i}>{error.message}</p>);
 
@@ -57,6 +58,17 @@ export default function Login() {
     )
       ? "error"
       : "";
+  };
+
+  const handleLoginWithGoogle = async () => {
+    return await auth
+      .signInWithPopup(provider)
+      .then((result) => {
+        console.log(result.user);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   };
 
   const { email, password, errors, loading } = login;
@@ -101,6 +113,16 @@ export default function Login() {
               Submit
             </Button>
           </Segment>
+          <Button
+            disabled={loading}
+            className={loading ? "loading" : ""}
+            color="red"
+            fluid
+            size="large"
+            onClick={handleLoginWithGoogle}
+          >
+            Login with Google
+          </Button>
         </Form>
         {errors.length > 0 && (
           <Message error>
