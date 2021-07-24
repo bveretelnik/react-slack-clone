@@ -6,7 +6,7 @@ function InfoModal({ modal, closeModal }) {
   return (
     <Modal basic onClose={closeModal} open={modal} size="small">
       <Header icon>
-        <Icon name="react" />
+        <Icon name="react" style={{ color: "#3ca3c4" }} />
         Developed by <span>B_Veretelnik</span>
         <p>{moonLanding.getFullYear()}</p>
       </Header>

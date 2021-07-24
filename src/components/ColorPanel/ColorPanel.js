@@ -77,11 +77,12 @@ function ColorPanel({ user }) {
       </React.Fragment>
     ));
 
-  const removeColor = async () => {
+  const removeAllThems = async () => {
     await axios.delete(
-      `https://react-slack-clone-527e8.firebaseio.com/user/${user.uid}/colors.json`
+      `${process.env.REACT_APP_FIREBASE_DATABASE_URL}/user/${user.uid}/colors.json`
     );
     setState({ ...state, userColors: [] });
+    dispatch(setColor("#350d36", "#3F0E40"));
   };
 
   const { infoModal, them, modal, userColors } = state;
@@ -106,7 +107,7 @@ function ColorPanel({ user }) {
           icon="caret up"
           color="red"
           size="small"
-          onClick={() => removeColor()}
+          onClick={removeAllThems}
         />
       )}
 

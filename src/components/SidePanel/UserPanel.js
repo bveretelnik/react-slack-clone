@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import firebase from "../../firebase";
-import { Grid, Header, Icon, Dropdown, Image } from "semantic-ui-react";
+import { Grid, Header, Dropdown, Image } from "semantic-ui-react";
 import { useSelector } from "react-redux";
 import ChangeAvatarModal from "./ChangeAvatarModal";
+import slackLogo from "../../../src/assets/img/slack-logo.png";
 
 const UserPanel = () => {
   const user = useSelector((state) => state.user.currentUser);
@@ -46,8 +47,8 @@ const UserPanel = () => {
           <Grid.Row style={{ padding: "1.2em", margin: 0 }}>
             {/* App Header */}
             <Header inverted floated="left" as="h2">
-              <Icon name="slack hash" />
-              <Header.Content>SlackChat</Header.Content>
+              <Image src={slackLogo} size="small" />
+              <Header.Content>Slack Chat</Header.Content>
             </Header>
 
             {/* User Dropdown  */}
