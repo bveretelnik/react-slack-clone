@@ -26,7 +26,7 @@ function ColorPanel({ user }) {
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [state.removeColors]);
+  }, [state.userColors.length]);
 
   useEffect(() => {
     if (user) {

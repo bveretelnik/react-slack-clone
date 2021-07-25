@@ -16,6 +16,7 @@ export default function Login() {
     email: "",
     password: "",
     errors: [],
+    userRef: firebase.database().ref("user"),
     loading: false,
   });
 
@@ -63,12 +64,21 @@ export default function Login() {
   const handleLoginWithGoogle = async () => {
     return await auth
       .signInWithPopup(provider)
-      .then((result) => {
-        console.log(result);
+      .then((loginUser) => {
+        saveUserInGoogle(loginUser).then(() => {
+          // console.log("user saved");
+        });
       })
       .catch((e) => {
         console.log(e);
       });
+  };
+
+  const saveUserInGoogle = async (createdUser) => {
+    return await login.userRef.child(createdUser.user.uid).set({
+      name: createdUser.user.displayName,
+      avatar: createdUser.user.photoURL,
+    });
   };
 
   const { email, password, errors, loading } = login;
