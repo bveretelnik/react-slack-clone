@@ -14,16 +14,19 @@ function ColorPanel({ user }) {
     userColors: [],
     modal: false,
     infoModal: false,
-    them: false,
+    them: true,
+    removeColors: true,
   };
   const dispatch = useDispatch();
   const [state, setState] = useState(initialState);
 
   useEffect(() => {
-    if (user) addListener(user.uid);
+    if (user) {
+      addListener(user.uid);
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [state.removeColors]);
 
   useEffect(() => {
     if (user) {
@@ -38,10 +41,17 @@ function ColorPanel({ user }) {
 
   const addListener = (userId) => {
     let userColors = [];
-    state.usersRef.child(`${userId}/colors`).on("child_added", (snap) => {
-      userColors.unshift(snap.val());
-      setState({ ...state, userColors });
-    });
+
+    return state.usersRef
+      .child(`${userId}/colors`)
+      .on("child_added", (snap) => {
+        userColors.unshift(snap.val());
+        setState((prevState) => ({
+          ...prevState,
+          userColors,
+          removeColors: true,
+        }));
+      });
   };
 
   const openModal = () => setState({ ...state, modal: true });
@@ -81,12 +91,22 @@ function ColorPanel({ user }) {
     await axios.delete(
       `${process.env.REACT_APP_FIREBASE_DATABASE_URL}/user/${user.uid}/colors.json`
     );
-    setState({ ...state, userColors: [] });
+    setState((prevState) => ({
+      ...prevState,
+      userColors: [],
+      removeColors: false,
+    }));
     dispatch(setColor("#350d36", "#3F0E40"));
   };
 
-  const { infoModal, them, modal, userColors } = state;
+  function addColor(newColor) {
+    setState((prevState) => ({
+      ...prevState,
+      userColors: [...prevState.userColors, newColor],
+    }));
+  }
 
+  const { infoModal, them, modal, userColors } = state;
   return (
     <Sidebar
       style={{ background: primaryColor }}
@@ -102,14 +122,14 @@ function ColorPanel({ user }) {
 
       {displayUserColors(userColors)}
       <Divider />
-      {userColors.length > 0 && (
-        <Button
-          icon="caret up"
-          color="red"
-          size="small"
-          onClick={removeAllThems}
-        />
-      )}
+
+      <Button
+        disabled={userColors.length === 0}
+        icon="caret up"
+        color="red"
+        size="small"
+        onClick={removeAllThems}
+      />
 
       <Divider />
       <div style={{ position: "absolute", bottom: "30px" }}>
@@ -131,7 +151,12 @@ function ColorPanel({ user }) {
         />
       </div>
       {/* Color Picker Modal */}
-      <ModalColor user={user} closeModal={closeModal} modal={modal} />
+      <ModalColor
+        user={user}
+        closeModal={closeModal}
+        modal={modal}
+        onAddColor={addColor}
+      />
       {/* Info  Modal */}
       <InfoModal closeModal={closeInfoModal} modal={infoModal} />
     </Sidebar>

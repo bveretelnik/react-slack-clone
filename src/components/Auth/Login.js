@@ -64,7 +64,7 @@ export default function Login() {
     return await auth
       .signInWithPopup(provider)
       .then((result) => {
-        console.log(result.user);
+        console.log(result);
       })
       .catch((e) => {
         console.log(e);

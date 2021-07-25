@@ -3,7 +3,7 @@ import firebase from "../../firebase";
 import { Button, Modal, Icon, Label, Segment } from "semantic-ui-react";
 import { SliderPicker } from "react-color";
 
-function ModalColor({ modal, closeModal, user }) {
+function ModalColor({ modal, closeModal, user, onAddColor }) {
   const initialState = {
     primary: "",
     secondary: "",
@@ -25,6 +25,7 @@ function ModalColor({ modal, closeModal, user }) {
   };
 
   const saveColors = (primary, secondary) => {
+    onAddColor({ primary, secondary });
     state.usersRef
       .child(`${user.uid}/colors`)
       .push()
