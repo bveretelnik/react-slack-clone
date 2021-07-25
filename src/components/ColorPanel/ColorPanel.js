@@ -15,7 +15,6 @@ function ColorPanel({ user }) {
     modal: false,
     infoModal: false,
     them: true,
-    removeColors: true,
   };
   const dispatch = useDispatch();
   const [state, setState] = useState(initialState);
@@ -49,7 +48,6 @@ function ColorPanel({ user }) {
         setState((prevState) => ({
           ...prevState,
           userColors,
-          removeColors: true,
         }));
       });
   };
@@ -94,7 +92,6 @@ function ColorPanel({ user }) {
     setState((prevState) => ({
       ...prevState,
       userColors: [],
-      removeColors: false,
     }));
     dispatch(setColor("#350d36", "#3F0E40"));
   };
