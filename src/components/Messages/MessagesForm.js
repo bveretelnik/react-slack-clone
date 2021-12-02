@@ -1,23 +1,20 @@
 import React, { useState, useContext, useEffect } from "react";
 import firebase from "../../firebase";
+import { v4 as uuidv4 } from "uuid";
 import { Segment, Button, Input } from "semantic-ui-react";
 import { ChannelContext } from "../context/channel/channelContext";
 import { UserContext } from "../context/user/userContext";
-import { MessegesContext } from "../context/messeges/messegesContext";
 import FileModal from "./FileModal";
-import { FileContext } from "../context/file/fileContext";
 import ProgressBar from "./ProgressBar";
 
-export default function MessagesForm() {
+export default function MessagesForm({ getMessagesRef }) {
   const { channel } = useContext(ChannelContext);
   const { user } = useContext(UserContext);
-  const { messege } = useContext(MessegesContext);
-  const { file } = useContext(FileContext);
-  const { uploadTask } = file;
-  const { messagesRef } = messege;
   const { currentChannel } = channel;
   const { currentUser } = user;
   const [state, setstate] = useState({
+    storageRef: firebase.storage().ref(),
+    uploadTask: null,
     uploadState: "",
     percentUploaded: 0,
     messag: "",
@@ -35,7 +32,7 @@ export default function MessagesForm() {
     const message = {
       timestamp: firebase.database.ServerValue.TIMESTAMP,
       user: {
-        // id: currentChannel.uid,
+        id: currentUser.uid,
         name: currentUser.displayName,
         avatar: currentUser.photoURL,
       },
@@ -51,23 +48,23 @@ export default function MessagesForm() {
   const sendMessage = () => {
     if (state.messag) {
       setstate({ ...state, loading: true });
-      messagesRef
+      getMessagesRef()
         .child(currentChannel.id)
         .push()
         .set(createMessage())
         .then(() => {
-          setstate({ ...state, loading: false, messag: "", errors: [] });
+          return setstate({ ...state, loading: false, messag: "", errors: [] });
         })
         .catch((err) => {
           console.err(err);
-          setstate({
+          return setstate({
             ...state,
             loading: false,
             errors: errors.concat(err),
           });
         });
     } else {
-      setstate({
+      return setstate({
         ...state,
         loading: false,
         errors: errors.concat({ messag: "Add a message" }),
@@ -76,22 +73,37 @@ export default function MessagesForm() {
   };
 
   useEffect(() => {
-    if (uploadTask) {
-      addFilesOnChat();
+    if (state.uploadTask) addFilesOnChat();
+  }, [state.uploadTask]);
+
+  const getPath = () => {
+    if (channel.isPrivateChannel) {
+      return `chat/private-${channel.currentChannel.id}`;
+    } else {
+      return `chat/public`;
     }
-  }, [uploadTask]);
+  };
+
+  const uploadFile = (file, metadata) => {
+    const filePath = `${getPath()}/${uuidv4()}.jpg`;
+    setstate({
+      ...state,
+      uploadState: "uploading",
+      uploadTask: state.storageRef.child(filePath).put(file, metadata),
+    });
+  };
 
   const addFilesOnChat = () => {
     const pathToUpload = currentChannel.id;
-    const ref = messagesRef;
+    const ref = getMessagesRef();
 
-    uploadTask.on(
+    state.uploadTask.on(
       "state_changed",
       (snap) => {
         const percentUploaded = Math.round(
           (snap.bytesTransferred / snap.totalBytes) * 100
         );
-        setstate({ ...state, percentUploaded });
+        setstate({ ...state, percentUploaded: percentUploaded });
       },
       (err) => {
         console.error(err);
@@ -103,7 +115,7 @@ export default function MessagesForm() {
         });
       },
       () => {
-        uploadTask.snapshot.ref
+        state.uploadTask.snapshot.ref
           .getDownloadURL()
           .then((downloadUrl) => {
             sendFileMessage(downloadUrl, ref, pathToUpload);
@@ -129,8 +141,8 @@ export default function MessagesForm() {
         setstate({
           ...state,
           uploadState: "done",
+          modal: false,
         });
-        console.log(state);
       })
       .catch((err) => {
         console.log(err);
@@ -161,7 +173,7 @@ export default function MessagesForm() {
       />
       <Button.Group icon widths="2">
         <Button
-          onClick={sendMessage}
+          onClick={() => sendMessage()}
           disabled={loading}
           color="orange"
           content="Add Reply"
@@ -176,7 +188,11 @@ export default function MessagesForm() {
           icon="cloud upload"
         />
       </Button.Group>
-      <FileModal modal={state.modal} closeModal={closeModal} />
+      <FileModal
+        modal={state.modal}
+        closeModal={closeModal}
+        uploadFile={uploadFile}
+      />
       <ProgressBar
         uploadState={uploadState}
         percentUploaded={percentUploaded}

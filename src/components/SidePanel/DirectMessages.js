@@ -9,6 +9,7 @@ export default function DirectMessages() {
   const { setCurrentChannel, setPrivateChannel } = useContext(ChannelContext);
   const { currentUser } = user;
   const [state, setState] = useState({
+    activeChannel: "",
     users: [],
     usersRef: firebase.database().ref("user"),
     connectedRef: firebase.database().ref(".info/connected"),
@@ -16,8 +17,9 @@ export default function DirectMessages() {
   });
 
   useEffect(() => {
-    if (currentUser) addListeners(currentUser.uid);
-  }, []);
+    addListeners(currentUser.uid);
+    // console.log(state);
+  }, [currentUser]);
 
   const addListeners = (currentUserUid) => {
     const { usersRef, connectedRef, presenceRef } = state;
@@ -28,7 +30,7 @@ export default function DirectMessages() {
         usernet["uid"] = snap.key;
         usernet["status"] = "offline";
         loadedUsers.push(usernet);
-        setState({
+        return setState({
           ...state,
           users: loadedUsers,
         });
@@ -65,7 +67,7 @@ export default function DirectMessages() {
       }
       return acc.concat(user);
     }, []);
-    setState({
+    return setState({
       ...state,
       users: updatedUsers,
     });
@@ -81,6 +83,7 @@ export default function DirectMessages() {
     };
     setCurrentChannel(channelData);
     setPrivateChannel(true);
+    setActiveChannel(user.uid);
   };
   const getChannelId = (userId) => {
     const currentUserId = currentUser.uid;
@@ -88,7 +91,14 @@ export default function DirectMessages() {
       ? `${userId}/${currentUserId}`
       : `${currentUserId}/${userId}`;
   };
-  const { users } = state;
+
+  const setActiveChannel = (userId) => {
+    setState({
+      ...state,
+      activeChannel: userId,
+    });
+  };
+  const { users, activeChannel } = state;
   return (
     <Menu.Menu className="menu">
       <Menu.Item>
@@ -100,6 +110,7 @@ export default function DirectMessages() {
       {users.map((user) => (
         <Menu.Item
           key={user.uid}
+          active={user.uid === activeChannel}
           onClick={() => changeChannel(user)}
           style={{ opacity: 0.7, fontStyle: "italic" }}
         >

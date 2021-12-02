@@ -15,8 +15,7 @@ import "semantic-ui-css/semantic.min.css";
 import UserState from "./components/context/user/UserState";
 import { UserContext } from "./components/context/user/userContext";
 import ChannelState from "./components/context/channel/ChannelState";
-import MessegesState from "./components/context/messeges/MessegesState";
-import FileState from "./components/context/file/FileState";
+import ColorsState from "./components/context/colors/ColorsState";
 
 const Root = ({ history }) => {
   const { setUser, clearUser, user } = useContext(UserContext);
@@ -31,6 +30,7 @@ const Root = ({ history }) => {
         clearUser();
       }
     });
+    // eslint-disable-next-line
   }, [user.currentUser]);
 
   return user.isLoading ? (
@@ -46,16 +46,14 @@ const Root = ({ history }) => {
 const RootWithAuth = withRouter(Root);
 
 ReactDOM.render(
-  <FileState>
-    <MessegesState>
-      <ChannelState>
-        <UserState>
-          <Router>
-            <RootWithAuth />
-          </Router>
-        </UserState>
-      </ChannelState>
-    </MessegesState>
-  </FileState>,
+  <ColorsState>
+    <ChannelState>
+      <UserState>
+        <Router>
+          <RootWithAuth />
+        </Router>
+      </UserState>
+    </ChannelState>
+  </ColorsState>,
   document.getElementById("root")
 );
